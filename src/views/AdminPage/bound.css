@@ -1,0 +1,146 @@
+@supports(display: grid) {
+
+    .items {
+        position: relative;
+        /* width: 100%; */
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        margin: auto;
+        /* transition: all 0.2s; */
+        /* transform: scale(0.98); */
+        /* will-change: transform; */
+        user-select: none;
+        cursor: pointer;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .containerHorizontal {
+        width: 16.667%
+    }
+
+    .itemsHorizontal {
+        position: relative;
+        padding: 0px 20px 0px;
+        height: calc(100% - 110px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        white-space: pre-line;
+        margin: auto;
+        /* transition: all 0.2s; */
+        /* transform: scale(0.98); */
+        /* will-change: transform; */
+        user-select: none;
+        cursor: pointer;
+        -ms-overflow-style: none;
+        margin-top: 70px;
+
+    }
+
+    .mobileContainer {
+        margin: 10px 30px;
+        padding-left: 20px;
+        margin-top: -70px;
+        z-index: 5;
+        height: 60px;
+    }
+
+
+
+    .itemsHorizontal::-webkit-scrollbar {
+        width: 2px
+    }
+
+    /* Track */
+    .itemsHorizontal::-webkit-scrollbar-track {
+        background: white
+    }
+
+    /* Handle */
+    .itemsHorizontal::-webkit-scrollbar-thumb {
+        background: black;
+    }
+
+    /* Handle on hover */
+    .itemsHorizontal::-webkit-scrollbar-thumb:hover {
+        background: #bfbfbf;
+    }
+
+    .items::-webkit-scrollbar {
+        display: none;
+    }
+
+    .items.active {
+        cursor: grabbing;
+        cursor: -webkit-grabbing;
+    }
+
+    .itemsHorizontal.active {
+        cursor: grabbing;
+        cursor: -webkit-grabbing;
+    }
+
+    .item {
+        display: inline-block;
+        /* min-width: 400px; */
+        /* margin: 2em 1em; */
+        margin-right: 25px;
+        pointer-events: auto;
+
+        /* @media screen and (max-width: 500px) {
+            min-height: 10px;
+            min-width: 10px;
+        } */
+    }
+
+    .mobileItem {
+        display: inline-block;
+        /* min-width: 400px; */
+        /* margin: 2em 1em; */
+        margin-right: 25px;
+        pointer-events: auto;
+        width: 80px
+        /* @media screen and (max-width: 500px) {
+            min-height: 10px;
+            min-width: 10px;
+        } */
+    }
+
+    .itemHorizontal {
+        display: inline-block;
+        /* min-width: 400px; */
+        /* margin: 2em 1em; */
+        margin-bottom: 25px;
+        pointer-events: auto;
+
+        /* @media screen and (max-width: 500px) {
+            min-height: 10px;
+            min-width: 10px;
+        } */
+    }
+
+    @media screen and (max-width: 1199px) {
+        .itemsHorizontal {
+            margin-top: 40px;
+            height: calc(100% - 60px);
+        }
+    }
+
+    @media screen and (max-width: 599px) {
+        .mobileContainer {
+            margin-top: -105px;
+            padding-left: 0px;
+            margin-left: 6px;
+            margin-right: 7px;
+        }
+
+        .mobileItem {
+            margin-right: 10px;
+            width: 90px;
+        }
+    }
+}
+
+/* 
+maxWidth: '100px', */

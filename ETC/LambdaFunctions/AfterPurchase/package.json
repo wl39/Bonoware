@@ -1,0 +1,16 @@
+{
+  "name": "lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.295.0",
+    "iamport": "^0.3.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm run"
+  },
+  "author": "",
+  "license": "ISC"
+}
