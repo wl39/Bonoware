@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch, withRouter, Redirect } from "react-router-dom";
+import { Route, withRouter, Redirect } from "react-router-dom";
 import Loadable from "react-loadable";
 
 import Aux from "hoc/Aux_/Aux_";
@@ -177,7 +177,7 @@ class App extends Component {
   //http://fonts.googleapis.com/earlyaccess/notosanskr.css
   render() {
     let routes = (
-      <Switch>
+      <div>
         <Route path="/admin" component={AdminPageLoader} />
         <Route path="/about" component={AboutPageLoader} />
         <Route path="/privacy" component={PrivacyPageLoader} />
@@ -206,7 +206,7 @@ class App extends Component {
         <Route path="/payments/complete" component={PaymentsCompleteLoader} />
         <Route exact path="/nfc/:id" component={NFCDetailPage} />
         <Route path="/" exact component={MainPageLoader} /> <Redirect to="/" />
-      </Switch>
+      </div>
     );
     const { classes, ...rest } = this.props;
 
