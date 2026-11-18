@@ -21,7 +21,7 @@ function Footer({ ...props }) {
     <footer className={footerClasses}>
       <div className={classes.footerContainer}>
         <div className={classes.firstRow}>
-          <div className={classes.call}>02.741.4293</div>
+          <div className={classes.call}>**.***.****</div>
           <div className={classes.listInfo}>
             <div className={classes.infoBorder}>
               <a href="/" className={classes.block} target="_blank">
@@ -77,28 +77,17 @@ function Footer({ ...props }) {
             </div>
           </div>
           <div>
-            <div>Fax: 02-753-4290</div>
-            <div>email: admin@probe.gg</div>
+            <div>Fax: **-***-****</div>
+            <div>email: ****@****.***</div>
           </div>
         </div>
         <div className={classes.lastRow}>
-          <div>상호명 : (주)보노웨어</div>
-          <div>
-            사업장소재지 : 서울특별시 종로구 창신1동
-          </div>
-          <div>종로46길 23, 2층 (창신동)</div>
-          <div>사업자등록번호 : 524-88-01143</div>
-          <div>
-            통신판매업신고 : 2019-서울종로-0020
-          </div>
-          <div>대표이사 : 조상훈</div>
-          <a
-            href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=5248801143"
-            target="_blank"
-            className={classes.company}
-          >
-            사업자 정보확인
-          </a>
+          <div>상호명 : ****</div>
+          <div>사업장소재지 : ****</div>
+          <div>사업자등록번호 : ***-**-*****</div>
+          <div>통신판매업신고 : ****-****-****</div>
+          <div>대표이사 : ***</div>
+          <div>사업자 정보확인 : ****</div>
         </div>
       </div>
     </footer>

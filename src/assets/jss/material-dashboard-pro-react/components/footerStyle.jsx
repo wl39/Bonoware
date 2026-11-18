@@ -80,8 +80,7 @@ const footerStyle = {
       justifyContent: "center",
       textAlign: "center"
     }
-  },
-  company: { ...link, textDecoration: "underline" }
+  }
 };
 
 export default footerStyle;

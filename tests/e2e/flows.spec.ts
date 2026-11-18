@@ -232,3 +232,34 @@ test("price distribution stays compact, marks overflow, and exposes actual count
   await expect(overflow).not.toBeFocused();
   await expect(chart.locator("figcaption")).not.toHaveText(label!);
 });
+
+test("home ticker scrolls, respects reduced motion, and the footer masks company records", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  const ticker = page.getByRole("navigation", { name: "신발 시세" });
+  const first = ticker.getByRole("link").first();
+  await expect(first).toBeVisible();
+  const start = (await first.boundingBox())!.x;
+  await expect
+    .poll(async () => (await first.boundingBox())!.x)
+    .toBeLessThan(start - 2);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(ticker.locator(".market-ticker__track")).toHaveCSS(
+    "animation-name",
+    "none",
+  );
+  await first.click();
+  await expect(page).toHaveURL(/#\/products\//);
+  const footer = page.getByRole("contentinfo");
+  await expect(footer).toContainText("사업자등록번호 : ***-**-*****");
+  await expect(footer).toContainText("사업자 정보확인 : ****");
+  await expect(
+    footer.getByRole("link", { name: "사업자 정보확인" }),
+  ).toHaveCount(0);
+  await footer.getByRole("link", { name: "개인정보처리방침" }).click();
+  await expect(
+    page.getByText("개인정보 보호책임자 : 대표이사 ***", { exact: true }),
+  ).toBeVisible();
+});

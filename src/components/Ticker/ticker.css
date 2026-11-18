@@ -1,0 +1,68 @@
+.market-ticker {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 4;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #222;
+  color: white;
+  line-height: 2.5rem;
+}
+.market-ticker__track {
+  display: flex;
+  width: max-content;
+  animation: probe-market-scroll 60s linear infinite;
+}
+.market-ticker__group {
+  display: flex;
+  justify-content: space-around;
+  min-width: 100vw;
+  flex: none;
+}
+.market-ticker__group a {
+  padding: 0 2rem;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.market-ticker__group a:is(:hover, :focus-visible) {
+  text-decoration: underline;
+}
+.market-ticker__group .market-ticker__up {
+  color: #7dcf81;
+}
+.market-ticker__group .market-ticker__down {
+  color: #ff8278;
+}
+@keyframes probe-market-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (hover: hover) {
+  .market-ticker:hover .market-ticker__track {
+    animation-play-state: paused;
+  }
+}
+.market-ticker:focus-within .market-ticker__track {
+  animation-play-state: paused;
+}
+@media (max-width: 599px) {
+  .market-ticker {
+    line-height: 32px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .market-ticker {
+    overflow-x: auto;
+  }
+  .market-ticker__track {
+    animation: none;
+  }
+  .market-ticker__group[aria-hidden="true"] {
+    display: none;
+  }
+}
