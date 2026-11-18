@@ -36,7 +36,8 @@ const bottomPageStyle = {
       height: "50px",
     },
     "@media (max-width: 576px)": {
-      height: "30px",
+      height: "44px",
+      fontSize: "15px",
     },
   },
 };

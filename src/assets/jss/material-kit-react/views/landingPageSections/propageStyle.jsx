@@ -23,6 +23,10 @@ const propageStyle = {
       paddingBottom: "150px"
     }
   },
+  sectionContainer: {
+    margin: "32px 0",
+    "@media (max-width: 599px)": { margin: "24px 16px" }
+  },
   detailPageConatiner: {
     display: "flex",
     borderRadius: "6px",
@@ -33,6 +37,9 @@ const propageStyle = {
     marginRight: "auto",
     width: "100%",
     marginTop: "60px",
+    "@media (max-width: 599px)": {
+      "& > :last-child": { paddingLeft: 16, paddingRight: 16 }
+    },
     "@media (min-width: 600px)": {
       maxWidth: "97% !important",
       paddingLeft: "0",
@@ -80,7 +87,8 @@ const propageStyle = {
     flexBasis: "60%"
   },
   descriptionContainer: {
-    display: "grid", gap: "6px", width: "72.222%", margin: "auto"
+    display: "grid", gap: "6px", width: "72.222%", margin: "auto",
+    "@media (max-width: 599px)": { width: "auto", margin: "auto 0 auto 16px", whiteSpace: "nowrap" }
   },
   type: {
     height: "22px",
@@ -97,6 +105,7 @@ const propageStyle = {
     backgroundColor: "#a2a9af",
     display: "flex",
     flexBasis: "40%",
+    overflow: "hidden",
     "&::before": {
       content: `''`,
       borderBottom: "250px solid #ebedec",
@@ -121,10 +130,10 @@ const propageStyle = {
   sourceLink: { color: "#454e54", textDecoration: "underline", textUnderlineOffset: ".2em" },
   listPrices: { display: "flex", textAlign: "right" },
   saleCell: { width: "100px", marginRight: "12px", textAlign: "right", "@media (max-width: 959px)": { display: "none" } },
-  detailFacts: { display: "grid", margin: "16px 16px 24px 0", "@media (max-width: 599px)": { gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: "0 16px", margin: "0 8px" } },
+  detailFacts: { display: "grid", margin: "16px 16px 24px 0", "@media (max-width: 599px)": { gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: "0 16px", margin: 0 } },
   productContainer: {
     display: "flex", flexDirection: "column", flex: "1 1 0", minWidth: 0,
-    "@media (max-width: 599px)": { padding: "0 14px 32px" }
+    "@media (max-width: 599px)": { padding: "0 16px 32px" }
   },
   productButtonContainer: {
     padding: "7.5px",
@@ -143,7 +152,7 @@ const propageStyle = {
   },
   filterOptionContainer: {
     width: "175px", border: "1px solid #c5c8ca", height: "40px", position: "relative", marginRight: "8px",
-    "@media (max-width: 599px)": { width: "145px" }
+    "@media (max-width: 599px)": { width: "clamp(114px, 35vw, 145px)" }
   },
   filterOption: {
     height: "16px",
@@ -225,7 +234,8 @@ const propageStyle = {
   },
   listHeader: {
     display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 8px",
-    borderTop: "1px solid #a2a9af", borderBottom: "1px solid #d7d9da", color: "#50565a", fontSize: "14px"
+    borderTop: "1px solid #a2a9af", borderBottom: "1px solid #d7d9da", color: "#50565a", fontSize: "14px",
+    "@media (max-width: 599px)": { padding: "10px 0 10px 66px" }
   },
   shoeName: {
     fontWeight: 500
@@ -276,16 +286,20 @@ const propageStyle = {
   },
   link: {
     display: "flex", flexDirection: "column", minWidth: 0, color: "#191919 !important",
-    textDecoration: "none", "&:hover $productHeader, &:focus-visible $productHeader": { borderColor: "#a5a9ab" }
+    textDecoration: "none", "&:hover $productHeader, &:focus-visible $productHeader": { borderColor: "#a5a9ab" },
+    "@media (max-width: 599px)": {
+      border: "1px solid #dce0e1", borderRadius: "4px", overflow: "hidden"
+    }
   },
   linkList: {
     display: "grid", gridTemplateColumns: "90px minmax(0, 1fr) auto", alignItems: "center",
     gap: "16px", color: "#191919 !important", padding: "12px 8px", textDecoration: "none", borderBottom: "1px solid #e5e5e5",
-    "@media (max-width: 599px)": { gridTemplateColumns: "64px minmax(0, 1fr) auto", gap: "8px", padding: "10px 4px" }
+    "@media (max-width: 599px)": { gridTemplateColumns: "56px minmax(0, 1fr) auto", gap: "10px", padding: "12px 0" }
   },
   productHeader: {
     aspectRatio: "1 / 1", border: "1px solid #dedfe0", padding: "8%", display: "flex", alignItems: "center",
-    background: "#fff", transition: "border-color .15s"
+    background: "#fff", transition: "border-color .15s",
+    "@media (max-width: 599px)": { border: 0, borderBottom: "1px solid #edf0f0" }
   },
   productHeaderList: {
     display: "grid", placeItems: "center", aspectRatio: "1.25 / 1", padding: "5px", background: "#fff", border: "1px solid #e1e3e4"
@@ -309,13 +323,16 @@ const propageStyle = {
     }
   },
   productBody: {
-    display: "grid", alignContent: "start", gap: "4px", margin: "11px 0 10px", minWidth: 0
+    display: "grid", alignContent: "start", gap: "4px", margin: "11px 0 10px", minWidth: 0,
+    "@media (max-width: 599px)": { margin: "10px 10px 12px" },
+    "& $modelEn": { minHeight: "2.8em" }
   },
   productBodyList: {
     display: "grid", gap: "2px", minWidth: 0
   },
   productFooter: {
-    display: "grid", gap: "1px", marginTop: "auto"
+    display: "grid", gap: "1px", marginTop: "auto",
+    "@media (max-width: 599px)": { padding: "0 10px 12px" }
   },
   productFooterList: {
     display: "flex", alignItems: "center", textAlign: "right", fontVariantNumeric: "tabular-nums"
@@ -368,11 +385,12 @@ const propageStyle = {
     fontSize: "17px", fontWeight: 700, color: "#161718", lineHeight: 1.35, fontVariantNumeric: "tabular-nums"
   },
   priceList: {
-    minWidth: "84px", fontSize: "15px", fontWeight: 600, color: "#161718", whiteSpace: "nowrap"
+    minWidth: "84px", fontSize: "15px", fontWeight: 600, color: "#161718", whiteSpace: "nowrap",
+    "@media (max-width: 599px)": { minWidth: 0 }
   },
   slider: {
     width: "min(22%, 250px)", flexShrink: 0, marginRight: "clamp(24px, 4vw, 64px)",
-    "@media (max-width: 959px)": { width: "auto", margin: 0, position: "absolute", top: 0, left: "14px", zIndex: 5 }
+    "@media (max-width: 959px)": { width: "auto", margin: 0, position: "absolute", top: 0, left: "16px", zIndex: 5 }
   },
   brandSearchContainer: {
     background: "#697278", padding: "20px", display: "grid", gap: "1px"
@@ -479,7 +497,7 @@ const propageStyle = {
     "@media (max-width: 599px)": {
       flexBasis: "100%",
       flexDirection: "column",
-      height: "340px",
+      height: "auto",
       maxWidth: "100%"
     }
   },
@@ -503,8 +521,8 @@ const propageStyle = {
     },
     "@media (max-width: 599px)": {
       flexDirection: "column",
-      height: "325px",
-      padding: "0px 5px"
+      height: "clamp(225px, 66vw, 300px)",
+      padding: "8px 16px 0"
     }
   },
   withImageActive: {
@@ -674,10 +692,10 @@ const propageStyle = {
     },
     "@media (max-width: 599px)": {
       width: "100%",
-      height: "150px",
-      padding: "15px 5px",
+      height: "auto",
+      padding: "16px",
       position: "static",
-      gridTemplateColumns: "calc(30% - 5px) calc(70% - 5px)",
+      gridTemplateColumns: "minmax(82px, 1fr) minmax(0, 2fr)",
       gridTemplateRows: "55px 55px",
       gridGap: "10px 10px"
     }
@@ -717,12 +735,12 @@ const propageStyle = {
     },
     "@media (max-width: 599px)": {
       width: "100%",
-      height: "300px",
-      padding: "15px 5px",
+      height: "auto",
+      padding: "16px",
       position: "static",
       justifyContent: "space-between",
       gridTemplateRows: "55px 205px",
-      gridGap: "10px 0px"
+      gridGap: "8px"
     }
   },
   shoeContainer: {
@@ -773,16 +791,14 @@ const propageStyle = {
     },
     "@media (max-width: 599px)": {
       flexBasis: "auto",
-      paddingTop: "9px",
-      paddingLeft: "5px",
-      paddingRight: "5px",
+      padding: "18px 16px",
       maxHeight: "none",
-      paddingBottom: "14px"
+      borderRight: 0
     }
   },
   optionModel: {
     width: "84%", display: "grid", gap: "8px", color: "#151515",
-    "@media (max-width: 599px)": { width: "100%", gap: "3px", padding: "0 8px", marginBottom: "6px" }
+    "@media (max-width: 599px)": { width: "100%", gap: "5px", marginBottom: "12px" }
   },
   optionModelEnglish: {
     fontSize: "clamp(19px, 2vw, 30px)", lineHeight: 1.22, fontWeight: 650, overflowWrap: "anywhere"
@@ -863,7 +879,8 @@ const propageStyle = {
       right: "10px"
     },
     "@media (max-width: 599px)": {
-      top: "-319px",
+      top: "auto",
+      bottom: "calc(100% + 12px)",
       right: "25px",
       zIndex: "10"
     }
@@ -958,15 +975,16 @@ const propageStyle = {
     margin: "0px 10px 10px 10px",
     paddingBottom: "10px",
     borderBottom: "1px solid #eee",
-    color: "#7c7c7c"
+    color: "#7c7c7c",
+    "@media (max-width: 599px)": { margin: "0 16px", padding: "0 0 12px" }
   },
   detailsContainer: {
     display: "grid", gridTemplateColumns: "minmax(65px, .8fr) minmax(0, 1.5fr)", alignItems: "baseline", gap: "8px",
-    padding: "4px 0", "@media (max-width: 599px)": { gridTemplateColumns: "auto minmax(0,1fr)", padding: "3px 0", gap: "4px" }
+    padding: "4px 0", "@media (max-width: 599px)": { gridTemplateColumns: "minmax(0,1fr)", alignContent: "start", borderTop: "1px solid #e4e6e7", padding: "7px 0", gap: "2px" }
   },
   detail: {
     fontSize: "14px", lineHeight: 1.45, color: "#232527", fontVariantNumeric: "tabular-nums",
-    "@media (max-width: 599px)": { fontSize: "12px", textAlign: "right" }
+    "@media (max-width: 599px)": { fontSize: "13px", overflowWrap: "anywhere" }
   },
   recommendButtonContainer: {
     display: "flex",

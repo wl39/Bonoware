@@ -14,7 +14,7 @@ import propageStyle from "assets/jss/material-kit-react/views/landingPageSection
 import Details from "components/Product/Details";
 import ModalBuy from "components/Modal/ModalBuy.jsx";
 import ProductCommentsPanel from "components/Product/ProductCommentsPanel.jsx";
-import RelatedSection from "../../views/MainPage/Sections/RelatedSection";
+import ProductShelf from "./ProductShelf";
 
 import PriceHistoryModal from "./ProductDetailModal/PriceHistoryModal";
 import SizeModal from "./ProductDetailModal/SizeModal";
@@ -836,7 +836,7 @@ class ProductDetail extends React.Component {
           )}
         </div>
         <div className={classes.sectionContainer}>
-          <RelatedSection
+          <ProductShelf
             headerName="연관 상품"
             helper={korean + " 와 관련된 상품입니다"}
             shoes={this.props.related}

@@ -14,7 +14,6 @@ import propageStyle from "assets/jss/material-kit-react/views/landingPageSection
 import Details from "components/Product/Details";
 import ModalBuy from "components/Modal/ModalBuy.jsx";
 import ProductCommentsPanel from "components/Product/ProductCommentsPanel.jsx";
-import RelatedSection from "../../views/MainPage/Sections/RelatedSection"
 
 import ReactApexChart from "react-apexcharts";
 

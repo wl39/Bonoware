@@ -66,6 +66,8 @@ function SearchResults({ classes, visible, search, josh, test, lol }) {
   return (
     <div
       className={classNames(josh, test, classes.surface)}
+      role="region"
+      aria-label="검색 결과"
       ref={scrollBox}
       onScroll={({ currentTarget }) => {
         if (

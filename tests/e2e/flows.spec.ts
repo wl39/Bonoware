@@ -61,17 +61,12 @@ test("original search panel finds a model", async ({ page, isMobile }) => {
     : page.getByRole("textbox", { name: "신발명, 브랜드 검색하세요." }).last();
   await search.click();
   await search.fill("Butter");
-  await expect(
-    page
-      .locator('a[href*="/products/"]')
-      .filter({ hasText: "이지 부스트 350 V2 버터" })
-      .last(),
-  ).toBeVisible();
-  await page
-    .locator('a[href*="/products/"]')
-    .filter({ hasText: "이지 부스트 350 V2 버터" })
-    .last()
-    .click();
+  const result = page
+    .getByRole("region", { name: "검색 결과" })
+    .getByRole("link")
+    .filter({ hasText: "이지 부스트 350 V2 버터" });
+  await expect(result).toBeVisible();
+  await result.click();
   await expect(page).toHaveURL(/products\//);
   await expect(
     page.getByText("사이즈별 최저가로 구매하기", { exact: true }),
@@ -291,4 +286,37 @@ test("home campaigns rotate distinct responsive artwork and sync the selection",
       campaign.getByRole("button", { name: /Smooth like/i }),
     ).toHaveAttribute("aria-pressed", "true");
   }
+});
+
+test("horizontal product cards scroll and open their matching detail", async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto("/");
+  const shelf = page.getByRole("region", { name: "인기 제품", exact: true });
+  const cards = shelf.locator(".shelf-card");
+  await cards.first().scrollIntoViewIfNeeded();
+  const rail = shelf.locator(".product-shelf__items");
+  if (!isMobile) {
+    const bounds = (await rail.boundingBox())!;
+    const x = bounds.x + bounds.width * 0.65;
+    const y = bounds.y + bounds.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x - 200, y, { steps: 8 });
+    await page.mouse.up();
+    await expect
+      .poll(() => rail.evaluate((e) => e.scrollLeft))
+      .toBeGreaterThan(50);
+  }
+  const last = cards.last();
+  const href = await last.getAttribute("href");
+  await last.click();
+  await expect.poll(() => new URL(page.url()).hash).toBe(href);
+  await expect(
+    page
+      .getByRole("region", { name: "연관 상품" })
+      .locator(".shelf-card")
+      .first(),
+  ).toBeVisible();
 });
