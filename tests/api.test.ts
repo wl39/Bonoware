@@ -53,17 +53,36 @@ const buy = (offerId = "stock-jordan-unc-260", extra = {}) =>
 describe("catalog and account API", () => {
   it("searches model numbers, combines filters, sorts prices, and keeps releases separate", async () => {
     const all = await request<Product[]>("/products");
-    expect(all.data).toHaveLength(16);
+    expect(all.data).toHaveLength(516);
+    expect(
+      new Set(
+        all.data.map((p) => p.model.toLowerCase().replace(/[^a-z0-9]/g, "")),
+      ).size,
+    ).toBe(516);
+    expect(
+      all.data.filter(
+        (p) =>
+          p.id.startsWith("sx-") &&
+          p.image.startsWith("https://images.stockx.com/images/"),
+      ),
+    ).toHaveLength(500);
     const filtered = await request<Product[]>(
       "/products?q=350&brand=Adidas&size=260&sort=price-asc",
     );
-    expect(filtered.data.map((p) => p.id)).toEqual([
-      "yeezy-antlia",
-      "yeezy-butter",
-      "yeezy-zebra",
-      "yeezy-pirate-black",
-      "yeezy-oxford-tan",
-    ]);
+    expect(filtered.data.map((p) => p.id)).toEqual(
+      expect.arrayContaining([
+        "yeezy-antlia",
+        "yeezy-butter",
+        "yeezy-zebra",
+        "yeezy-pirate-black",
+        "yeezy-oxford-tan",
+      ]),
+    );
+    expect(
+      filtered.data.every((p) => p.brand === "Adidas" && p.sizes.includes(260)),
+    ).toBe(true);
+    const prices = filtered.data.map((p) => p.price!);
+    expect(prices).toEqual(prices.toSorted((a, b) => a - b));
     expect(
       (await request<Product[]>("/products?q=AQ0818-148")).data[0].id,
     ).toBe("jordan-unc");
@@ -239,22 +258,30 @@ describe("recovery", () => {
     await login();
     const order = (await buy()).data;
     const old = JSON.parse(values.get(DB_KEY)!) as Database;
-    delete old.catalogRevision;
+    old.catalogRevision = 1;
     const originalIds = new Set(
-      old.products.filter((p) => !p.sourceUrl).map((p) => p.id),
+      old.products.filter((p) => !p.id.startsWith("sx-")).map((p) => p.id),
     );
     old.products = old.products.filter((p) => originalIds.has(p.id));
     old.offers = old.offers.filter((o) => originalIds.has(o.productId));
     values.set(DB_KEY, JSON.stringify(old));
-    const newShoe = await request<Detail>("/products/AA3831-002");
-    expect(newShoe.data.product.sourceUrl).toBe(
-      "https://stockx.com/nike-air-vapormax-off-white-black",
+    const additions = (await request<Product[]>("/products")).data.filter((p) =>
+      p.id.startsWith("sx-"),
     );
+    expect(additions).toHaveLength(500);
+    const model = additions[0].model;
+    const newShoe = await request<Detail>(`/products/${model}`);
+    expect(newShoe.data.product.sourceUrl).toMatch(/^https:\/\/stockx\.com\//);
+    expect(
+      (
+        await request<Product[]>(`/products?q=${model.replace(/-/g, "")}`)
+      ).data.some((p) => p.id === newShoe.data.product.id),
+    ).toBe(true);
     expect(newShoe.data.offers).toHaveLength(11);
     expect((await request("/profile")).data.orders[0].id).toBe(order.id);
     expect((await buy()).status).toBe(409);
     expect(
-      (await request<Detail>("/products/AA3831-002")).data.offers,
+      (await request<Detail>(`/products/${model}`)).data.offers,
     ).toHaveLength(11);
     expect((await request<Product[]>("/products?q=지브라")).data[0].model).toBe(
       "CP9654",

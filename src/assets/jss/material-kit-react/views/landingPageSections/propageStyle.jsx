@@ -676,7 +676,7 @@ const propageStyle = {
       width: "100%",
       height: "150px",
       padding: "15px 5px",
-      top: "565px",
+      position: "static",
       gridTemplateColumns: "calc(30% - 5px) calc(70% - 5px)",
       gridTemplateRows: "55px 55px",
       gridGap: "10px 10px"
@@ -711,7 +711,7 @@ const propageStyle = {
     },
     "@media (max-width: 959px)": {
       padding: "30px 1.6%",
-      gridTemplateColumns: "33% 33% 33%",
+      gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
       gridGap: "initial",
       justifyContent: "space-between"
     },
@@ -719,7 +719,7 @@ const propageStyle = {
       width: "100%",
       height: "300px",
       padding: "15px 5px",
-      top: "565px",
+      position: "static",
       justifyContent: "space-between",
       gridTemplateRows: "55px 205px",
       gridGap: "10px 0px"
@@ -735,9 +735,9 @@ const propageStyle = {
       height: "340px"
     },
     "@media (max-width: 599px)": {
-      height: "505px",
+      height: "auto",
       flexDirection: "column-reverse",
-      marginBottom: "150px"
+      marginBottom: 0
     }
   },
   shoeContainerActive: {
@@ -750,9 +750,9 @@ const propageStyle = {
       marginBottom: "350px"
     },
     "@media (max-width: 599px)": {
-      height: "505px",
+      height: "auto",
       flexDirection: "column-reverse",
-      marginBottom: "300px"
+      marginBottom: 0
     }
   },
   containerLeft: {
@@ -772,11 +772,12 @@ const propageStyle = {
       paddingTop: "20px"
     },
     "@media (max-width: 599px)": {
-      flexBasis: "100%",
-      paddingTop: "5px",
+      flexBasis: "auto",
+      paddingTop: "9px",
       paddingLeft: "5px",
       paddingRight: "5px",
-      maxHeight: "180px"
+      maxHeight: "none",
+      paddingBottom: "14px"
     }
   },
   optionModel: {

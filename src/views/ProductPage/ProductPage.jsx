@@ -40,7 +40,7 @@ function ProductPage({ classes, location }) {
 
   useEffect(() => {
     const controller = new AbortController();
-    api("/products", { signal: controller.signal })
+    api("/products?view=filters", { signal: controller.signal })
       .then(setCatalog)
       .catch(() => {});
     return () => controller.abort();

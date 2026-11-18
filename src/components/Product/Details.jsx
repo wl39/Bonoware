@@ -10,8 +10,10 @@ function Details({ classes, products, date }) {
     ["품번", products.sku],
     ...(products.sourceUrl
       ? [
-          ["컬러", products.colorway],
-          ["미국 정가", "US$" + products.retailUsd],
+          ...(products.colorway ? [["컬러", products.colorway]] : []),
+          ...(products.retailUsd
+            ? [["미국 정가", "US$" + products.retailUsd]]
+            : []),
           [
             "출처",
             <a

@@ -1,11 +1,15 @@
 import { stockxCatalog } from "./stockx-catalog";
 import type { Database, News, Product } from "./types";
+import catalogBatch from "./stockx-batch.json";
+import { normalizeStyleCode } from "./product-index";
 
 export const DEMO_EMAIL = "demo@probe.local";
 export const DEMO_PASSWORD = "Probe1234!";
 export const SIZES = [240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290];
 export const imagePath = (name: string) =>
-  `${import.meta.env.BASE_URL}images/${name}`;
+  name.startsWith("https://images.stockx.com/images/")
+    ? name
+    : `${import.meta.env.BASE_URL}images/${name}`;
 
 const definitions = [
   [
@@ -130,7 +134,7 @@ const definitions = [
   ],
 ] as const;
 
-export const CATALOG_REVISION = 1;
+export const CATALOG_REVISION = 2;
 
 export function createSeed(now = new Date()): Database {
   const dateAt = (days: number) =>
@@ -174,6 +178,33 @@ export function createSeed(now = new Date()): Database {
       history: priceHistory(item.price, products.length),
     });
   }
+  for (const item of catalogBatch) {
+    products.push({
+      id: item.id,
+      brand: item.brand,
+      name: item.name,
+      subtitle: "",
+      model: item.sku,
+      image: item.image,
+      price: item.price,
+      releaseDate: item.releaseDate + "T12:00:00.000Z",
+      sourceUrl:
+        item.sourceUrl ||
+        `https://stockx.com/search?s=${encodeURIComponent(item.sku)}`,
+      retailUsd: item.retailUsd,
+      upcoming: false,
+      sizes: SIZES,
+      retail: null,
+      popular: Math.max(
+        1,
+        525 - (products.length - definitions.length - stockxCatalog.length),
+      ),
+      change: 0,
+      color: "#f3f3f3",
+      description: `${item.brand} · ${item.sku}`,
+      history: priceHistory(item.price, products.length),
+    });
+  }
   return {
     version: 2,
     catalogRevision: CATALOG_REVISION,
@@ -214,8 +245,14 @@ export function upgradeCatalog(db: Database) {
   if ((db.catalogRevision ?? 0) >= CATALOG_REVISION) return;
   const seed = createSeed();
   const existing = new Set(db.products.map((product) => product.id));
+  const styleCodes = new Set(
+    db.products.map((product) => normalizeStyleCode(product.model)),
+  );
   const additions = seed.products.filter(
-    (product) => product.sourceUrl && !existing.has(product.id),
+    (product) =>
+      product.sourceUrl &&
+      !existing.has(product.id) &&
+      !styleCodes.has(normalizeStyleCode(product.model)),
   );
   const addedIds = new Set(additions.map((product) => product.id));
   db.products.push(...additions);

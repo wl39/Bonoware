@@ -1,4 +1,5 @@
 import { imagePath, news } from "../app/seed";
+import { marketIndex } from "../app/product-index";
 const korean = {
   "jordan-unc": "에어 조던 1 오프화이트 유니버시티 블루",
   "yeezy-butter": "이지 부스트 350 V2 버터",
@@ -11,22 +12,12 @@ const korean = {
   "force-volt": "나이키 에어 포스 1 오프화이트 볼트",
   footscape: "나이키 에어 풋스케이프",
 };
-export function classicProduct(db, p) {
-  const stock = db.offers.filter(
-    (o) => o.productId === p.id && o.status === "on_sale",
-  );
-  const latestSale = db.orders.reduce((latest, order) => {
-    if (
-      order.productId === p.id &&
-      order.status === "confirmed" &&
-      (!latest || order.createdAt >= latest.createdAt)
-    )
-      return order;
-    return latest;
-  }, null);
+export function classicProduct(db, p, market = marketIndex(db)) {
+  const stock = market.stock.get(p.id) || [];
+  const latestSale = market.latestSales.get(p.id);
   return {
     _id: p.id,
-    name: `${p.name} ${p.subtitle}|${p.koreanName || korean[p.id] || p.name}`,
+    name: `${[p.name, p.subtitle].filter(Boolean).join(" ")}|${p.koreanName || korean[p.id] || p.model}`,
     image: [imagePath(p.image)],
     brand: p.brand.toLowerCase(),
     lastSalePrice: latestSale?.price ?? null,

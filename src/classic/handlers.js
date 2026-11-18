@@ -7,6 +7,7 @@ import {
 } from "../app/database";
 import { classicProduct, classicAccount, classicNews } from "./models";
 import { imagePath } from "../app/seed";
+import { marketIndex, matchesStyleCode } from "../app/product-index";
 const background = imagePath("original-bg.jpg");
 const banner = imagePath("original-banner.png");
 const mobileBanner = imagePath("original-banner-mobile.png");
@@ -89,14 +90,14 @@ export function classicHandlers(repository) {
             ),
           );
         if (route === "/protected/createListing") {
-          const id = await repository.transaction(
-            (db) =>
-              db.products.find(
-                (p) =>
-                  p.id === body.productId ||
-                  classicProduct(db, p).name === body.productId,
-              )?.id,
-          );
+          const id = await repository.transaction((db) => {
+            const market = marketIndex(db);
+            return db.products.find(
+              (p) =>
+                p.id === body.productId ||
+                classicProduct(db, p, market).name === body.productId,
+            )?.id;
+          });
           if (!id)
             throw new ApiError(404, "검색 결과에서 상품을 선택해주세요.");
           return HttpResponse.json(
@@ -132,17 +133,17 @@ export function classicHandlers(repository) {
           );
         }
         const result = await repository.transaction(async (db) => {
-          const all = db.products.map((p) => classicProduct(db, p));
+          const market = marketIndex(db);
+          const all = db.products.map((p) => classicProduct(db, p, market));
+          const upcomingIds = new Set(
+            db.products.filter((p) => p.upcoming).map((p) => p.id),
+          );
           const find = (value) =>
             all.find(
               (p) => p._id === value || p.name === value || p.model === value,
             );
-          const current = all.filter(
-            (p) => !db.products.find((x) => x.id === p._id)?.upcoming,
-          );
-          const upcoming = all.filter(
-            (p) => db.products.find((x) => x.id === p._id)?.upcoming,
-          );
+          const current = all.filter((p) => !upcomingIds.has(p._id));
+          const upcoming = all.filter((p) => upcomingIds.has(p._id));
           const wrapper = (p) => ({ ...p, data: [p] });
           if (route === "/open") {
             const popularity = new Map(
@@ -199,9 +200,12 @@ export function classicHandlers(repository) {
           ) {
             let rows = route.endsWith("unreleasedShoe") ? upcoming : current;
             if (route.endsWith("/search")) {
-              const value = (q.get("shoe") || "").toLowerCase();
-              rows = rows.filter((p) =>
-                `${p.name} ${p.brand} ${p.model}`.toLowerCase().includes(value),
+              const value = (q.get("shoe") || "").trim().toLowerCase();
+              rows = rows.filter(
+                (p) =>
+                  `${p.name} ${p.brand} ${p.model}`
+                    .toLowerCase()
+                    .includes(value) || matchesStyleCode(p.model, value),
               );
             }
             if (q.get("brand"))
@@ -225,12 +229,7 @@ export function classicHandlers(repository) {
                 .filter(Boolean)
                 .map(Number);
               rows = rows.filter((p) =>
-                db.offers.some(
-                  (o) =>
-                    o.productId === p._id &&
-                    o.status === "on_sale" &&
-                    sizes.includes(o.size),
-                ),
+                market.stock.get(p._id)?.some((o) => sizes.includes(o.size)),
               );
             }
             if (q.has("lowestPrice"))

@@ -37,15 +37,14 @@ test("original home and catalog layout, local images and route navigation", asyn
   await expect(page.locator("body")).not.toContainText("취향은 선명하게");
   await page.goto("/#/products");
   await expect(page.getByText("Release Years", { exact: true })).toBeAttached();
-  const products = await (await page.request.get("/api/products")).json();
   const links = page.locator('a[href*="/products/"]');
   await expect(links).toHaveCount(12);
   await page.getByRole("button", { name: "물품 더 보기" }).click();
-  await expect(links).toHaveCount(products.length);
+  await expect(links).toHaveCount(24);
   const hrefs = await links.evaluateAll((nodes) =>
     nodes.map((node) => node.getAttribute("href")),
   );
-  expect(new Set(hrefs).size).toBe(products.length);
+  expect(new Set(hrefs).size).toBe(24);
   await page.locator('a[href*="/products/"]').first().click();
   await expect(
     page.getByText("사이즈별 최저가로 구매하기", { exact: true }),

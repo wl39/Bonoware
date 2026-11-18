@@ -17,17 +17,19 @@ const requests = new AsyncLocalStorage();
 let state = { database: null, sessions: {} };
 if (fs.existsSync(stateFile))
   state = JSON.parse(fs.readFileSync(stateFile, "utf8"));
-const persist = () => {
+const persist = (snapshot = state) => {
   fs.mkdirSync(path.dirname(stateFile), { recursive: true });
-  fs.writeFileSync(`${stateFile}.tmp`, JSON.stringify(state));
+  fs.writeFileSync(`${stateFile}.tmp`, JSON.stringify(snapshot));
   fs.renameSync(`${stateFile}.tmp`, stateFile);
 };
+let sessionsDirty = false;
 const storage = {
   getItem: (key) => (key === DB_KEY ? state.database : null),
   setItem: (key, value) => {
-    if (key === DB_KEY) {
+    if (key === DB_KEY && (state.database !== value || sessionsDirty)) {
+      persist({ ...state, database: value });
       state.database = value;
-      persist();
+      sessionsDirty = false;
     }
   },
 };
@@ -39,7 +41,11 @@ const repository = {
       db.session = state.sessions[token] ?? null;
       try {
         const result = await fn(db);
-        state.sessions[token] = db.session;
+        if (db.session !== (state.sessions[token] ?? null)) {
+          if (db.session === null) delete state.sessions[token];
+          else state.sessions[token] = db.session;
+          sessionsDirty = true;
+        }
         return result;
       } finally {
         db.session = null;

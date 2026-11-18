@@ -7,7 +7,8 @@ import {
   type Repository,
 } from "./database";
 import { news, SIZES } from "./seed";
-import type { Database, Product } from "./types";
+import type { Database, Offer, Product } from "./types";
+import { marketIndex, matchesStyleCode } from "./product-index";
 
 const text = (value: unknown, name: string, min = 1, max = 200) => {
   if (
@@ -33,10 +34,7 @@ const productIn = (db: Database, id: string) => {
   if (!product) throw new ApiError(404, "상품을 찾을 수 없습니다.");
   return product;
 };
-const withMarket = (db: Database, p: Product) => {
-  const offers = db.offers.filter(
-    (o) => o.productId === p.id && o.status === "on_sale",
-  );
+const withMarket = (p: Product, offers: Offer[] = []) => {
   return {
     ...p,
     price: offers.length ? Math.min(...offers.map((o) => o.price)) : null,
@@ -73,13 +71,15 @@ export function createHandlers(repository: Repository, latency = 100) {
           const q = (query.get("q") || "").trim().toLocaleLowerCase();
           const brand = query.get("brand");
           const size = query.get("size");
+          const { stock } = marketIndex(db);
           let products = db.products
-            .map((p) => withMarket(db, p))
+            .map((p) => withMarket(p, stock.get(p.id)))
             .filter(
               (p) =>
-                `${p.brand} ${p.name} ${p.subtitle} ${p.model} ${p.koreanName ?? ""} ${p.colorway ?? ""}`
+                (`${p.brand} ${p.name} ${p.subtitle} ${p.model} ${p.koreanName ?? ""} ${p.colorway ?? ""}`
                   .toLocaleLowerCase()
-                  .includes(q) &&
+                  .includes(q) ||
+                  matchesStyleCode(p.model, q)) &&
                 (!brand || p.brand === brand) &&
                 (!size || p.sizes.includes(Number(size))) &&
                 (query.get("upcoming") === "true" ? p.upcoming : !p.upcoming),
@@ -103,6 +103,12 @@ export function createHandlers(repository: Repository, latency = 100) {
             default:
               products.sort((a, b) => b.popular - a.popular);
           }
+          if (query.get("view") === "filters") {
+            return products.map(({ price, releaseDate }) => ({
+              price,
+              releaseDate,
+            }));
+          }
           return products;
         }),
       ),
@@ -112,7 +118,7 @@ export function createHandlers(repository: Repository, latency = 100) {
         repository.transaction((db) => {
           const product = productIn(db, String(params.id));
           return {
-            product: withMarket(db, product),
+            product: withMarket(product, marketIndex(db).stock.get(product.id)),
             offers: db.offers
               .filter(
                 (o) => o.productId === product.id && o.status === "on_sale",
