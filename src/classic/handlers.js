@@ -9,8 +9,16 @@ import { classicProduct, classicAccount, classicNews } from "./models";
 import { imagePath } from "../app/seed";
 import { marketIndex, matchesStyleCode } from "../app/product-index";
 const background = imagePath("original-bg.jpg");
-const banner = imagePath("original-banner.png");
-const mobileBanner = imagePath("original-banner-mobile.png");
+const banners = [
+  "banner-canvas.jpg",
+  "banner-butter.jpg",
+  "original-banner.png",
+].map(imagePath);
+const mobileBanners = [
+  "banner-canvas.jpg",
+  "banner-butter-mobile.jpg",
+  "original-banner-mobile.png",
+].map(imagePath);
 function matchesBrand(product, filter) {
   const brand = product.brand.toLowerCase();
   switch (filter.toLowerCase()) {
@@ -164,8 +172,8 @@ export function classicHandlers(repository) {
                 mainpageimages: {
                   item: [
                     { images: background },
-                    { images: [banner, banner, banner] },
-                    { images: [mobileBanner, mobileBanner, mobileBanner] },
+                    { images: banners },
+                    { images: mobileBanners },
                   ],
                 },
               },

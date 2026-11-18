@@ -28,28 +28,15 @@ const mainPageStyle = {
     }
   },
   titleContainer: {
-    ...container,
     position: "absolute",
-    padding: "0px",
+    left: 0,
+    right: 0,
     top: "130px",
-    height: "245px",
-    left: "0",
-    right: "0",
-    "@media (min-width: 480px)": {
-      maxWidth: "90%"
-    },
-    "@media (min-width: 768px)": {
-      maxWidth: "90%"
-    },
-    "@media (min-width: 992px)": {
-      top: "180px",
-      maxWidth: "90%",
-      height: "211px"
-    },
-    "@media (min-width: 1200px)": {
-      top: "220px",
-      maxWidth: "83.333%"
-    }
+    width: "90%",
+    margin: "0 auto",
+    "@media (max-width: 599px)": { width: "calc(100% - 32px)" },
+    "@media (min-width: 992px)": { top: "180px" },
+    "@media (min-width: 1200px)": { top: "220px", width: "83.333%" }
   },
   brand: {
     color: "#FFFFFF",
@@ -87,46 +74,6 @@ const mainPageStyle = {
     },
     "@media (min-width: 1200px)": {
       height: "251px"
-    }
-  },
-  dotContainer: {
-    height: "inherit",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    marginRight: "15px",
-    "@media (min-width: 480px)": {
-      // top: "400px"
-    },
-    "@media (min-width: 768px)": {
-      // top: "517px"
-    },
-    "@media (min-width: 992px)": {
-      marginRight: "34px"
-    },
-    "@media (min-width: 1200px)": {
-      marginRight: "52px"
-    }
-  },
-  dot: {
-    width: "7px",
-    height: "7px",
-    background: "white",
-    borderRadius: "50%",
-    display: "none",
-    "@media (min-width: 480px)": {
-      display: "none"
-    },
-    "@media (min-width: 768px)": {
-      display: "none"
-    },
-    "@media (min-width: 992px)": {
-      width: "5px",
-      height: "5px"
-    },
-    "@media (min-width: 1200px)": {
-      width: "7px",
-      height: "7px"
     }
   },
   titles: {
@@ -185,29 +132,6 @@ const mainPageStyle = {
     },
     "@media (min-width: 1200px)": {
       height: "80px"
-    }
-  },
-  redDot: {
-    width: "7px",
-    height: "7px",
-    background: "#FE0229",
-    borderRadius: "50%",
-    position: "absolute",
-    bottom: "0",
-    display: "none",
-    "@media (min-width: 480px)": {
-      display: "none"
-    },
-    "@media (min-width: 768px)": {
-      display: "none"
-    },
-    "@media (min-width: 992px)": {
-      width: "5px",
-      height: "5px"
-    },
-    "@media (min-width: 1200px)": {
-      width: "7px",
-      height: "7px"
     }
   },
   subtitle: {

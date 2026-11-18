@@ -263,3 +263,32 @@ test("home ticker scrolls, respects reduced motion, and the footer masks company
     page.getByText("개인정보 보호책임자 : 대표이사 ***", { exact: true }),
   ).toBeVisible();
 });
+
+test("home campaigns rotate distinct responsive artwork and sync the selection", async ({
+  page,
+  isMobile,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  const campaign = page.getByRole("region", { name: "메인 배너" });
+  const current = campaign.locator(".slick-current img");
+  const source = () =>
+    current.evaluate((image: HTMLImageElement) => image.currentSrc);
+  await expect.poll(source).toContain("original-banner");
+  await expect.poll(source, { timeout: 8000 }).toContain("banner-canvas");
+  if (!isMobile) {
+    await campaign.getByRole("button", { name: /Smooth like/i }).click();
+  }
+  await expect
+    .poll(source, { timeout: 8000 })
+    .toContain(isMobile ? "banner-butter-mobile" : "banner-butter.jpg");
+  await expect(page.locator(".campaign-hero--1")).toHaveAttribute(
+    "data-current",
+    "true",
+  );
+  if (!isMobile) {
+    await expect(
+      campaign.getByRole("button", { name: /Smooth like/i }),
+    ).toHaveAttribute("aria-pressed", "true");
+  }
+});
