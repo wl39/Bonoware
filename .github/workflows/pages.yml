@@ -2,10 +2,6 @@ name: Publish catalog to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_run:
-    workflows: ["pages build and deployment"]
-    branches: [main]
-    types: [completed]
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,26 +9,7 @@ concurrency:
   group: bonoware-catalog-pages
   cancel-in-progress: false
 jobs:
-  source:
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.head_sha == github.sha
-    permissions:
-      pages: read
-    outputs:
-      publish: ${{ steps.source.outputs.publish }}
-    steps:
-      - id: source
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          source=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type)
-          case "$GITHUB_EVENT_NAME:$source" in
-            workflow_dispatch:*|push:workflow|workflow_run:legacy) echo 'publish=true' >> "$GITHUB_OUTPUT" ;;
-            *) echo 'publish=false' >> "$GITHUB_OUTPUT" ;;
-          esac
   build:
-    needs: source
-    if: needs.source.outputs.publish == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -53,11 +30,21 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Wait for any branch-based Pages deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        timeout-minutes: 15
+        run: |
+          runs="repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&event=dynamic&per_page=100"
+          while [[ "$(gh api "$runs" --jq '[.workflow_runs[] | select(.path == "dynamic/pages/pages-build-deployment" and .status != "completed")] | length')" != 0 ]]; do
+            sleep 10
+          done
       - id: deployment
         uses: actions/deploy-pages@v5
