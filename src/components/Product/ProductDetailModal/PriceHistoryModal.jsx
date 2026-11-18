@@ -1,7 +1,7 @@
+import { catalogData } from "classic/catalogData";
 import React from "react";
 import priceHistoryModal from "assets/jss/material-kit-react/views/landingPageSections/priceHistoryModal.jsx";
 
-import axios from "axios";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -17,14 +17,10 @@ class PriceHistoryModal extends React.Component {
     let sid = this.props.sid;
     let size = this.props.size ? "=" + this.props.size : "";
 
-    axios({
-      method: "get",
-      url:
-        "https://api.probe.gg/open/allShoeSizePrice?shoe=" +
+    catalogData("/open/allShoeSizePrice?shoe=" +
         sid +
         "&size" +
-        size
-    }).then(response => {
+        size).then(response => {
       const { classes } = this.props;
       let priceHistory = [];
 

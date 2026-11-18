@@ -1,3 +1,4 @@
+import { staticPages } from "classic/mode";
 import AppBar from "@material-ui/core/AppBar";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
@@ -256,8 +257,8 @@ class Header extends React.Component {
                       <Link to="/" className={classes.link}>
                         App
                       </Link>
-                      <Link to="/profile/portfolio" className={classes.link}>
-                        Portfolio
+                      <Link to={staticPages ? "/new-releases" : "/profile/portfolio"} className={classes.link}>
+                        {staticPages ? "Releases" : "Portfolio"}
                       </Link>
                       <Link to="/about" className={classes.link}>
                         About
@@ -295,8 +296,8 @@ class Header extends React.Component {
                       <Link to="/" className={classes.link}>
                         App
                       </Link>
-                      <Link to="/profile/portfolio" className={classes.link}>
-                        Portfolio
+                      <Link to={staticPages ? "/new-releases" : "/profile/portfolio"} className={classes.link}>
+                        {staticPages ? "Releases" : "Portfolio"}
                       </Link>
                       <Link to="/about" className={classes.link}>
                         About
@@ -307,7 +308,7 @@ class Header extends React.Component {
               </div>
             )}
             <Hidden xsDown>{leftLinks}</Hidden>
-            <div
+            {!staticPages && <div
               className={
                 this.props.searchBar
                   ? classes.mobileDrawerRightOther
@@ -347,7 +348,7 @@ class Header extends React.Component {
                   otherPage={this.props.searchBar}
                 />
               </Hidden>
-            </div>
+            </div>}
           </Toolbar>
 
           <Hidden smUp>
@@ -363,7 +364,20 @@ class Header extends React.Component {
               {/* 밑에 div 필요한거지 확인해보기 */}
               <div className={classes.appResponsive}>
                 {/* 일단 여기 있는 거는 확실히 바뀌어야 함 */}
-                <MobileHeaderLink onClose={this.handleDrawerToggle} />
+                {staticPages ? (
+                  <nav className="catalog-menu">
+                    {[
+                      ["/products", "상품 목록"],
+                      ["/new-releases", "출시 일정"],
+                      ["/news", "뉴스"],
+                      ["/about", "소개"]
+                    ].map(([path, label]) => (
+                      <Link key={path} to={path} onClick={this.handleDrawerToggle}>
+                        {label}
+                      </Link>
+                    ))}
+                  </nav>
+                ) : <MobileHeaderLink onClose={this.handleDrawerToggle} />}
               </div>
             </Drawer>
           </Hidden>

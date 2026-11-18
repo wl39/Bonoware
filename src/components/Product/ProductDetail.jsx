@@ -1,3 +1,5 @@
+import { staticPages } from "classic/mode";
+import { catalogData } from "classic/catalogData";
 import React from "react";
 
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -22,7 +24,6 @@ import SizeModal from "./ProductDetailModal/SizeModal";
 import ReactApexChart from "react-apexcharts";
 
 import Carousel from "./../../views/AdminPage/Carousel";
-import axios from "axios";
 import moment from "moment";
 
 const MIN_SIZE = 220;
@@ -581,10 +582,7 @@ class ProductDetail extends React.Component {
   }
 
   sizePanelHandler = () => {
-    axios({
-      method: "get",
-      url: "https://api.probe.gg/open/shoeSizePrice?shoe=" + this.props.sid
-    }).then(value => {
+    catalogData("/open/shoeSizePrice?shoe=" + this.props.sid).then(value => {
       const { classes } = this.props;
 
       let sizePrice = {};
@@ -820,14 +818,14 @@ class ProductDetail extends React.Component {
             <Button
               className={classes.sizeButton}
               onClick={this.sizePanelHandler}
-              disabled={this.state.disable}
+              disabled={staticPages || this.state.disable}
               classes={{
                 disabled: classes.buttonDisabled
               }}
             >
               {this.state.unreleased
                 ? "아직 출시되지 않은 신발입니다."
-                : this.props.stockCount
+                : staticPages ? "카탈로그 보기 전용" : this.props.stockCount
                 ? "사이즈별 최저가로 구매하기"
                 : "상품 준비중 입니다"}
             </Button>

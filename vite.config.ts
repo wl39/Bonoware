@@ -9,6 +9,7 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
   resolve: {
     alias: [
       ...[
+        "classic",
         "assets",
         "components",
         "views",

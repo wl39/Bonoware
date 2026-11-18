@@ -1,3 +1,4 @@
+import { catalogData } from "classic/catalogData";
 import axios from "axios";
 import { api } from "../../app/api";
 import { classicAccount } from "../../classic/models";
@@ -246,10 +247,7 @@ export const getMainImages = () => {
     let unreleased = [];
     let ticker = [];
 
-    axios({
-      method: "get",
-      url: "https://api.probe.gg/open"
-    }).then(value => {
+    catalogData("/open").then(value => {
       value.data[1].graph.forEach(value => {
         switch (value.graphName) {
           case "nike":

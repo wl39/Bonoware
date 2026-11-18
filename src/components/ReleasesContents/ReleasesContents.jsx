@@ -1,5 +1,5 @@
+import { catalogData } from "classic/catalogData";
 import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import ReleaseCards from "components/ReleaseDatePanel/ReleaseCards";
 
 export default function ReleasesContents({
@@ -24,8 +24,7 @@ export default function ReleasesContents({
     const controller = new AbortController();
     setData(null);
     setError(false);
-    axios
-      .get("https://api.probe.gg/open/unreleasedShoe", {
+    catalogData("/open/unreleasedShoe", {
         params: { period, month, subBrand: families, skip: page },
         signal: controller.signal,
       })

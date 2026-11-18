@@ -1,14 +1,13 @@
+import { catalogData, catalogFilters } from "classic/catalogData";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button, ClickAwayListener, IconButton } from "@material-ui/core";
 import { KeyboardArrowDown, ViewModule, ViewStream } from "@material-ui/icons";
 import withStyles from "@material-ui/core/styles/withStyles";
-import axios from "axios";
 import propageStyle from "assets/jss/material-kit-react/views/landingPageSections/propageStyle.jsx";
 import Product from "components/Product/Product.jsx";
 import ProductSearchPanel, {
   brands,
 } from "components/Product/ProductSearchPanel.jsx";
-import { api } from "../../app/api";
 
 const sortOptions = [
   ["mostPopular", "인기순", "인기 있는 제품부터 봅니다.", "whatshot"],
@@ -40,7 +39,7 @@ function ProductPage({ classes, location }) {
 
   useEffect(() => {
     const controller = new AbortController();
-    api("/products?view=filters", { signal: controller.signal })
+    catalogFilters(controller.signal)
       .then(setCatalog)
       .catch(() => {});
     return () => controller.abort();
@@ -77,8 +76,7 @@ function ProductPage({ classes, location }) {
         if (sizes.length) params.size = sizes.join(",");
         if (years.length) params.year = years.join(",");
         if (range) params.price = range.join(",");
-        const { data } = await axios.get(
-          "https://api.probe.gg/open/search_option",
+        const { data } = await catalogData("/open/search_option",
           { params, signal: controller.signal },
         );
         if (controller.signal.aborted) return;

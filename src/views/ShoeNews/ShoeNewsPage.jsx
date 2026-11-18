@@ -1,8 +1,8 @@
+import { catalogData } from "classic/catalogData";
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import shoeNewsPage from "assets/jss/material-kit-react/views/shoeNewsPage";
 
 function dateLabel(dateString) {
@@ -33,8 +33,7 @@ function ShoeNewsPage({ classes }) {
   React.useEffect(() => {
     const controller = new AbortController();
     setError(false);
-    axios
-      .get("https://api.probe.gg/open/list_news", {
+    catalogData("/open/list_news", {
         params: { skip: page },
         signal: controller.signal,
       })

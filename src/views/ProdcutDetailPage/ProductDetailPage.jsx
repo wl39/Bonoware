@@ -1,7 +1,7 @@
+import { catalogData } from "classic/catalogData";
 import withStyles from "@material-ui/core/styles/withStyles";
 import ProductDetail from "components/Product/ProductDetail.jsx";
 import React from "react";
-import axios from "axios";
 import Button from "@material-ui/core/Button";
 class ProductDetailPage extends React.Component {
   state = { data: null, error: "" };
@@ -21,7 +21,7 @@ class ProductDetailPage extends React.Component {
     const signal = this.controller.signal;
     this.setState({ error: "", data: null });
     try {
-      const response = await axios.get("https://api.probe.gg/open/shoe", {
+      const response = await catalogData("/open/shoe", {
         params: { shoe: this.props.match.params.model },
         signal,
       });

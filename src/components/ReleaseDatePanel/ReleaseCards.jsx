@@ -1,3 +1,4 @@
+import { staticPages } from "classic/mode";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -32,7 +33,7 @@ export default function ReleaseCards({ shoes }) {
             <article className="release-card" key={shoe._id}>
               <div className="release-card__top">
                 <time dateTime={day}>{day.replaceAll("-", ".")}</time>
-                <IconButton
+                {!staticPages && <IconButton
                   aria-label={subtitle + " 관심 상품 설정"}
                   aria-pressed={saved}
                   onClick={() =>
@@ -40,7 +41,7 @@ export default function ReleaseCards({ shoes }) {
                   }
                 >
                   {saved ? <AddCircle /> : <AddCircleOutline />}
-                </IconButton>
+                </IconButton>}
               </div>
               <Link
                 to={"/products/" + encodeURIComponent(shoe._id)}

@@ -56,12 +56,12 @@ const articles = [
     "다음 아카이브 드롭 안내",
   ].map((title, i) => ({ ...news[i], id: `archive-${i + 1}`, title })),
 ];
-export const classicNews = () =>
+export const classicNews = (publishedAt = Date.now()) =>
   articles.map((n, i) => ({
     _id: n.id,
     title: n.title,
     writer: "PROBE",
-    postDate: new Date(Date.now() - i * 86400000).toISOString(),
+    postDate: new Date(publishedAt - i * 86400000).toISOString(),
     viewCount: 120 + i * 30,
     image: [imagePath(n.image)],
     body: n.paragraphs,

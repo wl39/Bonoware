@@ -1,3 +1,4 @@
+import { staticPages } from "classic/mode";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { HashRouter } from "react-router-dom";
@@ -22,16 +23,17 @@ async function start() {
       /* The local API does not depend on browser service workers. */
     }
   }
-  axios.interceptors.request.use((config) => {
-    const url = new URL(config.url, location.origin);
-    if (url.hostname === "api.probe.gg") {
-      config.url = mockMode
-        ? `${import.meta.env.BASE_URL}classic${url.pathname}${url.search}`
-        : `${import.meta.env.VITE_API_BASE_URL || "/api"}${url.pathname}${url.search}`;
-      delete config.headers["Access-Control-Allow-Origin"];
-    }
-    return config;
-  });
+  if (!staticPages)
+    axios.interceptors.request.use((config) => {
+      const url = new URL(config.url, location.origin);
+      if (url.hostname === "api.probe.gg") {
+        config.url = mockMode
+          ? `${import.meta.env.BASE_URL}classic${url.pathname}${url.search}`
+          : `${import.meta.env.VITE_API_BASE_URL || "/api"}${url.pathname}${url.search}`;
+        delete config.headers["Access-Control-Allow-Origin"];
+      }
+      return config;
+    });
   const store = createStore(
     reducer,
     (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(
@@ -40,8 +42,8 @@ async function start() {
   );
   store.dispatch(actions.getId("demo@probe.local"));
   store.dispatch(actions.getPw("Probe1234!"));
-  const session = await api("/session");
-  if (session.user) {
+  const session = staticPages ? null : await api("/session");
+  if (session?.user) {
     const { classicAccount } = await import("./models");
     store.dispatch(
       actions.setAuth(

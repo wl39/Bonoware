@@ -33,3 +33,12 @@ a.store-see-all:focus-visible {
   color: inherit;
   border-color: currentColor;
 }
+
+.catalog-menu {
+  display: grid;
+  padding: 16px;
+}
+.catalog-menu a {
+  padding: 12px;
+  color: #191919;
+}

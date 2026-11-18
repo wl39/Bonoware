@@ -27,6 +27,12 @@ npm run dev
 
 판매 상품은 1,516종입니다. StockX 기반 공개 자료에서 품번으로 중복을 확인했습니다. 자료에 발매일이 없는 상품은 상세 화면에 대시(—)로 표시합니다. 새 상품 이미지는 StockX 이미지 서버에서 불러옵니다. 자세한 자료와 사진 출처는 푸터의 LICENSES에서 확인할 수 있습니다.
 
+## GitHub Pages
+
+[공개 카탈로그 열기](https://wl39.github.io/Bonoware/)
+
+`main`에 변경을 푸시하면 GitHub Actions가 `npm run build:pages`를 실행하고 `dist-pages/`를 배포합니다. 상품 검색·필터·상세, 뉴스와 출시 일정은 저장소의 `src/app/stockx-batch.json`, `stockx-catalog.ts`, `archive-drops.ts`, `seed.ts` 자료를 브라우저에서 직접 읽습니다. 일부 상품 사진은 StockX에서 불러옵니다. 로그인·주문·판매처럼 저장이 필요한 기능은 위의 로컬 실행에서 이용할 수 있습니다.
+
 ## 빌드·검증
 
 ```sh

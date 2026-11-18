@@ -1,8 +1,8 @@
+import { catalogData } from "classic/catalogData";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
-import axios from "axios";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import searchStyle from "../../../assets/jss/material-kit-react/components/searchStyle";
@@ -25,7 +25,7 @@ function SearchResults({ classes, visible, search, josh, test, lol }) {
       setError(false);
       setLoading(true);
       try {
-        const { data } = await axios.get("https://api.probe.gg/open/search", {
+        const { data } = await catalogData("/open/search", {
           params: { shoe: term, skip: page, limit: pageSize },
           signal: controller.signal,
         });

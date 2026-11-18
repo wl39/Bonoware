@@ -1,5 +1,6 @@
+import { staticPages } from "classic/mode";
 import React, { lazy, Suspense, useEffect } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
@@ -68,6 +69,10 @@ export default function App() {
             <Route path="/new-releases" component={Releases} />
             <Route exact path="/news" component={News} />
             <Route path="/news/:model" component={Article} />
+            {staticPages && <Redirect from="/sell" to="/products" />}
+            {staticPages && <Redirect from="/profile" to="/products" />}
+            {staticPages && <Redirect from="/register" to="/" />}
+            {staticPages && <Redirect from="/payments" to="/" />}
             <Route exact path="/sell" component={Sell} />
             <Route path="/sell/details" component={SellDetail} />
             <Route path="/profile/:content?" component={Profile} />
