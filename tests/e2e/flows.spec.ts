@@ -288,7 +288,7 @@ test("home campaigns rotate distinct responsive artwork and sync the selection",
   }
 });
 
-test("horizontal product cards scroll and open their matching detail", async ({
+test("portrait product cards scroll and open their matching detail", async ({
   page,
   isMobile,
 }) => {
@@ -296,6 +296,17 @@ test("horizontal product cards scroll and open their matching detail", async ({
   const shelf = page.getByRole("region", { name: "인기 제품", exact: true });
   const cards = shelf.locator(".shelf-card");
   await cards.first().scrollIntoViewIfNeeded();
+  const card = (await cards.first().boundingBox())!;
+  expect(card.height).toBeGreaterThan(card.width);
+  const photo = (await cards
+    .first()
+    .locator(".shelf-card__photo")
+    .boundingBox())!;
+  const caption = (await cards
+    .first()
+    .locator(".shelf-card__body")
+    .boundingBox())!;
+  expect(caption.y).toBeGreaterThanOrEqual(photo.y + photo.height - 1);
   const rail = shelf.locator(".product-shelf__items");
   if (!isMobile) {
     const bounds = (await rail.boundingBox())!;
