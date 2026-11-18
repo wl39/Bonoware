@@ -396,22 +396,7 @@ class ProductDetail extends React.Component {
         top: 0,
         behavior: "smooth"
       });
-      let date = new Date(nextProps.releaseDate);
-
-      const newDate = moment(date, "DD-MM-YYYY-HH-mm");
-
-      let mm = date.getMonth() + 1;
-      let dd = date.getDate();
-      date =
-        date.getFullYear() +
-        "." +
-        (mm > 9 ? "" : "0") +
-        mm +
-        "." +
-        (dd > 9 ? "" : "0") +
-        dd;
-
-      const today = moment();
+      const released = moment.utc(nextProps.releaseDate, moment.ISO_8601, true);
 
       let imageSlider = [];
 
@@ -430,12 +415,12 @@ class ProductDetail extends React.Component {
 
       this.setState({
         shoeName: nextProps.model,
-        date: date.toString(),
+        date: released.isValid() ? released.format("YYYY.MM.DD") : "—",
         sizeOpen: false,
         slider: [...imageSlider]
       });
 
-      let diff = today.diff(newDate, "month");
+      let diff = moment().diff(released, "month");
 
       if (diff === 0) {
         this.setState({
@@ -549,22 +534,7 @@ class ProductDetail extends React.Component {
       top: 0,
       behavior: "smooth"
     });
-    let date = new Date(this.props.releaseDate);
-
-    const newDate = moment(date, "DD-MM-YYYY-HH-mm");
-
-    let mm = date.getMonth() + 1;
-    let dd = date.getDate();
-    date =
-      date.getFullYear() +
-      "." +
-      (mm > 9 ? "" : "0") +
-      mm +
-      "." +
-      (dd > 9 ? "" : "0") +
-      dd;
-
-    const today = moment();
+    const released = moment.utc(this.props.releaseDate, moment.ISO_8601, true);
 
     let imageSlider = [];
 
@@ -584,11 +554,11 @@ class ProductDetail extends React.Component {
 
     this.setState({
       shoeName: this.props.model,
-      date: date.toString(),
+      date: released.isValid() ? released.format("YYYY.MM.DD") : "—",
       slider: [...imageSlider]
     });
 
-    let diff = today.diff(newDate, "month");
+    let diff = moment().diff(released, "month");
     if (diff === 0) {
       this.setState({
         new: true

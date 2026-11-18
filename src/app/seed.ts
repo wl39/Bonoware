@@ -134,7 +134,7 @@ const definitions = [
   ],
 ] as const;
 
-export const CATALOG_REVISION = 2;
+export const CATALOG_REVISION = 3;
 
 export function createSeed(now = new Date()): Database {
   const dateAt = (days: number) =>
@@ -187,7 +187,8 @@ export function createSeed(now = new Date()): Database {
       model: item.sku,
       image: item.image,
       price: item.price,
-      releaseDate: item.releaseDate + "T12:00:00.000Z",
+      // An empty date also keeps cached catalog clients able to sort and filter.
+      releaseDate: item.releaseDate ? item.releaseDate + "T12:00:00.000Z" : "",
       sourceUrl:
         item.sourceUrl ||
         `https://stockx.com/search?s=${encodeURIComponent(item.sku)}`,

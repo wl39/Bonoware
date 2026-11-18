@@ -36,25 +36,27 @@ function ProductSearchPanel({
   const highPrice = useRef(null);
   const releaseYears = useMemo(
     () =>
-      [...new Set(catalog.map((item) => item.releaseDate.slice(0, 4)))]
+      [
+        ...new Set(
+          catalog.map((item) => item.releaseDate?.slice(0, 4)).filter(Boolean),
+        ),
+      ]
         .sort()
         .reverse(),
     [catalog],
   );
-  const { maximum, buckets } = useMemo(() => {
-    const prices = catalog.map((item) => item.price).filter(Number.isFinite);
-    const step = Math.max(
-      50000,
-      Math.ceil(Math.max(0, ...prices) / 50 / 50000) * 50000,
-    );
-    const buckets = Array.from({ length: 50 }, () => ({
-      frequency: 0,
-      lowestFrequency: 0,
-    }));
-    prices.forEach((price) => {
-      buckets[Math.min(49, Math.floor(price / step))].frequency++;
-    });
-    return { maximum: 50 * step, buckets };
+  const { maximum, buckets, step } = useMemo(() => {
+    const count = 28;
+    const prices = catalog
+      .map((item) => item.price)
+      .filter((price) => Number.isFinite(price) && price >= 0);
+    const highest = prices.reduce((max, price) => Math.max(max, price), 0);
+    const step = Math.max(5000, Math.ceil(highest / count / 5000) * 5000);
+    const buckets = Array(count).fill(0);
+    for (const price of prices) {
+      buckets[Math.min(count - 1, Math.floor(price / step))]++;
+    }
+    return { maximum: count * step, buckets, step };
   }, [catalog]);
 
   function renderFilters() {
@@ -83,7 +85,7 @@ function ProductSearchPanel({
             <span ref={lowPrice}>{currency(range?.[0] ?? 0)}</span>
             <span ref={highPrice}>{currency(range?.[1] ?? maximum)}</span>
           </div>
-          <Histogram histogram={buckets} />
+          <Histogram buckets={buckets} step={step} range={range} />
           <div className="slider slider-grey">
             <Nouislider
               start={range || [0, maximum]}

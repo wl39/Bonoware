@@ -206,3 +206,29 @@ test("repeated search, filter buttons, logo and navigation keep the page alive w
   await expect(page.getByText("프로브하세요", { exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });
+test("price distribution stays compact, marks overflow, and exposes actual counts", async ({
+  page,
+  isMobile,
+}) => {
+  const prices = Array.from({ length: 1400 }, (_, i) => ({
+    price: i < 1300 ? 105000 : (i - 1300) * 10000,
+    releaseDate: "",
+  }));
+  await page.route("**/api/products?view=filters", (route) =>
+    route.fulfill({ json: prices }),
+  );
+  await page.goto("/#/products");
+  if (isMobile) await page.getByRole("button", { name: "상세 검색" }).click();
+  const chart = page.getByRole("figure", { name: "가격대별 상품 수" });
+  const overflow = chart.getByRole("button").filter({ hasText: "+" });
+  await expect(overflow).toHaveCount(1);
+  const label = await overflow.getAttribute("aria-label");
+  expect(label).toContain("1,304종");
+  const rect = await chart.boundingBox();
+  expect(rect!.height).toBeLessThan(100);
+  await overflow.click();
+  await expect(chart.locator("figcaption")).toHaveText(label!);
+  await overflow.press("ArrowRight");
+  await expect(overflow).not.toBeFocused();
+  await expect(chart.locator("figcaption")).not.toHaveText(label!);
+});

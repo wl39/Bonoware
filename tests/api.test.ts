@@ -53,19 +53,19 @@ const buy = (offerId = "stock-jordan-unc-260", extra = {}) =>
 describe("catalog and account API", () => {
   it("searches model numbers, combines filters, sorts prices, and keeps releases separate", async () => {
     const all = await request<Product[]>("/products");
-    expect(all.data).toHaveLength(516);
+    expect(all.data).toHaveLength(1516);
     expect(
       new Set(
         all.data.map((p) => p.model.toLowerCase().replace(/[^a-z0-9]/g, "")),
       ).size,
-    ).toBe(516);
+    ).toBe(1516);
     expect(
       all.data.filter(
         (p) =>
           p.id.startsWith("sx-") &&
           p.image.startsWith("https://images.stockx.com/images/"),
       ),
-    ).toHaveLength(500);
+    ).toHaveLength(1500);
     const filtered = await request<Product[]>(
       "/products?q=350&brand=Adidas&size=260&sort=price-asc",
     );
@@ -268,7 +268,7 @@ describe("recovery", () => {
     const additions = (await request<Product[]>("/products")).data.filter((p) =>
       p.id.startsWith("sx-"),
     );
-    expect(additions).toHaveLength(500);
+    expect(additions).toHaveLength(1500);
     const model = additions[0].model;
     const newShoe = await request<Detail>(`/products/${model}`);
     expect(newShoe.data.product.sourceUrl).toMatch(/^https:\/\/stockx\.com\//);

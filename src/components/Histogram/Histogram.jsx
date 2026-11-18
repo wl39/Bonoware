@@ -1,37 +1,93 @@
-import withStyles from "@material-ui/core/styles/withStyles";
-import React from "react";
+import React, { useState } from "react";
+import "./histogram.css";
 
-function Histogram({ histogram = [] }) {
-  // The original graph has 50 price buckets. Never allocate DOM from an
-  // untrusted sparse-array length (a currency amount used as an index can hang a tab).
-  const buckets = Array.from(
-    { length: Math.min(histogram.length, 50) },
-    (_, i) => histogram[i],
+const formatWon = (value) => (value / 10000).toLocaleString("ko-KR") + "만";
+
+export default function Histogram({ buckets, step, range }) {
+  const [active, setActive] = useState(null);
+  const occupied = buckets.filter((count) => count > 0).sort((a, b) => a - b);
+  // Keep a few very crowded bins from flattening the rest of the distribution.
+  const percentile = occupied[Math.ceil(occupied.length * 0.9) - 1] || 1;
+  const cap = Math.min(
+    250,
+    occupied.at(-1) || 1,
+    Math.ceil(percentile / 10) * 10,
   );
+  const clipped = occupied.at(-1) > cap;
+  const label = (i) =>
+    `${formatWon(i * step)}~${formatWon((i + 1) * step)}원 · ${buckets[i].toLocaleString("ko-KR")}종`;
+  const first = buckets.findIndex((count) => count > 0);
+  const [tabStop, setTabStop] = useState(null);
+
+  function moveFocus(event, index) {
+    const direction = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+    if (!direction) return;
+    event.preventDefault();
+    let next = index + direction;
+    while (next >= 0 && next < buckets.length) {
+      if (buckets[next]) {
+        event.currentTarget.parentElement.children[next].focus();
+        return;
+      }
+      next += direction;
+    }
+  }
+
   return (
-    <div
-      style={{ display: "flex", flexDirection: "row", alignItems: "baseline" }}
-    >
-      {buckets.map((bucket, i) => (
-        <div key={i} style={{ width: "2%" }}>
-          <div
-            style={{
-              height: Math.max(0, Number(bucket?.frequency) || 0) * 10 + "px",
-              width: "100%",
-              background: "#c8c8c8",
-            }}
-          />
-          <div
-            style={{
-              height:
-                Math.max(0, Number(bucket?.lowestFrequency) || 0) * 10 + "px",
-              width: "100%",
-              backgroundImage: "linear-gradient(#c8c8c8, #939393)",
-            }}
-          />
-        </div>
-      ))}
-    </div>
+    <figure className="price-histogram" aria-label="가격대별 상품 수">
+      <figcaption className="price-histogram__caption">
+        {active !== null
+          ? label(active)
+          : clipped
+            ? `+ 표시 · ${cap}종 초과`
+            : "가격대별 상품 수"}
+      </figcaption>
+      <div
+        className="price-histogram__plot"
+        onPointerLeave={() => setActive(null)}
+      >
+        {buckets.map((count, i) => {
+          if (!count)
+            return (
+              <span
+                key={i}
+                aria-hidden="true"
+                onPointerEnter={() => setActive(i)}
+              />
+            );
+          const outside =
+            range && (i * step > range[1] || (i + 1) * step <= range[0]);
+          return (
+            <button
+              type="button"
+              className="price-histogram__bin"
+              data-active={active === i}
+              data-muted={Boolean(outside)}
+              aria-label={label(i)}
+              tabIndex={i === (tabStop ?? first) ? 0 : -1}
+              key={i}
+              onPointerEnter={() => setActive(i)}
+              onFocus={() => {
+                setTabStop(i);
+                setActive(i);
+              }}
+              onBlur={() => setActive(null)}
+              onClick={() => setActive(i)}
+              onKeyDown={(event) => moveFocus(event, i)}
+            >
+              <span
+                aria-hidden="true"
+                className="price-histogram__bar"
+                style={{ height: Math.max(2, Math.min(count / cap, 1) * 52) }}
+              >
+                {count > cap && (
+                  <span className="price-histogram__plus">+</span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </figure>
   );
 }
-export default withStyles(null)(Histogram);
