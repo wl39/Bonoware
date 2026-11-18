@@ -1,0 +1,122 @@
+.release-calendar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 64px;
+  color: #191919;
+}
+.release-calendar h1 {
+  margin: 0;
+  font-size: clamp(28px, 3.2vw, 40px);
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+.release-calendar header p {
+  margin: 8px 0 28px;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.release-calendar__layout {
+  display: grid;
+  grid-template-columns: 144px minmax(0, 1fr);
+  gap: 24px;
+}
+.release-filters__period,
+.release-filters__brands {
+  display: grid;
+  align-content: start;
+}
+.release-filters__period {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+.release-filters label,
+.release-filters summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  margin: 0;
+  color: #252525;
+  cursor: pointer;
+  font-size: 14px;
+}
+.release-filters input {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: #202020;
+}
+.release-filters summary {
+  display: list-item;
+  line-height: 40px;
+  font-weight: 600;
+}
+.release-filters details div {
+  padding-left: 12px;
+}
+.release-results__bar,
+.release-results__pages {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.release-results__bar {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.release-results__bar span,
+.release-results__pages span {
+  font-size: 13px;
+  color: #555;
+  font-variant-numeric: tabular-nums;
+}
+.release-results select,
+.release-results__pages button {
+  min-height: 40px;
+  border: 1px solid #c5c8ca;
+  border-radius: 0;
+  background: white;
+  color: #202020;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.release-results select {
+  min-width: 146px;
+  scroll-margin-top: 104px;
+}
+.release-results__pages {
+  justify-content: center;
+  margin-top: 24px;
+}
+.release-results__pages button:disabled {
+  cursor: default;
+  color: #858585;
+}
+@media (max-width: 768px) {
+  .release-calendar {
+    padding: 90px 16px 40px;
+  }
+  .release-calendar__layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .release-filters__period,
+  .release-filters__brands {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+  }
+  .release-filters__brands {
+    align-items: flex-start;
+    border-bottom: 1px solid #ddd;
+  }
+}
+@media (max-width: 599px) {
+  .release-calendar {
+    padding-top: 84px;
+  }
+}

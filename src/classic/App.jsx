@@ -4,7 +4,12 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import ErrorBoundary from "./ErrorBoundary";
+import "./storefront.css";
 const theme = createMuiTheme({
+  shape: { borderRadius: 0 },
+  overrides: {
+    MuiIconButton: { root: { borderRadius: 0 } },
+  },
   typography: {
     fontFamily: "'Noto Sans KR', sans-serif",
     fontSize: 14,

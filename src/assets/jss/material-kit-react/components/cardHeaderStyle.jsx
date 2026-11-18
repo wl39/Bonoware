@@ -7,7 +7,7 @@ import {
 } from "assets/jss/material-kit-react.jsx";
 const cardHeaderStyle = {
   cardHeader: {
-    borderRadius: "3px",
+    borderRadius: 0,
     padding: "1rem 15px",
     marginLeft: "15px",
     marginRight: "15px",

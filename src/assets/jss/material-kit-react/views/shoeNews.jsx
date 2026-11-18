@@ -18,9 +18,7 @@ const shoeNews = {
     },
     "@media (max-width: 599px)": {
       maxWidth: "100%",
-      paddingTop: "72px",
-      paddingLeft: "0",
-      paddingRight: "0"
+      padding: "84px 16px 32px"
     }
   },
   newsContainer: {
@@ -35,10 +33,12 @@ const shoeNews = {
     left: "0",
     right: "0",
     width: "100%",
-    display: "flex"
+    display: "flex",
+    "@media (max-width: 599px)": { display: "none" }
   },
   newsHeader: {
-    padding: "70px 0px"
+    padding: "70px 0px",
+    "@media (max-width: 599px)": { padding: "0 0 24px" }
   },
   headerCategory: {
     textTransform: "uppercase",
@@ -47,11 +47,11 @@ const shoeNews = {
     fontSize: "14px",
     height: "10px",
     lineHeight: "10px",
-    marginBottom: "30px"
+    marginBottom: "16px"
   },
   title: {
-    fontSize: "36px",
-    lineHeight: "36px",
+    fontSize: "clamp(26px, 3.5vw, 36px)",
+    lineHeight: 1.3,
     letterSpacing: "-1.8px",
     fontWeight: "600",
     color: "#2a2a2a",
@@ -60,7 +60,7 @@ const shoeNews = {
   info: {
     display: "flex",
     justifyContent: "space-between",
-    width: "320px",
+    maxWidth: "320px",
     color: "#010101",
     fontSize: "16px",
     lineHeight: "16px",
@@ -88,22 +88,27 @@ const shoeNews = {
     paddingRight: "1px"
   },
   contentsContainer: {
-    padding: "5px 15px 0px 15px"
+    padding: "5px 15px 0px 15px",
+    "@media (max-width: 599px)": { padding: 0 }
   },
   imgContainer: {
     textAlign: "center",
-    height: "800px",
-    lineHeight: "800px"
+    height: "clamp(200px, 65vw, 560px)",
+    display: "grid !important",
+    placeItems: "center"
   },
   img: {
     display: "inline-block !important",
-    maxHeight: "800px",
+    maxHeight: "100%",
+    minHeight: 0,
+    objectFit: "contain",
     maxWidth: "100%"
   },
   contents: {
     whiteSpace: "pre-wrap",
     paddingTop: "40px",
-    paddingBottom: "100px"
+    paddingBottom: "100px",
+    "@media (max-width: 599px)": { padding: "20px 0 32px" }
   }
 };
 

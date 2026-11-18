@@ -1,3 +1,4 @@
+import { releaseCalendarDay } from "./archive-drops";
 import { http, HttpResponse, delay, type JsonBodyType } from "msw";
 import {
   ApiError,
@@ -72,6 +73,8 @@ export function createHandlers(repository: Repository, latency = 100) {
           const brand = query.get("brand");
           const size = query.get("size");
           const { stock } = marketIndex(db);
+          const upcomingOnly = query.get("upcoming") === "true";
+          const today = releaseCalendarDay();
           let products = db.products
             .map((p) => withMarket(p, stock.get(p.id)))
             .filter(
@@ -82,7 +85,9 @@ export function createHandlers(repository: Repository, latency = 100) {
                   matchesStyleCode(p.model, q)) &&
                 (!brand || p.brand === brand) &&
                 (!size || p.sizes.includes(Number(size))) &&
-                (query.get("upcoming") === "true" ? p.upcoming : !p.upcoming),
+                (upcomingOnly
+                  ? p.upcoming && p.releaseDate.slice(0, 10) >= today
+                  : !p.upcoming),
             );
           switch (query.get("sort")) {
             case "price-asc":
@@ -101,7 +106,11 @@ export function createHandlers(repository: Repository, latency = 100) {
               );
               break;
             default:
-              products.sort((a, b) => b.popular - a.popular);
+              products.sort(
+                upcomingOnly
+                  ? (a, b) => a.releaseDate.localeCompare(b.releaseDate)
+                  : (a, b) => b.popular - a.popular,
+              );
           }
           if (query.get("view") === "filters") {
             return products.map(({ price, releaseDate }) => ({

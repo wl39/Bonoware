@@ -3,7 +3,7 @@ const paymentsComplete = {
         display: "flex",
         flexDirection: "column",
         paddingTop: "100px",
-        borderRadius: "6px",
+        borderRadius: 0,
         zIndex: "3",
         position: "relative",
         background: "#FFFFFF",

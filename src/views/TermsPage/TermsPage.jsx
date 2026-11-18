@@ -1,21 +1,15 @@
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Chip from "@material-ui/core/Chip";
 import Description from "@material-ui/icons/Description";
 
-import termsPage from "assets/jss/material-kit-react/views/termsPage.jsx";
+import termsPage from "assets/jss/material-kit-react/views/legalPage.jsx";
 
 class TermsPage extends React.Component {
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.container}>
-        <Chip
-          className={classes.chips}
-          icon={<Description />}
-          color="secondary"
-          label="이용약관"
-        />
+        <h1 className={classes.title}><Description aria-hidden="true" />이용약관</h1>
         <p>
           제1조(목적) 이 약관은 ****가 운영하는 사이버 몰
           “프로브”(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하

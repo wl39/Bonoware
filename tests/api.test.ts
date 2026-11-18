@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { setupServer } from "msw/node";
 import { createDatabase, DB_KEY, type StorageLike } from "../src/app/database";
 import { createHandlers } from "../src/app/handlers";
@@ -22,6 +22,7 @@ beforeEach(async () => {
 });
 afterEach(async () => {
   await server.close();
+  vi.useRealTimers();
 });
 async function request<T = any>(path: string, method = "GET", data?: unknown) {
   const response = await fetch(`http://localhost/api${path}`, {
@@ -52,6 +53,8 @@ const buy = (offerId = "stock-jordan-unc-260", extra = {}) =>
 
 describe("catalog and account API", () => {
   it("searches model numbers, combines filters, sorts prices, and keeps releases separate", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-11-18T03:00:00Z"));
     const all = await request<Product[]>("/products");
     expect(all.data).toHaveLength(1516);
     expect(
@@ -86,9 +89,15 @@ describe("catalog and account API", () => {
     expect(
       (await request<Product[]>("/products?q=AQ0818-148")).data[0].id,
     ).toBe("jordan-unc");
+    const releases = (await request<Product[]>("/products?upcoming=true")).data;
+    expect(releases).toHaveLength(29);
+    expect(new Set(releases.map((p) => p.releaseDate.slice(0, 7))).size).toBe(
+      14,
+    );
+    expect(releases.at(-1)?.releaseDate.slice(0, 10)).toBe("2027-12-31");
     expect(
-      (await request<Product[]>("/products?upcoming=true")).data,
-    ).toHaveLength(2);
+      releases.every((p) => p.price === null && p.sizes.length === 0),
+    ).toBe(true);
     expect((await request<Product[]>("/products?q=nonexistent")).data).toEqual(
       [],
     );
@@ -260,7 +269,9 @@ describe("recovery", () => {
     const old = JSON.parse(values.get(DB_KEY)!) as Database;
     old.catalogRevision = 1;
     const originalIds = new Set(
-      old.products.filter((p) => !p.id.startsWith("sx-")).map((p) => p.id),
+      old.products
+        .filter((p) => !p.id.startsWith("sx-") && !p.id.startsWith("drop-"))
+        .map((p) => p.id),
     );
     old.products = old.products.filter((p) => originalIds.has(p.id));
     old.offers = old.offers.filter((o) => originalIds.has(o.productId));
@@ -269,6 +280,13 @@ describe("recovery", () => {
       p.id.startsWith("sx-"),
     );
     expect(additions).toHaveLength(1500);
+    const migrated = JSON.parse(values.get(DB_KEY)!) as Database;
+    expect(
+      migrated.products.filter((p) => p.id.startsWith("drop-")),
+    ).toHaveLength(27);
+    expect(migrated.offers.some((o) => o.productId.startsWith("drop-"))).toBe(
+      false,
+    );
     const model = additions[0].model;
     const newShoe = await request<Detail>(`/products/${model}`);
     expect(newShoe.data.product.sourceUrl).toMatch(/^https:\/\/stockx\.com\//);

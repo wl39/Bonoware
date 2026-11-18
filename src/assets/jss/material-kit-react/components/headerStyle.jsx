@@ -233,7 +233,7 @@ const headerStyle = {
     ...defaultFont,
     lineHeight: "30px",
     fontSize: "18px",
-    borderRadius: "3px",
+    borderRadius: 0,
     textTransform: "none",
     color: "inherit",
     "&:hover,&:focus": {
@@ -245,7 +245,7 @@ const headerStyle = {
   primary: {
     backgroundColor: primaryColor,
     color: "#FFFFFF",
-    borderRadius: "1rem",
+    borderRadius: 0,
     boxShadow:
       "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(156, 39, 176, 0.46)"
   },

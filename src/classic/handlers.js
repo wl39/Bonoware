@@ -1,3 +1,4 @@
+import { releaseCalendarDay } from "../app/archive-drops";
 import { http, HttpResponse } from "msw";
 import {
   ApiError,
@@ -32,6 +33,24 @@ function matchesBrand(product, filter) {
     default:
       return brand === filter.toLowerCase();
   }
+}
+
+function releaseFamily(product) {
+  if (product.brand === "jordan") return "airJordan";
+  const name = product.name.toLowerCase();
+  if (product.brand === "nike") {
+    if (name.includes("air force")) return "airForce";
+    if (name.includes("air max")) return "airMax";
+    return "nOther";
+  }
+  if (product.brand === "adidas") {
+    if (name.includes("yeezy")) return "yeezy";
+    if (/ultra ?boost/.test(name)) return "ultraBoost";
+    if (name.includes("nmd")) return "nmd";
+    if (name.includes("iniki")) return "iniki";
+    return "aOther";
+  }
+  return "other";
 }
 
 export function classicHandlers(repository) {
@@ -151,7 +170,13 @@ export function classicHandlers(repository) {
               (p) => p._id === value || p.name === value || p.model === value,
             );
           const current = all.filter((p) => !upcomingIds.has(p._id));
-          const upcoming = all.filter((p) => upcomingIds.has(p._id));
+          const today = releaseCalendarDay();
+          const upcoming = all
+            .filter(
+              (p) =>
+                upcomingIds.has(p._id) && p.releaseDate.slice(0, 10) >= today,
+            )
+            .sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));
           const wrapper = (p) => ({ ...p, data: [p] });
           if (route === "/open") {
             const popularity = new Map(
@@ -188,7 +213,7 @@ export function classicHandlers(repository) {
               { orderby: { item: recent } },
               { item: affordable.map(wrapper) },
               { shoeNews: { item: classicNews() } },
-              { orderby: { item: upcoming } },
+              { orderby: { item: upcoming.slice(0, 4) } },
               rec.map((p, i) => ({
                 id: p._id,
                 name: p.name,
@@ -198,15 +223,43 @@ export function classicHandlers(repository) {
               })),
             ];
           }
+          if (route === "/open/unreleasedShoe") {
+            const calendar =
+              q.get("period") === "past"
+                ? all
+                    .filter(
+                      (p) =>
+                        p.releaseDate && p.releaseDate.slice(0, 10) < today,
+                    )
+                    .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+                : upcoming;
+            const months = [
+              ...new Set(calendar.map((p) => p.releaseDate.slice(0, 7))),
+            ];
+            const families = (q.get("subBrand") || "")
+              .split(",")
+              .filter(Boolean);
+            const month = q.get("month");
+            const rows = calendar.filter(
+              (p) =>
+                (!month || p.releaseDate.startsWith(month + "-")) &&
+                (!families.length || families.includes(releaseFamily(p))),
+            );
+            const limit = 12;
+            const start = Math.max(0, parseInt(q.get("skip"), 10) || 0) * limit;
+            return {
+              orderby: { item: rows.slice(start, start + limit) },
+              months,
+              total: rows.length,
+              hasMore: start + limit < rows.length,
+            };
+          }
           if (
-            [
-              "/open/products",
-              "/open/search",
-              "/open/search_option",
-              "/open/unreleasedShoe",
-            ].includes(route)
+            ["/open/products", "/open/search", "/open/search_option"].includes(
+              route,
+            )
           ) {
-            let rows = route.endsWith("unreleasedShoe") ? upcoming : current;
+            let rows = current;
             if (route.endsWith("/search")) {
               const value = (q.get("shoe") || "").trim().toLowerCase();
               rows = rows.filter(
@@ -257,11 +310,7 @@ export function classicHandlers(repository) {
             const start =
               Math.max(0, Number.parseInt(q.get("skip"), 10) || 0) * limit;
             rows = rows.slice(start, start + limit + 1);
-            return route.endsWith("/unreleasedShoe")
-              ? { orderby: { item: rows } }
-              : route.endsWith("/search_option")
-                ? rows.map(wrapper)
-                : rows;
+            return route.endsWith("/search_option") ? rows.map(wrapper) : rows;
           }
           if (["/open/shoe", "/open/shoeChangedData"].includes(route)) {
             const product = find(q.get("shoe"));

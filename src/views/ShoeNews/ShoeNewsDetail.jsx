@@ -111,7 +111,11 @@ class ShoeNewsDetail extends React.Component {
         </div>
         <div className={classes.contentsContainer}>
           <Slider {...setting}>{this.state.images}</Slider>
-          <div className={classes.contents}>{this.props.contents}</div>
+          <div className={classes.contents}>
+            {Array.isArray(this.props.contents)
+              ? this.props.contents.map((paragraph, index) => <p key={index}>{paragraph}</p>)
+              : this.props.contents}
+          </div>
         </div>
       </div>
     );

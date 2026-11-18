@@ -27,7 +27,7 @@ export default function ProductShelf({ headerName, helper, shoes, filter }) {
 
   return (
     <section className="product-shelf" aria-label={headerName}>
-      <div className="product-shelf__heading">
+      <div className="store-section-heading">
         <h2>{headerName}</h2>
         <ClickAwayListener onClickAway={() => setHelpOpen(false)}>
           <Tooltip
@@ -47,7 +47,7 @@ export default function ProductShelf({ headerName, helper, shoes, filter }) {
         </ClickAwayListener>
         {filter && (
           <Link
-            className="product-shelf__all"
+            className="store-see-all"
             to={{ pathname: "/products", state: { filter, brand: "" } }}
           >
             전체보기

@@ -1,3 +1,4 @@
+import { archiveDrops } from "./archive-drops";
 import { stockxCatalog } from "./stockx-catalog";
 import type { Database, News, Product } from "./types";
 import catalogBatch from "./stockx-batch.json";
@@ -134,7 +135,7 @@ const definitions = [
   ],
 ] as const;
 
-export const CATALOG_REVISION = 3;
+export const CATALOG_REVISION = 4;
 
 export function createSeed(now = new Date()): Database {
   const dateAt = (days: number) =>
@@ -161,7 +162,10 @@ export function createSeed(now = new Date()): Database {
     change: d[9],
     popular: 980 - index * 73,
     upcoming: index >= 8,
-    releaseDate: dateAt(index >= 8 ? (index - 7) * 3 : -30 - index),
+    releaseDate:
+      index >= 8
+        ? ["2026-11-21", "2026-11-24"][index - 8] + "T03:00:00.000Z"
+        : dateAt(-30 - index),
     description: `${d[1]}의 아카이브에서 만나는 ${d[2]}. ${d[3]} 컬러의 독특한 디테일과 실루엣을 살펴보세요. 원본 Bonoware 프로젝트의 이미지를 활용한 체험용 상품입니다.`,
     sizes: SIZES,
     history: priceHistory(d[8], index),
@@ -206,6 +210,7 @@ export function createSeed(now = new Date()): Database {
       history: priceHistory(item.price, products.length),
     });
   }
+  products.push(...archiveDrops(products));
   return {
     version: 2,
     catalogRevision: CATALOG_REVISION,
@@ -251,7 +256,7 @@ export function upgradeCatalog(db: Database) {
   );
   const additions = seed.products.filter(
     (product) =>
-      product.sourceUrl &&
+      (product.sourceUrl || product.upcoming) &&
       !existing.has(product.id) &&
       !styleCodes.has(normalizeStyleCode(product.model)),
   );

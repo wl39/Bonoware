@@ -17,7 +17,7 @@ const buttonStyle = {
     boxShadow:
       "0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12)",
     border: "none",
-    borderRadius: "3px",
+    borderRadius: 0,
     position: "relative",
     padding: "12px 30px",
     margin: ".3125rem 1px",
@@ -275,16 +275,16 @@ const buttonStyle = {
     padding: "1.125rem 2.25rem",
     fontSize: "0.875rem",
     lineHeight: "1.333333",
-    borderRadius: "0.2rem"
+    borderRadius: 0
   },
   sm: {
     padding: "0.40625rem 1.25rem",
     fontSize: "0.6875rem",
     lineHeight: "1.5",
-    borderRadius: "0.2rem"
+    borderRadius: 0
   },
   round: {
-    borderRadius: "30px"
+    borderRadius: 0
   },
   block: {
     width: "100% !important"

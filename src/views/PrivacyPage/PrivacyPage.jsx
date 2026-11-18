@@ -1,9 +1,8 @@
 import React from "react";
 
 import withStyles from "@material-ui/core/styles/withStyles";
-import privacyPage from "assets/jss/material-kit-react/views/privacyPage.jsx";
+import privacyPage from "assets/jss/material-kit-react/views/legalPage.jsx";
 
-import Chip from "@material-ui/core/Chip";
 import Description from "@material-ui/icons/Description";
 
 class PrivacyPage extends React.Component {
@@ -11,12 +10,7 @@ class PrivacyPage extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.container}>
-        <Chip
-          className={classes.chips}
-          icon={<Description />}
-          color="secondary"
-          label="개인정보 처리방침"
-        />
+        <h1 className={classes.title}><Description aria-hidden="true" />개인정보 처리방침</h1>
         <p className={classes.br}>**** 개인정보 처리방침 개정안</p>
         <p>
           ****(이하 "회사"라 합니다)는 이용자들의 개인정보보호를 매우

@@ -1,7 +1,7 @@
 const propageStyle = {
   container: {
     display: "flex",
-    borderRadius: "6px",
+    borderRadius: 0,
     zIndex: "3",
     position: "relative",
     background: "#FFFFFF",
@@ -29,7 +29,7 @@ const propageStyle = {
   },
   detailPageConatiner: {
     display: "flex",
-    borderRadius: "6px",
+    borderRadius: 0,
     zIndex: "3",
     position: "static",
     background: "#FFFFFF",
@@ -125,7 +125,7 @@ const propageStyle = {
   cardImage: { display: "block", width: "100%", height: "100%", minWidth: 0, minHeight: 0, objectFit: "contain" },
   sortToggle: { display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "space-between", background: "white", border: 0, padding: "0 10px", cursor: "pointer", font: "inherit", fontSize: "14px", color: "#33393c" },
   viewToggle: { width: "40px", height: "40px", padding: "6px", color: "#72787b", "&[aria-pressed=true]": { color: "#111", background: "#f1f2f2" } },
-  filterTrigger: { background: "#fff", border: "1px solid #c5c8ca", color: "#30363a", borderRadius: "3px", height: "40px", width: "40px", marginTop: "2px", padding: "6px", "&:hover": { background: "#f1f2f2" } },
+  filterTrigger: { background: "#fff", border: "1px solid #c5c8ca", color: "#30363a", borderRadius: 0, height: "40px", width: "40px", marginTop: "2px", padding: "6px", "&:hover": { background: "#f1f2f2" } },
   sizeChoice: { font: "inherit", fontSize: "14px", lineHeight: 1.4, minHeight: "34px", background: "white", color: "#565c60", border: "1px solid #c9cdcf", cursor: "pointer", "&[aria-pressed=true], &:hover": { borderColor: "#25292b", color: "black", fontWeight: 600 } },
   sourceLink: { color: "#454e54", textDecoration: "underline", textUnderlineOffset: ".2em" },
   listPrices: { display: "flex", textAlign: "right" },
@@ -288,7 +288,7 @@ const propageStyle = {
     display: "flex", flexDirection: "column", minWidth: 0, color: "#191919 !important",
     textDecoration: "none", "&:hover $productHeader, &:focus-visible $productHeader": { borderColor: "#a5a9ab" },
     "@media (max-width: 599px)": {
-      border: "1px solid #dce0e1", borderRadius: "4px", overflow: "hidden"
+      border: "1px solid #dce0e1", borderRadius: 0, overflow: "hidden"
     }
   },
   linkList: {
@@ -1062,6 +1062,7 @@ const propageStyle = {
     color: "black"
   },
   recentSold: {
+    "& .apexcharts-tooltip, & .apexcharts-xaxistooltip, & .apexcharts-yaxistooltip": { borderRadius: 0 },
     textAlign: "left",
     fontSize: "24px",
     marginBottom: "10px",

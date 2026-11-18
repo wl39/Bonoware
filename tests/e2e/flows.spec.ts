@@ -96,9 +96,17 @@ test("original news and release pages render without runtime errors", async ({
   ).toBeVisible();
   await page.goto("/#/new-releases");
   await expect(page.getByText("출시 예정 신발", { exact: true })).toBeVisible();
-  await expect(
-    page.getByText("나이키 에어 포스 1 오프화이트 볼트", { exact: true }),
-  ).toBeVisible();
+  const today = new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10);
+  if (today > "2027-12-31")
+    await page.getByRole("radio", { name: "이전 출시" }).check();
+  const month = page.getByRole("combobox", { name: "출시 월" });
+  await month.selectOption("2027-12");
+  const last = page
+    .locator("article")
+    .filter({ has: page.locator('time[datetime="2027-12-31"]') });
+  await expect(last).toBeVisible();
+  await last.getByRole("link").click();
+  await expect(page).toHaveURL(/products\/drop-2027-12-31-fear-of-god/);
   expect(errors).toEqual([]);
 });
 test("original purchase stepper creates a persisted mock order", async ({
