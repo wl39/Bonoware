@@ -69,11 +69,11 @@ const customInputStyle = {
     textAlign: "center",
     display: "none",
     flexDirection: "row",
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    backgroundColor: "rgba(20, 24, 26, 0.88)",
     color: "white",
     border: "1px solid rgba(255, 255, 255, 0.8)",
     height: "52px",
-    width: "5040px",
+    width: "100%",
     "@media (min-width: 600px)": {
       display: "flex",
       height: "48px",
@@ -136,7 +136,8 @@ const customInputStyle = {
     }
   },
   inputBase: {
-    marginLeft: 21,
+    marginLeft: 18,
+    "& input::placeholder": { color: "#fff", opacity: 0.90 },
     flex: 1,
     height: "48px",
     color: "white",

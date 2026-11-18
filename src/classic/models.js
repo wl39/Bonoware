@@ -15,17 +15,29 @@ export function classicProduct(db, p) {
   const stock = db.offers.filter(
     (o) => o.productId === p.id && o.status === "on_sale",
   );
+  const latestSale = db.orders.reduce((latest, order) => {
+    if (
+      order.productId === p.id &&
+      order.status === "confirmed" &&
+      (!latest || order.createdAt >= latest.createdAt)
+    )
+      return order;
+    return latest;
+  }, null);
   return {
     _id: p.id,
-    name: `${p.name} ${p.subtitle}|${korean[p.id] || p.name}`,
+    name: `${p.name} ${p.subtitle}|${p.koreanName || korean[p.id] || p.name}`,
     image: [imagePath(p.image)],
-    brand: p.brand === "Adidas" ? "adidas" : "nike",
+    brand: p.brand.toLowerCase(),
+    lastSalePrice: latestSale?.price ?? null,
+    sourceUrl: p.sourceUrl,
+    retailUsd: p.retailUsd,
     lowestPrice: stock.length ? Math.min(...stock.map((o) => o.price)) : 0,
     releasePrice: p.retail,
     releaseDate: p.releaseDate,
     stockCount: stock.length,
     model: p.model,
-    color: p.subtitle,
+    color: p.colorway || p.subtitle,
     designer: "",
     description: p.description,
   };

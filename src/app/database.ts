@@ -1,4 +1,4 @@
-import { createSeed, DEMO_EMAIL, DEMO_PASSWORD } from "./seed";
+import { createSeed, DEMO_EMAIL, DEMO_PASSWORD, upgradeCatalog } from "./seed";
 import type { Account, Database } from "./types";
 
 import { DB_KEY } from "./storage-key";
@@ -81,6 +81,7 @@ export function createDatabase(storage: StorageLike) {
         )
       )
         throw new Error();
+      upgradeCatalog(db);
       return db;
     } catch {
       throw new ApiError(

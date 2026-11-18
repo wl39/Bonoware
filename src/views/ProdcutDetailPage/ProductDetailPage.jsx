@@ -60,8 +60,12 @@ class ProductDetailPage extends React.Component {
       <ProductDetail
         model={item.name}
         image={item.image[0]}
-        imageList={Array(5).fill(item.image[0])}
+        imageList={[...new Set(item.image)].slice(1)}
         brand={item.brand}
+        sku={item.model}
+        sourceUrl={item.sourceUrl}
+        colorway={item.color}
+        retailUsd={item.retailUsd}
         lowest={item.lowestPrice}
         releaseDate={item.releaseDate}
         stockCount={item.stockCount}

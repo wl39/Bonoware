@@ -266,16 +266,16 @@ export const getMainImages = () => {
         }
       });
       value.data[2].orderby.item.forEach(value => {
-        daily.push({ name: value.name, image: value.image[0] });
+        daily.push({ id: value._id, name: value.name, image: value.image[0] });
       });
       value.data[3].orderby.item.forEach(value => {
-        weekly.push({ name: value.name, image: value.image[0] });
+        weekly.push({ id: value._id, name: value.name, image: value.image[0] });
       });
       value.data[4].orderby.item.forEach(value => {
-        monthly.push({ name: value.name, image: value.image[0] });
+        monthly.push({ id: value._id, name: value.name, image: value.image[0] });
       });
       value.data[5].orderby.item.forEach(value => {
-        recommend.push({ name: value.name, image: value.image[0] });
+        recommend.push({ id: value._id, name: value.name, image: value.image[0] });
       });
 
       mostPopularSlider = value.data[6].item;

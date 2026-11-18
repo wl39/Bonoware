@@ -528,12 +528,17 @@ class ProductDetail extends React.Component {
     });
   };
 
+  updateOrientation = () => {
+    const horizontal = window.innerWidth > 959;
+    if (this.state.horizontal !== horizontal) this.setState({ horizontal });
+  };
+
   componentDidMount() {
-    window.addEventListener("resize", () => {
-      if (this.state.horizontal !== window.innerWidth > 959) {
-        this.setState({ horizontal: window.innerWidth > 959 });
-      }
-    });
+    window.addEventListener("resize", this.updateOrientation);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateOrientation);
   }
 
   componentWillMount() {
@@ -746,7 +751,7 @@ class ProductDetail extends React.Component {
             ) : null}
             <Details date={this.state.date} products={this.props} />
           </div>
-          <div className={classes.imageContainer}>
+          <div className={classes.imageContainer} data-single={this.props.imageList.length === 0}>
             <div
               className={
                 this.state.sizeModalOpen || this.state.priceHistoryModalOpen
@@ -769,9 +774,9 @@ class ProductDetail extends React.Component {
                 /> */}
               </div>
             </div>
-            <Carousel horizontal={this.state.horizontal} detail={true}>
-              {this.state.slider}
-            </Carousel>
+            {this.props.imageList.length > 0 && (
+              <Carousel horizontal={this.state.horizontal} detail={true}>{this.state.slider}</Carousel>
+            )}
           </div>
         </div>
 

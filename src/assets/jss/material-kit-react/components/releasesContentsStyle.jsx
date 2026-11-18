@@ -3,7 +3,7 @@ const releasesContentsStyle = {
     margin: "10px 0px",
     display: "flex",
     flexFlow: "row wrap",
-    width: "100%"
+    width: "100%",
   },
   item: {
     width: "25%",
@@ -11,15 +11,15 @@ const releasesContentsStyle = {
     display: "flex",
     flexDirection: "column",
     "@media (max-width: 992px)": {
-      width: "33%"
+      width: "33%",
     },
     "@media (max-width: 768px)": {
-      width: "50%"
+      width: "50%",
     },
     "@media (max-width: 599px)": {
       width: "50%",
-      padding: "0px 4px 8px"
-    }
+      padding: "0px 4px 8px",
+    },
   },
   dateContainer: {
     display: "flex",
@@ -29,75 +29,92 @@ const releasesContentsStyle = {
     paddingRight: "5px",
     borderRight: "1px solid #eee",
     borderLeft: "1px solid #eee",
-    borderTop: "1px solid #eee"
+    borderTop: "1px solid #eee",
   },
   date: {
     fontSize: "18px",
     fontWeight: "500",
     paddingLeft: "10px",
-    display: "flex"
+    display: "flex",
   },
   calendar: {
     width: "18px",
     height: "24px",
     marginRight: "4px",
-    color: "black"
+    color: "black",
   },
   icon: {
     padding: "0px",
     width: "24px",
     height: "24px",
-    color: "black"
+    color: "black",
   },
   imageContainer: {
     borderLeft: "1px solid #eee",
     borderRight: "1px solid #eee",
     borderBottom: "1px solid #eee",
-    padding: "20px 0px"
+    aspectRatio: "4 / 3",
+    display: "grid",
+    placeItems: "center",
+    background: "#fff",
   },
   img: {
-    padding: "0px 5px",
-    width: "100%"
+    padding: "8px",
+    height: "100%",
+    minHeight: 0,
+    objectFit: "contain",
+    width: "100%",
   },
   detailsContainer: {
+    flex: 1,
+    padding: "10px 4px 0",
+    display: "flex",
+    flexDirection: "column",
     textAlign: "left",
     background: "white",
     color: "black",
-    borderBottom: "1px solid #b7b7b7"
+    borderBottom: "1px solid #b7b7b7",
   },
   brand: {
     fontSize: "15px",
     fontWeight: "300",
-    marginBottom: "10px"
+    marginBottom: "10px",
   },
   model: {
-    fontSize: "16px",
-    lineHeight: "20px",
+    fontSize: "clamp(13px,1.2vw,16px)",
+    lineHeight: 1.4,
     fontWeight: "500",
-    height: "40px",
-    overflow: "hidden",
+    display: "grid",
+    gridTemplateRows: "2.8em 2.8em",
     letterSpacing: "-0.5px",
-    marginBottom: "15px"
+    marginBottom: "15px",
   },
   modelEN: {
     fontWeight: "400",
-    height: "20px",
-    overflow: "hidden"
+    lineHeight: 1.4,
+    overflow: "hidden",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
   },
   modelKR: {
     fontWeight: "300",
-    height: "20px",
-    overflow: "hidden"
+    lineHeight: 1.4,
+    overflow: "hidden",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
   },
   priceContainer: {
-    paddingBottom: "12px"
+    marginTop: "auto",
+    paddingBottom: "12px",
   },
   price: {
-    fontWeight: "600"
+    fontWeight: "600",
   },
   empty: {
-    margin: "auto"
-  }
+    margin: "auto",
+  },
 };
 
 export default releasesContentsStyle;

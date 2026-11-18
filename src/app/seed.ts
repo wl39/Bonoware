@@ -1,3 +1,4 @@
+import { stockxCatalog } from "./stockx-catalog";
 import type { Database, News, Product } from "./types";
 
 export const DEMO_EMAIL = "demo@probe.local";
@@ -129,9 +130,20 @@ const definitions = [
   ],
 ] as const;
 
+export const CATALOG_REVISION = 1;
+
 export function createSeed(now = new Date()): Database {
   const dateAt = (days: number) =>
     new Date(now.getTime() + days * 86400000).toISOString();
+  const priceHistory = (price: number, index: number) =>
+    Array.from({ length: 12 }, (_, i) => ({
+      date: dateAt(-33 + i * 3),
+      price:
+        Math.round(
+          (price * (0.88 + i * 0.01 + Math.sin(i * 1.7 + index) * 0.045)) /
+            1000,
+        ) * 1000,
+    }));
   const products: Product[] = definitions.map((d, index) => ({
     id: d[0],
     brand: d[1],
@@ -148,16 +160,23 @@ export function createSeed(now = new Date()): Database {
     releaseDate: dateAt(index >= 8 ? (index - 7) * 3 : -30 - index),
     description: `${d[1]}의 아카이브에서 만나는 ${d[2]}. ${d[3]} 컬러의 독특한 디테일과 실루엣을 살펴보세요. 원본 Bonoware 프로젝트의 이미지를 활용한 체험용 상품입니다.`,
     sizes: SIZES,
-    history: Array.from({ length: 12 }, (_, i) => ({
-      date: dateAt(-33 + i * 3),
-      price:
-        Math.round(
-          (d[8] * (0.88 + i * 0.01 + Math.sin(i * 1.7 + index) * 0.045)) / 1000,
-        ) * 1000,
-    })),
+    history: priceHistory(d[8], index),
   }));
+  for (const item of stockxCatalog) {
+    products.push({
+      ...item,
+      releaseDate: item.releaseDate + "T12:00:00.000Z",
+      upcoming: false,
+      sizes: SIZES,
+      retail: null,
+      change: 0,
+      color: "#f3f3f3",
+      history: priceHistory(item.price, products.length),
+    });
+  }
   return {
     version: 2,
+    catalogRevision: CATALOG_REVISION,
     products,
     accounts: [],
     orders: [],
@@ -187,6 +206,23 @@ export function createSeed(now = new Date()): Database {
       },
     ],
   };
+}
+
+// Existing v2 stores contain user orders and listings. Only append the new
+// catalog rows and their initial inventory; never replenish an existing shoe.
+export function upgradeCatalog(db: Database) {
+  if ((db.catalogRevision ?? 0) >= CATALOG_REVISION) return;
+  const seed = createSeed();
+  const existing = new Set(db.products.map((product) => product.id));
+  const additions = seed.products.filter(
+    (product) => product.sourceUrl && !existing.has(product.id),
+  );
+  const addedIds = new Set(additions.map((product) => product.id));
+  db.products.push(...additions);
+  db.offers.push(
+    ...seed.offers.filter((offer) => addedIds.has(offer.productId)),
+  );
+  db.catalogRevision = CATALOG_REVISION;
 }
 
 export const news: News[] = [

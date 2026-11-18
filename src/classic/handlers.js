@@ -10,6 +10,21 @@ import { imagePath } from "../app/seed";
 const background = imagePath("original-bg.jpg");
 const banner = imagePath("original-banner.png");
 const mobileBanner = imagePath("original-banner-mobile.png");
+function matchesBrand(product, filter) {
+  const brand = product.brand.toLowerCase();
+  switch (filter.toLowerCase()) {
+    case "airjordan":
+    case "jordan":
+      return brand === "jordan";
+    case "yeezy":
+      return /yeezy/i.test(product.name);
+    case "other":
+      return !["nike", "jordan", "adidas"].includes(brand);
+    default:
+      return brand === filter.toLowerCase();
+  }
+}
+
 export function classicHandlers(repository) {
   return [
     http.all("*/classic/*", async ({ request }) => {
@@ -130,8 +145,19 @@ export function classicHandlers(repository) {
           );
           const wrapper = (p) => ({ ...p, data: [p] });
           if (route === "/open") {
-            const rec = current.slice(0, 6),
-              ranked = rec.map(wrapper);
+            const popularity = new Map(
+              db.products.map((p) => [p.id, p.popular]),
+            );
+            const rec = [...current]
+              .sort((a, b) => popularity.get(b._id) - popularity.get(a._id))
+              .slice(0, 6);
+            const recent = [...current]
+              .sort((a, b) => b.releaseDate.localeCompare(a.releaseDate))
+              .slice(0, 6);
+            const affordable = current
+              .filter((p) => p.stockCount > 0)
+              .sort((a, b) => a.lowestPrice - b.lowestPrice)
+              .slice(0, 6);
             return [
               {
                 mainpageimages: {
@@ -149,12 +175,13 @@ export function classicHandlers(repository) {
                 })),
               },
               ...Array.from({ length: 4 }, () => ({ orderby: { item: rec } })),
-              { item: ranked },
-              { orderby: { item: rec } },
-              { item: ranked },
+              { item: rec.map(wrapper) },
+              { orderby: { item: recent } },
+              { item: affordable.map(wrapper) },
               { shoeNews: { item: classicNews() } },
               { orderby: { item: upcoming } },
               rec.map((p, i) => ({
+                id: p._id,
                 name: p.name,
                 ticker: p.model,
                 price: p.lowestPrice,
@@ -178,9 +205,13 @@ export function classicHandlers(repository) {
               );
             }
             if (q.get("brand"))
-              rows = rows.filter(
-                (p) => p.brand === q.get("brand").toLowerCase(),
+              rows = rows.filter((p) => matchesBrand(p, q.get("brand")));
+            if (q.get("year")) {
+              const years = q.get("year").split(",");
+              rows = rows.filter((p) =>
+                years.includes(p.releaseDate.slice(0, 4)),
               );
+            }
             if (q.get("price")) {
               const [min, max] = q.get("price").split(",").map(Number);
               rows = rows.filter(
@@ -206,10 +237,19 @@ export function classicHandlers(repository) {
               rows.sort((a, b) => a.lowestPrice - b.lowestPrice);
             if (q.has("mostRecent"))
               rows.sort((a, b) => b.releaseDate.localeCompare(a.releaseDate));
-            rows = rows.slice(
-              Number(q.get("skip") || 0) * 12,
-              Number(q.get("skip") || 0) * 12 + 13,
-            );
+            if (q.has("mostPopular")) {
+              const popularity = new Map(
+                db.products.map((p) => [p.id, p.popular]),
+              );
+              rows.sort(
+                (a, b) => popularity.get(b._id) - popularity.get(a._id),
+              );
+            }
+            const limit =
+              route === "/open/search" && q.get("limit") === "6" ? 6 : 12;
+            const start =
+              Math.max(0, Number.parseInt(q.get("skip"), 10) || 0) * limit;
+            rows = rows.slice(start, start + limit + 1);
             return route.endsWith("/unreleasedShoe")
               ? { orderby: { item: rows } }
               : route.endsWith("/search_option")

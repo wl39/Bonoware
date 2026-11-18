@@ -77,7 +77,7 @@ export function createHandlers(repository: Repository, latency = 100) {
             .map((p) => withMarket(db, p))
             .filter(
               (p) =>
-                `${p.brand} ${p.name} ${p.subtitle} ${p.model}`
+                `${p.brand} ${p.name} ${p.subtitle} ${p.model} ${p.koreanName ?? ""} ${p.colorway ?? ""}`
                   .toLocaleLowerCase()
                   .includes(q) &&
                 (!brand || p.brand === brand) &&

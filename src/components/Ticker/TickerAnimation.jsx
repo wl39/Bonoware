@@ -7,8 +7,13 @@ const tickerStyles = {
     overflow: "hidden",
     height: "2.5rem",
     backgroundColor: "#222222",
-    boxLizing: "content-box",
+    left: 0,
+    boxSizing: "border-box",
     zIndex: "4",
+    "@media (max-width: 599px)": {
+      position: "relative",
+      height: "32px"
+    },
     "&:hover $ticker": {
       animationPlayState: "paused"
     }
@@ -24,10 +29,8 @@ const tickerStyles = {
     animationTimingFunction: "linear",
     animationName: "$ticker",
     animationDuration: "60s",
-    "@media (min-width: 768px)": {
-      height: "3rem",
-      lineHeight: "3rem"
-    }
+    "@media (max-width: 599px)": { height: "32px", lineHeight: "32px" },
+    "@media (prefers-reduced-motion: reduce)": { animation: "none" }
   },
   upTrend: {
     display: "inline-block",
@@ -35,12 +38,9 @@ const tickerStyles = {
     margin: "0 2rem",
     fontSize: "16px",
     fontWeight: "600",
-    color: "#4caf50 !important",
+    color: "#7dcf81 !important",
     "&:hover": {
-      color: "green !important"
-    },
-    "&:visted": {
-      color: "green !important"
+      textDecoration: "underline"
     }
   },
   downTrend: {
@@ -49,12 +49,9 @@ const tickerStyles = {
     margin: "0 2rem",
     fontSize: "16px",
     fontWeight: "600",
-    color: "#f44336 !important",
+    color: "#ff8278 !important",
     "&:hover": {
-      color: "red !important"
-    },
-    "&:visted": {
-      color: "red !important"
+      textDecoration: "underline"
     }
   }
 };

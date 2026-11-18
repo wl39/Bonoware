@@ -20,13 +20,13 @@ class Ticker extends React.Component {
     ticker.forEach((element, index) => {
       if (element.lowHigh) {
         temp.push(
-          <Link to={"/products/" + element.name} key={index} className={classes.upTrend}>
+          <Link to={"/products/" + encodeURIComponent(element.id || element.name)} key={index} className={classes.upTrend}>
             {element.ticker} ₩{this.numberWithCommas(element.price)}▲
           </Link>
         );
       } else {
         temp.push(
-          <Link to={"/products/" + element.name} key={index} className={classes.downTrend}>
+          <Link to={"/products/" + encodeURIComponent(element.id || element.name)} key={index} className={classes.downTrend}>
             {element.ticker} ₩{this.numberWithCommas(element.price)}▼
           </Link>
         );

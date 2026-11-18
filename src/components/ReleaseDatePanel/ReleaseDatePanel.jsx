@@ -100,22 +100,15 @@ class ReleaseDatePanel extends React.Component {
       firstRow = [
         ...firstRow,
         <div
-          className={
-            index === 4
-              ? classes.itemContainerFirstRowLast
-              : index === 5
-              ? classes.itemContainerFirstRowLast2
-              : classes.itemContainerFirstRow
-          }
+          className={classes.itemContainerFirstRow}
           key={index}
         >
           <div className={classes.headerContainer}>
-            <div className={classes.dateContainer}>
-              <div className={classes.year}>{date}</div>
-            </div>
+            <div className={classes.year}>{date}</div>
             {attr.following.includes(value._id) ? (
               <IconButton
                 className={classes.icon}
+                aria-label={splitName[1] + " 관심 상품 설정"}
                 onClick={() => this.followingModalHandler(true, value)}
               >
                 <AddCircle classes={{ root: classes.iconFont }} />
@@ -123,30 +116,22 @@ class ReleaseDatePanel extends React.Component {
             ) : (
               <IconButton
                 className={classes.icon}
+                aria-label={splitName[1] + " 관심 상품 설정"}
                 onClick={() => this.followingModalHandler(true, value)}
               >
                 <AddCircleOutline classes={{ root: classes.iconFont }} />
               </IconButton>
             )}
           </div>
-          <Link to={"/products/" + value.name} className={classes.eachLink}>
-            <Button
-              className={classes.eachButton}
-              classes={{ label: classes.flexButton }}
-            >
-              <div className={classes.imageContainer}>
-                <img className={classes.image} src={value.image[0]} alt="1" />
-              </div>
-              <div className={classes.name}>
-                <div className={classes.modelEn}>{splitName[0]}</div>
-                <div className={classes.modelKr}>{splitName[1]}</div>
-              </div>
-              <div className={classes.price}>
-                {value.releasePrice
-                  ? "₩ " + value.releasePrice.toLocaleString()
-                  : "--"}
-              </div>
-            </Button>
+          <Link to={"/products/" + encodeURIComponent(value._id || value.name)} className={classes.eachLink}>
+            <img className={classes.image} src={value.image[0]} alt="" />
+            <div>
+              <div className={classes.modelEn}>{splitName[0]}</div>
+              <div className={classes.modelKr}>{splitName[1]}</div>
+            </div>
+            <div className={classes.price}>
+              {value.releasePrice ? "₩ " + value.releasePrice.toLocaleString() : "--"}
+            </div>
           </Link>
         </div>
       ];
@@ -181,7 +166,7 @@ class ReleaseDatePanel extends React.Component {
       //           </IconButton>
       //         )}
       //       </div>
-      //       <Link to={"/products/" + value.name} className={classes.eachLink}>
+      //       <Link to={"/products/" + encodeURIComponent(value._id || value.name)} className={classes.eachLink}>
       //         <Button
       //           className={classes.eachButton}
       //           classes={{ label: classes.flexButton }}
@@ -289,9 +274,7 @@ class ReleaseDatePanel extends React.Component {
                 </IconButton>
               </Tooltip>
             </ClickAwayListener> */}
-        <div className={classes.rowsContainer}>
-          <div className={classes.rowContainer}>{this.state.firstRow}</div>
-        </div>
+        <div className={classes.rowContainer}>{this.state.firstRow}</div>
         <FollowingModal
           open={this.state.followingModalOpen}
           modalHandler={this.followingModalHandler}

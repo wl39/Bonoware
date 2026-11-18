@@ -11,14 +11,10 @@ import carouselStyle from "assets/jss/material-kit-react/views/componentsSection
 
 import Tooltip from "@material-ui/core/Tooltip";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import ButtonBase from "@material-ui/core/ButtonBase";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import ListItem from "@material-ui/core/ListItem";
 import Icon from "@material-ui/core/Icon";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import Carousel from "../../AdminPage/Carousel";
 
@@ -40,9 +36,10 @@ class MostPopularSection extends React.Component {
     let arrayOfItems = [];
 
     itemProps.forEach((element, index) => {
-      let name = needData ? element.data[0].name : element.name;
+      const product = needData ? element.data[0] : element;
+      const name = product.name;
       let nameArray = name.split("|");
-      let image = needData ? element.data[0].image[0] : element.image[0];
+      const image = product.image[0];
       let lowestPrice = element.lowestPrice;
 
       arrayOfItems.push(
@@ -50,7 +47,7 @@ class MostPopularSection extends React.Component {
           <Button
             className={classesProps.button}
             onClick={() => {
-              this.props.history.push("/products/" + name);
+              this.props.history.push("/products/" + encodeURIComponent(product._id || name));
             }}
           >
             <div className={classesProps.paper}>
@@ -138,88 +135,48 @@ class MostPopularSection extends React.Component {
   }
 
   render() {
-    let bold;
-    if (this.props.iconName === "whatshot") bold = "bold";
-
     const { classes } = this.props;
 
     return (
       <Card className={classes.card}>
-        <CardHeader className={classes.cardHeader} stats icon>
-          <CardIcon
-            style={{
-              paddingRight: "0px",
-              background: "transparent",
-              color: "#232020",
-              marginTop: "-5px",
-              boxShadow: "none",
-              marginLeft: "-15px",
-              fontWeight: "bold",
-              fontSize: "22px"
-              // "@media (max-width: 992px)": {
-              //   width: "135px",
-              //   height: "45px"
-              // },
-              // "@media (max-width: 599px)": {
-              //   width: "100px",
-              //   height: "30px"
-              // }
-            }}
-          >
-            <ListItem style={{ padding: "0px" }}>
-              <div className={classes.headerName}>{this.props.headerName}</div>
-              <ClickAwayListener onClickAway={this.handleTooltipClose}>
-                <Tooltip
-                  classes={{
-                    popper: classes.popper,
-                    tooltip: classes.tooltipText
-                  }}
-                  className={classes.tooltipIcon}
-                  // style={{ padding: 0, height: "30px", width: "30px" }}
-                  PopperProps={{
-                    disablePortal: true
-                  }}
-                  onClose={this.handleTooltipClose}
-                  open={this.state.open}
-                  id="tooltip-top"
-                  title={this.props.helper}
-                  placement="right"
-                  disableFocusListener
-                  disableTouchListener
-                >
-                  <IconButton
-                    onClick={this.handleTooltipOpen}
-                    className={classes.tooltipButton}
-                  >
-                    <Icon className={classes.tooltipAlert}>help</Icon>
-                  </IconButton>
-                </Tooltip>
-              </ClickAwayListener>
-            </ListItem>
-          </CardIcon>
-          <ButtonBase className={classes.buttonBase}>
-            <CardIcon className={classes.seeAll}>
-              <Link
-                to={{
-                  pathname: "/products",
-                  state: {
-                    filter: this.props.iconName,
-                    brand: ""
-                  }
+        <div className={classes.sectionHeading}>
+          <div className={classes.headingLabel}>
+            <h2 className={classes.headerName}>{this.props.headerName}</h2>
+            <ClickAwayListener onClickAway={this.handleTooltipClose}>
+              <Tooltip
+                classes={{
+                  popper: classes.popper,
+                  tooltip: classes.tooltipText
                 }}
-                className={classes.link}
+                className={classes.tooltipIcon}
+                // style={{ padding: 0, height: "30px", width: "30px" }}
+                PopperProps={{
+                  disablePortal: true
+                }}
+                onClose={this.handleTooltipClose}
+                open={this.state.open}
+                id="tooltip-top"
+                title={this.props.helper}
+                placement="right"
+                disableFocusListener
+                disableTouchListener
               >
-                <div className={classes.seeAllText}>전체보기</div>
-              </Link>
-            </CardIcon>
-          </ButtonBase>
-          {/* <Button className={classes.cardCategory} color="primary" >모두 보기</Button> */}
-        </CardHeader>
-        {/* <div className={classes.slider}>{this.state.shoes}</div> */}
-        {/* <Slider {...settings} className={classes.slider}>
-          {this.state.shoes}
-        </Slider> */}
-        <br />
+                <IconButton
+                  onClick={this.handleTooltipOpen}
+                  className={classes.tooltipButton}
+                >
+                  <Icon className={classes.tooltipAlert}>help</Icon>
+                </IconButton>
+              </Tooltip>
+            </ClickAwayListener>
+          </div>
+          <Link
+            className={classes.sectionLink}
+            to={{ pathname: "/products", state: { filter: this.props.iconName, brand: "" } }}
+          >
+            전체보기
+          </Link>
+        </div>
         <Carousel>{this.state.shoes}</Carousel>
       </Card>
     );

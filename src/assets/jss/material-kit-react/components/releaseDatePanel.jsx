@@ -3,8 +3,7 @@ const releaseDatePanel = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    height: "100%",
-    overflow: "hidden"
+    minWidth: 0
   },
   tooltipAlert: {
     color: "black",
@@ -33,8 +32,8 @@ const releaseDatePanel = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: "10px",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.6)"
+    alignItems: "center",
+    paddingBottom: "14px"
   },
   cardHeaderName: {
     textAlign: "center",
@@ -80,238 +79,79 @@ const releaseDatePanel = {
       fontSize: "12px"
     }
   },
-  rowsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-    border: "1px solid #cfcfcf"
-  },
   rowContainer: {
     display: "grid",
-    height: "100%",
-    marginRight: "-1px",
-    marginBottom: "-1px",
-    gridTemplateColumns: "33.333% 33.333% 33.333%",
-    gridTemplateRows: "326px 326px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 150px), 1fr))",
     "@media (max-width: 599px)": {
-      display: "grid",
-      gridTemplateColumns: "50% 50%",
-      gridTemplateRows: "50% 50%"
+      gridTemplateColumns: "repeat(2, minmax(0, 1fr))"
     }
   },
   itemContainerFirstRow: {
     display: "flex",
     flexDirection: "column",
-    padding: "25px 20px 35px 20px",
-    justifyContent: "space-between",
-    borderRight: "1px solid #cfcfcf",
-    borderBottom: "1px solid #cfcfcf",
-    height: "100%",
-    marginTop: "auto",
-    "@media (max-width: 1199px)": {
-      padding: "15px 10px 25px 10px"
-    },
-    "@media (max-width: 959px)": {
-      marginBottom: "0px",
-      padding: "25px 20px 35px 20px"
-    },
-    "@media (max-width: 768px)": {
-      padding: "12px 10px 17px 10px"
-    }
+    gap: "12px",
+    padding: "clamp(10px, 1.25vw, 18px)",
+    border: "1px solid #dedede",
+    minWidth: 0,
+    marginRight: "-1px",
+    marginBottom: "-1px"
   },
-  itemContainerFirstRowLast2: {
-    display: "flex",
-    flexDirection: "column",
-    padding: "25px 20px 35px 20px",
-    justifyContent: "space-between",
-    borderRight: "1px solid #cfcfcf",
-    borderBottom: "1px solid #cfcfcf",
-    height: "100%",
-    marginTop: "auto",
-    "@media (max-width: 1199px)": {
-      padding: "15px 10px 25px 10px"
-    },
-    "@media (max-width: 959px)": {
-      marginBottom: "0px",
-      padding: "25px 20px 35px 20px"
-    },
-    "@media (max-width: 768px)": {
-      padding: "12px 10px 17px 10px"
-    },
-    "@media (max-width: 599px)": {
-      display: "none"
-    }
-  },
-  itemContainerFirstRowLast: {
-    display: "flex",
-    flexDirection: "column",
-    padding: "25px 20px 35px 20px",
-    justifyContent: "space-between",
-    borderBottom: "1px solid #cfcfcf",
-    borderRight: "1px solid #cfcfcf",
-    "@media (max-width: 1199px)": {
-      padding: "15px 10px 25px 10px"
-    },
-    "@media (max-width: 959px)": {
-      marginBottom: "0px",
-      padding: "25px 20px 35px 20px"
-    },
-    "@media (max-width: 768px)": {
-      padding: "12px 10px 17px 10px"
-    },
-    "@media (max-width: 599px)": {
-      display: "none"
-    }
-  },
-  itemContainerSecondRow: {
-    display: "flex",
-    flexDirection: "column",
-    width: "33.333%",
-    padding: "25px 20px 35px 20px",
-    justifyContent: "space-between",
-    borderRight: "1px solid #cfcfcf",
-    "@media (max-width: 768px)": {
-      padding: "12px 10px 17px 10px"
-    }
-  },
-  itemContainerSecondRowLast: {
-    display: "flex",
-    flexDirection: "column",
-    width: "33.333%",
-    padding: "25px 20px 35px 20px",
-    justifyContent: "space-between",
-    "@media (max-width: 768px)": {
-      padding: "12px 10px 17px 10px"
-    }
-  },
-
   headerContainer: {
     display: "flex",
-    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    height: "25px",
-    marginBottom: "18px"
-  },
-  dateContainer: {
-    display: "flex",
-    flexDirection: "row"
-  },
-  dateDetailContainer: {
-    display: "flex",
-    flexDirection: "column",
-    fontSize: "14px",
-    lineHeight: "16px"
+    gap: "4px"
   },
   year: {
-    margin: "auto",
-    fontSize: "18px",
-    fontWeight: "500",
-    lineHeight: "18px",
-    letterSpacing: "-0.53",
-    "@media (max-width: 1199px)": {
-      height: "25px",
-      lineHeight: "25px"
-    },
-    "@media (max-width: 959px)": {
-      height: "18px",
-      lineHeight: "18px"
-    }
-  },
-  date: {
-    lineHeight: "32px",
-    fontSize: "16px",
-    marginRight: "5px"
+    fontWeight: 600,
+    fontSize: "clamp(13px, 1.2vw, 17px)",
+    fontVariantNumeric: "tabular-nums"
   },
   icon: {
-    padding: "0px",
-    width: "25px",
-    height: "25px",
-    marginLeft: "2px",
-    color: "black"
+    color: "#202020",
+    padding: "3px"
   },
-  iconFont: {
-    fontSize: "25px"
-  },
-  imageContainer: {
-    margin: "auto",
-    marginBottom: "20px",
-    "@media (max-width: 768px)": {
-      margin: "10px 0px"
-    }
+  iconFont: { fontSize: "22px" },
+  eachLink: {
+    display: "grid",
+    gridTemplateRows: "auto 1fr auto",
+    gridTemplateColumns: "minmax(0, 1fr)",
+    minWidth: 0,
+    flex: 1,
+    gap: "8px",
+    color: "#232020 !important",
+    textDecoration: "none",
+    "&:hover $modelEn, &:focus-visible $modelEn": { textDecoration: "underline" }
   },
   image: {
     width: "100%",
-    maxHeight: "130px",
-    objectFit: "contain",
-    padding: "0px 13px"
-  },
-  name: {
-    marginTop: "-5px",
-    fontSize: "15px",
-    fontWeight: "normal",
-    lineHeight: "1.1",
-    height: "75px",
-    textAlign: "left",
-    overflow: "hidden",
-    width: "100%",
-    letterSpacing: "normal",
-    "@media (max-width: 768px)": {
-      height: "56px"
-    }
+    height: "clamp(80px, 9vw, 138px)",
+    objectFit: "contain"
   },
   modelEn: {
-    height: "33px",
+    fontSize: "clamp(13px, 1.1vw, 15px)",
+    fontWeight: 500,
+    lineHeight: 1.45,
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
     overflow: "hidden"
   },
   modelKr: {
-    fontWeight: "100",
-    height: "33px",
+    color: "#595959",
+    fontSize: "clamp(12px, 1vw, 14px)",
+    marginTop: "3px",
+    lineHeight: 1.45,
     overflow: "hidden",
-    "@media (max-width: 768px)": {
-      height: "16px"
-    }
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis"
   },
   price: {
-    width: "100%",
-    textAlign: "left",
-    fontSize: "18px",
-    fontWeight: "bold",
-    height: "18px",
-    lineHeight: "18px",
-    "@media (max-width: 768px)": {
-      fontSize: "16px"
-    }
-  },
-  newsLink: {
-    display: "flex",
-    height: "0px"
-  },
-  allButton: {
-    height: "30px",
-    minHeight: "30px",
-    position: "relative",
-    left: "calc(100% - 75px)",
-    top: "-38px",
-    color: "#232020"
-  },
-  eachLink: {
-    height: "100%",
-    width: "100%",
-    display: "flex"
-  },
-  eachButton: {
-    width: "100%",
-    height: "100%",
-    padding: "4px 0px 0px 0px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between"
-  },
-  flexButton: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    height: "100%"
+    color: "#181818",
+    fontSize: "clamp(16px, 1.4vw, 18px)",
+    lineHeight: 1.4,
+    fontWeight: 700,
+    fontVariantNumeric: "tabular-nums"
   }
 };
 

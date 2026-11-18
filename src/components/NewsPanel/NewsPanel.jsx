@@ -87,7 +87,7 @@ class NewsPanel extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes.newsPanelContainer}>
+      <div>
         <div className={classes.cardHeader}>
           <div className={classes.cardHeaderName}>최신 소식</div>
           <Link to="/news" className={classes.newsLink}>

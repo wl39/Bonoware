@@ -6,7 +6,11 @@ export interface Product {
   model: string;
   image: string;
   color: string;
-  retail: number;
+  retail: number | null;
+  koreanName?: string;
+  colorway?: string;
+  retailUsd?: number;
+  sourceUrl?: string;
   releaseDate: string;
   upcoming: boolean;
   popular: number;
@@ -68,6 +72,7 @@ export interface News {
 }
 export interface Database {
   version: 2;
+  catalogRevision?: number;
   products: Product[];
   accounts: Account[];
   offers: Offer[];

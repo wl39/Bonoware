@@ -80,12 +80,7 @@ const propageStyle = {
     flexBasis: "60%"
   },
   descriptionContainer: {
-    display: "flex",
-    height: "60px",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    width: "72.222%",
-    margin: "auto"
+    display: "grid", gap: "6px", width: "72.222%", margin: "auto"
   },
   type: {
     height: "22px",
@@ -96,10 +91,7 @@ const propageStyle = {
     letterSpacing: "3px"
   },
   headerDescription: {
-    height: "18px",
-    fontSize: "18px",
-    lineHeight: "14px",
-    color: "black"
+    fontSize: "14px", lineHeight: 1.5, color: "#4b5154"
   },
   pageHeaderRight: {
     backgroundColor: "#a2a9af",
@@ -115,11 +107,24 @@ const propageStyle = {
       }
     }
   },
+  cards: {
+    display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: "28px 18px",
+    "@media (max-width: 1199px)": { gridTemplateColumns: "repeat(3, minmax(0,1fr))" },
+    "@media (max-width: 599px)": { gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: "20px 12px" }
+  },
+  rows: { display: "grid" },
+  cardImage: { display: "block", width: "100%", height: "100%", minWidth: 0, minHeight: 0, objectFit: "contain" },
+  sortToggle: { display: "flex", width: "100%", height: "100%", alignItems: "center", justifyContent: "space-between", background: "white", border: 0, padding: "0 10px", cursor: "pointer", font: "inherit", fontSize: "14px", color: "#33393c" },
+  viewToggle: { width: "40px", height: "40px", padding: "6px", color: "#72787b", "&[aria-pressed=true]": { color: "#111", background: "#f1f2f2" } },
+  filterTrigger: { background: "#fff", border: "1px solid #c5c8ca", color: "#30363a", borderRadius: "3px", height: "40px", width: "40px", marginTop: "2px", padding: "6px", "&:hover": { background: "#f1f2f2" } },
+  sizeChoice: { font: "inherit", fontSize: "14px", lineHeight: 1.4, minHeight: "34px", background: "white", color: "#565c60", border: "1px solid #c9cdcf", cursor: "pointer", "&[aria-pressed=true], &:hover": { borderColor: "#25292b", color: "black", fontWeight: 600 } },
+  sourceLink: { color: "#454e54", textDecoration: "underline", textUnderlineOffset: ".2em" },
+  listPrices: { display: "flex", textAlign: "right" },
+  saleCell: { width: "100px", marginRight: "12px", textAlign: "right", "@media (max-width: 959px)": { display: "none" } },
+  detailFacts: { display: "grid", margin: "16px 16px 24px 0", "@media (max-width: 599px)": { gridTemplateColumns: "repeat(2,minmax(0,1fr))", gap: "0 16px", margin: "0 8px" } },
   productContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    width: "100%",
-    height: "fit-content"
+    display: "flex", flexDirection: "column", flex: "1 1 0", minWidth: 0,
+    "@media (max-width: 599px)": { padding: "0 14px 32px" }
   },
   productButtonContainer: {
     padding: "7.5px",
@@ -133,35 +138,12 @@ const propageStyle = {
     width: "100%"
   },
   productFilter: {
-    flexBasis: "100%",
-    display: "flex",
-    justifyContent: "flex-end",
-    paddingRight: "12.5px",
-    height: "45px",
-    marginBottom: "22.5px",
-    "@media (max-width: 599px)": {
-      paddingRight: "0px",
-      marginBottom: "15px"
-    }
+    display: "flex", alignItems: "center", justifyContent: "flex-end",
+    gap: "4px", height: "44px", marginBottom: "18px"
   },
   filterOptionContainer: {
-    display: "flex",
-    width: "195px",
-    border: "1px solid #dbdbdb",
-    height: "45px",
-    marginRight: "40px",
-    paddingLeft: "16px",
-    justifyContent: "space-between",
-    color: "#a2a9af",
-    cursor: "pointer",
-    position: "relative",
-    "&:hover": {
-      border: "1px solid #bfbfbf",
-      color: "#75808a"
-    },
-    "@media (max-width: 599px)": {
-      width: "calc(100% - 135px)"
-    }
+    width: "175px", border: "1px solid #c5c8ca", height: "40px", position: "relative", marginRight: "8px",
+    "@media (max-width: 599px)": { width: "145px" }
   },
   filterOption: {
     height: "16px",
@@ -198,33 +180,8 @@ const propageStyle = {
     }
   },
   filterActive: {
-    flexDirection: "column",
-    position: "absolute",
-    background: "white",
-    WebkitTransition: "height 0.3s, -webkit-transform 0.3s",
-    transition: "height 0.3s, transform 0.3s",
-    zIndex: "4",
-    top: "44px",
-    left: "-1px",
-    width: "270px",
-    height: "150px",
-    overflowY: "scroll",
-    border: "1px solid #ebebeb",
-    "&::-webkit-scrollbar": {
-      width: "2px"
-    },
-    "&::-webkit-scrollbar-track": {
-      background: "#ebebeb"
-    },
-    "&::-webkit-scrollbar-thumb": {
-      background: "black"
-    },
-    "&::-webkit-scrollbar-thumb:hover": {
-      background: "#bfbfbf"
-    },
-    "@media (max-width: 599px)": {
-      width: "calc(100% + 2px)"
-    }
+    display: "grid", position: "absolute", background: "#fff", zIndex: 8,
+    top: "100%", right: -1, width: "205px", boxShadow: "0 4px 12px rgba(0,0,0,.12)", border: "1px solid #c5c8ca"
   },
   filterDeactive: {
     height: "0px",
@@ -239,19 +196,8 @@ const propageStyle = {
     transition: "height 0.3s, transform 0.3s, border 0.3s"
   },
   filterOptionActive: {
-    height: "110px",
-    width: "100%",
-    padding: "10px 15px",
-    display: "flex",
-    flexDirection: "column",
-    borderBottom: "1px solid #ebebeb",
-    marginBottom: "-1px",
-    WebkitTransition: "height 0.3s, -webkit-transform 0.3s",
-    transition: "height 0.3s, transform 0.3s",
-    color: "#808080 !important",
-    "&:hover": {
-      color: "black !important"
-    }
+    background: "white", font: "inherit", textAlign: "left", padding: "9px 12px", cursor: "pointer",
+    border: 0, borderBottom: "1px solid #e2e4e5", "&:hover, &:focus-visible": { background: "#f3f4f4" }
   },
   filterOptionDeactive: {
     height: "0px",
@@ -262,17 +208,10 @@ const propageStyle = {
     transition: "height 0.3s, transform 0.3s"
   },
   filterOptionTitle: {
-    fontSize: "20px",
-    padding: "10px 0px",
-    color: "inherit",
-    fontWeight: "600"
+    display: "block", fontSize: "14px", fontWeight: 600, lineHeight: 1.4
   },
   filterOptionDescription: {
-    fontSize: "16px",
-    lineHeight: "20px",
-    letterSpacing: "0.2px",
-    paddingBottom: "5px",
-    fontWeight: "200"
+    display: "block", fontSize: "12px", color: "#575d60", lineHeight: 1.45
   },
   product: {
     flexBasis: "25%",
@@ -285,20 +224,11 @@ const propageStyle = {
     }
   },
   listHeader: {
-    width: "100%",
-    display: "flex",
-    height: "54px",
-    justifyContent: "space-between",
-    borderTop: "1px solid #a2a9af",
-    borderBottom: "1px solid #a2a9af"
+    display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 8px",
+    borderTop: "1px solid #a2a9af", borderBottom: "1px solid #d7d9da", color: "#50565a", fontSize: "14px"
   },
   shoeName: {
-    fontWeight: "100",
-    color: "black",
-    margin: "auto 0px",
-    paddingLeft: "20px",
-    fontSize: "16px",
-    lineHeight: "16px"
+    fontWeight: 500
   },
   headerPriceContainer: {
     fontWeight: "100",
@@ -333,9 +263,7 @@ const propageStyle = {
     }
   },
   headerLowestPrice: {
-    margin: "0px auto",
-    textAlign: "center",
-    width: "120px"
+    minWidth: "84px", textAlign: "right"
   },
   productList: {
     display: "flex",
@@ -344,60 +272,27 @@ const propageStyle = {
     borderBottom: "1px solid #ebebeb"
   },
   noResults: {
-    display: "flex",
-    margin: "0px auto"
+    textAlign: "center", padding: "36px 0", color: "#545a5e"
   },
   link: {
-    color: "black !important"
+    display: "flex", flexDirection: "column", minWidth: 0, color: "#191919 !important",
+    textDecoration: "none", "&:hover $productHeader, &:focus-visible $productHeader": { borderColor: "#a5a9ab" }
   },
   linkList: {
-    color: "black !important",
-    height: "200px",
-    display: "flex",
-    width: "100%",
-    position: "relative",
-    justifyContent: "space-between",
-    "@media (max-width: 959px)": {
-      height: "150px"
-    },
-    "@media (max-width: 599px)": {
-      height: "80px"
-    }
+    display: "grid", gridTemplateColumns: "90px minmax(0, 1fr) auto", alignItems: "center",
+    gap: "16px", color: "#191919 !important", padding: "12px 8px", textDecoration: "none", borderBottom: "1px solid #e5e5e5",
+    "@media (max-width: 599px)": { gridTemplateColumns: "64px minmax(0, 1fr) auto", gap: "8px", padding: "10px 4px" }
   },
   productHeader: {
-    border: "1px solid #ebebeb",
-    padding: "50px 10px",
-    "@media (max-width: 599px)": {
-      padding: "10px"
-    }
+    aspectRatio: "1 / 1", border: "1px solid #dedfe0", padding: "8%", display: "flex", alignItems: "center",
+    background: "#fff", transition: "border-color .15s"
   },
   productHeaderList: {
-    border: "1px solid #ebebeb",
-    padding: "36px 10px",
-    height: "200px",
-    "@media (max-width: 959px)": {
-      height: "150px"
-    },
-    "@media (max-width: 599px)": {
-      height: "80px",
-      width: "105px",
-      padding: "10px"
-    }
-    // cursor: "pointer"
+    display: "grid", placeItems: "center", aspectRatio: "1.25 / 1", padding: "5px", background: "#fff", border: "1px solid #e1e3e4"
   },
   moreButton: {
-    flexBasis: "50%",
-    background: "black",
-    color: "white",
-    padding: "0px",
-    height: "60px",
-    margin: "70px auto",
-    borderRadius: "0px",
-    "&:hover": {
-      background: "white",
-      color: "black",
-      border: "1px solid black"
-    }
+    alignSelf: "center", background: "#151515", color: "white", padding: "0 30px", height: "46px", minWidth: "170px", margin: "32px auto", borderRadius: 0,
+    "&:hover": { background: "#343434" }
   },
   moreButtonList: {
     flexBasis: "50%",
@@ -414,68 +309,20 @@ const propageStyle = {
     }
   },
   productBody: {
-    minHeight: "40px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    textAlign: "left",
-    margin: "20px 0px"
+    display: "grid", alignContent: "start", gap: "4px", margin: "11px 0 10px", minWidth: 0
   },
   productBodyList: {
-    minHeight: "40px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    textAlign: "left",
-    margin: "auto auto auto 0px",
-    paddingLeft: "20px",
-    "@media (max-width: 599px)": {
-      paddingLeft: "5px"
-      // width: "calc(100vw - 205px)"
-    }
+    display: "grid", gap: "2px", minWidth: 0
   },
   productFooter: {
-    justifyContent: "space-between",
-    minHeight: "40px",
-    display: "flex",
-    flexDirection: "column",
-    textAlign: "left"
+    display: "grid", gap: "1px", marginTop: "auto"
   },
   productFooterList: {
-    justifyContent: "space-between",
-    minHeight: "40px",
-    display: "flex",
-    flexDirection: "row",
-    textAlign: "center",
-    margin: "auto 0px",
-    width: "300px",
-    minWidth: "300px",
-    "@media (max-width: 1199px)": {
-      width: "120px",
-      minWidth: "120px"
-    },
-    "@media (max-width: 959px)": {
-      width: "300px",
-      minWidth: "300px"
-    },
-    "@media (max-width: 599px)": {
-      width: "100px",
-      minWidth: "100px"
-    }
+    display: "flex", alignItems: "center", textAlign: "right", fontVariantNumeric: "tabular-nums"
   },
   modelEn: {
-    height: "34px",
-    fontSize: "14px",
-    lineHeight: "1.2",
-    letterSpacing: "0.2px",
-    overflow: "hidden",
-    fontWeight: "300",
-    marginBottom: "12px",
-    "@media (max-width: 599px)": {
-      fontSize: "14px",
-      lineHeight: "1.1",
-      height: "30px"
-    }
+    fontSize: "14px", fontWeight: 500, lineHeight: 1.4, overflow: "hidden", display: "-webkit-box",
+    WebkitBoxOrient: "vertical", WebkitLineClamp: 2
   },
   modelEnList: {
     height: "34px",
@@ -493,28 +340,11 @@ const propageStyle = {
     }
   },
   modelKr: {
-    fontWeight: "100",
-    fontSize: "18px",
-    width: "inherit",
-    lineHeight: "18px",
-    height: "18px",
-    letterSpacing: "-0.45px",
-    overflow: "hidden",
-    "@media (max-width: 599px)": {
-      fontSize: "12px",
-      lineHeight: "12px",
-      height: "12px"
-      // whiteSpace: "nowrap",
-      // textOverflow: "ellipsis"
-    }
+    color: "#595f63", fontSize: "13px", lineHeight: 1.45, overflow: "hidden",
+    whiteSpace: "nowrap", textOverflow: "ellipsis"
   },
   priceHeader: {
-    fontSize: "14px",
-    fontWeight: "300",
-    height: "14px",
-    lineHeight: "14px",
-    letterSpacing: "-0.35px",
-    color: "#a3a3a3"
+    fontSize: "12px", color: "#646a6d", lineHeight: 1.5
   },
   lastSalePrice: {
     width: "120px",
@@ -535,108 +365,43 @@ const propageStyle = {
     }
   },
   price: {
-    fontSize: "18px",
-    fontWeight: "900",
-    height: "18px",
-    lineHeight: "18px",
-    letterSpacing: "0.21px"
+    fontSize: "17px", fontWeight: 700, color: "#161718", lineHeight: 1.35, fontVariantNumeric: "tabular-nums"
   },
   priceList: {
-    width: "120px",
-    margin: "0px auto",
-    fontSize: "18px",
-    fontWeight: "900",
-    height: "18px",
-    lineHeight: "18px",
-    letterSpacing: "0.21px",
-    "@media (max-width: 599px)": {
-      fontSize: "12px",
-      lineHeight: "12px",
-      height: "12px",
-      margin: "auto"
-    }
+    minWidth: "84px", fontSize: "15px", fontWeight: 600, color: "#161718", whiteSpace: "nowrap"
   },
   slider: {
-    minWidth: "250px",
-    width: "250px",
-    marginRight: "65px",
-    "@media (max-width: 959px)": {
-      background: "rgba(0, 0, 0, 0.2)",
-      left: "0",
-      display: "flex",
-      justifyContent: "center",
-      position: "fixed",
-      zIndex: "5",
-      width: "54px",
-      top: "120px",
-      padding: "0",
-      margin: "0",
-      borderTopRightRadius: "10px",
-      borderBottomRightRadius: "10px",
-      minWidth: "54px"
-    }
+    width: "min(22%, 250px)", flexShrink: 0, marginRight: "clamp(24px, 4vw, 64px)",
+    "@media (max-width: 959px)": { width: "auto", margin: 0, position: "absolute", top: 0, left: "14px", zIndex: 5 }
   },
   brandSearchContainer: {
-    width: "250px",
-    height: "250px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    padding: "40px 20px",
-    background: "#a2a9af",
-    "@media (max-width: 959px)": {
-      display: "none"
-    }
+    background: "#697278", padding: "20px", display: "grid", gap: "1px"
   },
   brandSearchValue: {
-    color: "white",
-    transition: "0.3s",
-    fontWeight: "200",
-    fontSize: "21px",
-    "&:hover": {
-      fontWeight: "500"
-    }
+    background: "transparent", color: "#fff", textAlign: "left", fontFamily: "inherit",
+    fontSize: "17px", fontWeight: 400, border: 0, padding: "4px 0", lineHeight: 1.5, cursor: "pointer",
+    "&:hover, &:focus-visible": { textDecoration: "underline" }
   },
   brandSearchValueActive: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: "21px"
+    background: "transparent", color: "white", textAlign: "left", fontFamily: "inherit",
+    fontSize: "17px", fontWeight: 700, border: 0, padding: "4px 0", lineHeight: 1.5, cursor: "pointer"
   },
   settingButton: {
     fontSize: "30px"
   },
   priceRange: {
-    display: "flex",
-    justifyContent: "space-between",
-    paddingBottom: "10px"
+    display: "flex", justifyContent: "space-between", paddingBottom: "8px", fontSize: "13px", color: "#43494d", fontVariantNumeric: "tabular-nums"
   },
   panel: {
-    padding: "40px 15px",
-    borderBottom: "1px solid #a2a9af"
+    padding: "22px 12px", borderBottom: "1px solid #d5d8d9"
   },
   panelHeader: {
-    fontSize: "18px",
-    fontWeight: "500",
-    color: "black",
-    marginLeft: "5px",
-    marginBottom: "30px",
-    textTransform: "uppercase"
+    fontSize: "16px", fontWeight: 600, lineHeight: 1.45, color: "#161718", marginBottom: "16px", textTransform: "uppercase"
   },
   dropdownContainer: {
-    border: "1px solid rgba(0, 0, 0, 0.4)",
-    borderRadius: "7px",
-    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.2)",
-    background: "white",
-    left: "80px",
-    top: "100px",
-    width: "75%",
-    minWidth: "250px",
-    position: "fixed",
-    height: "75%",
-    overflowY: "scroll",
-    "@media (max-width: 599px)": {
-      left: "60px"
-    }
+    marginTop: "4px", position: "absolute", top: "100%", left: 0, boxSizing: "border-box",
+    width: "min(300px, calc(100vw - 30px))", maxHeight: "65vh", overflowY: "auto", overscrollBehavior: "contain",
+    background: "white", border: "1px solid #c9ccce", boxShadow: "0 6px 20px rgba(0,0,0,.15)"
   },
   dropdownContainerClose: {
     display: "none"
@@ -670,32 +435,19 @@ const propageStyle = {
     justifyContent: "flex-end"
   },
   shoeSizeContainer: {
-    textAlign: "center",
-    // padding: "10px 10px",
-    "@media (max-width: 959px)": {
-      padding: "10px 10px"
-    }
+    display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: "5px"
   },
   containerItem: {
     padding: "5px"
   },
   boxesContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    paddingLeft: "5px"
+    display: "flex", flexWrap: "wrap"
   },
   checkboxContainer: {
-    display: "flex",
-    flexBasis: "50%",
-    margin: "10px 0px"
+    display: "flex", alignItems: "center", width: "50%", minHeight: "34px", margin: "0", cursor: "pointer"
   },
   checkboxValue: {
-    fontSize: "16px",
-    lineHeight: "16px",
-    fontWeight: "400",
-    letterSpacing: "0.4px",
-    margin: "auto 0px",
-    paddingLeft: "10px"
+    fontSize: "14px", lineHeight: 1.4, paddingLeft: "6px"
   },
   checkboxValueChecked: {
     fontSize: "16px",
@@ -710,6 +462,8 @@ const propageStyle = {
     height: "24px"
   },
   imageContainer: {
+    "&[data-single=true] $withImage, &[data-single=true] $withImageActive": { width: "100%", borderRight: 0 },
+    "&[data-single=true] $imageWrapper": { padding: "12px 6%" },
     display: "flex",
     position: "relative",
     flexDirection: "row",
@@ -1026,57 +780,14 @@ const propageStyle = {
     }
   },
   optionModel: {
-    display: "flex",
-    width: "80%",
-    flexDirection: "column",
-    color: "black",
-    fontSize: "30px",
-    fontWeight: "600",
-    lineHeight: "32px",
-    height: "130px",
-    justifyContent: "space-between",
-    "@media (max-width: 1199px)": {
-      fontSize: "24px",
-      lineHeight: "30px",
-      height: "120px"
-    },
-    "@media (max-width: 599px)": {
-      fontSize: "26px",
-      lineHeight: "32px",
-      height: "fit-content",
-      width: "100%",
-      justifyContent: "normal",
-      marginBottom: "10px"
-    }
+    width: "84%", display: "grid", gap: "8px", color: "#151515",
+    "@media (max-width: 599px)": { width: "100%", gap: "3px", padding: "0 8px", marginBottom: "6px" }
   },
   optionModelEnglish: {
-    height: "90px",
-    textTransform: "capitalize",
-    "@media (max-width: 1199px)": {
-      fontSize: "20px",
-      lineHeight: "30px",
-      height: "90px"
-    },
-    "@media (max-width: 599px)": {
-      fontSize: "20px",
-      lineHeight: "28px",
-      height: "fit-content"
-    }
+    fontSize: "clamp(19px, 2vw, 30px)", lineHeight: 1.22, fontWeight: 650, overflowWrap: "anywhere"
   },
   optionModelKorean: {
-    fontSize: "18px",
-    lineHeight: "18px",
-    fontWeight: "100",
-    "@media (max-width: 1199px)": {
-      fontSize: "16px",
-      lineHeight: "16px"
-    },
-    "@media (max-width: 599px)": {
-      fontSize: "18px",
-      lineHeight: "18px",
-      height: "auto",
-      paddingTop: "5px"
-    }
+    fontSize: "clamp(14px, 1.2vw, 17px)", lineHeight: 1.45, color: "#5a5e62", fontWeight: 400
   },
   buttonDisabled: {
     // 품절 버튼 disabled 색깔 &:disabled
@@ -1249,35 +960,12 @@ const propageStyle = {
     color: "#7c7c7c"
   },
   detailsContainer: {
-    justifyContent: "space-between",
-    display: "flex",
-    flexDirection: "row",
-    height: "36px",
-    "@media (max-width: 599px)": {
-      height: "20px",
-      width: "50%",
-      padding: "0px 5px"
-    }
+    display: "grid", gridTemplateColumns: "minmax(65px, .8fr) minmax(0, 1.5fr)", alignItems: "baseline", gap: "8px",
+    padding: "4px 0", "@media (max-width: 599px)": { gridTemplateColumns: "auto minmax(0,1fr)", padding: "3px 0", gap: "4px" }
   },
   detail: {
-    width: "50%",
-    paddingLeft: "20px",
-    overflowY: "hidden",
-    fontSize: "18px",
-    lineHeight: "18px",
-    height: "18px",
-    "@media (max-width: 1199px)": {
-      fontSize: "16px",
-      lineHeight: "16px",
-      height: "16px"
-    },
-    "@media (max-width: 599px)": {
-      fontSize: "14px",
-      lineHeight: "14px",
-      height: "14px",
-      textAlign: "right",
-      paddingLeft: "0px"
-    }
+    fontSize: "14px", lineHeight: 1.45, color: "#232527", fontVariantNumeric: "tabular-nums",
+    "@media (max-width: 599px)": { fontSize: "12px", textAlign: "right" }
   },
   recommendButtonContainer: {
     display: "flex",
@@ -1346,22 +1034,7 @@ const propageStyle = {
     }
   },
   detailHeader: {
-    width: "50%",
-    fontSize: "18px",
-    lineHeight: "18px",
-    height: "18px",
-    borderRight: "1px solid black",
-    "@media (max-width: 1199px)": {
-      fontSize: "16px",
-      lineHeight: "16px",
-      height: "16px"
-    },
-    "@media (max-width: 599px)": {
-      fontSize: "14px",
-      lineHeight: "14px",
-      height: "14px",
-      borderRight: "0px"
-    }
+    fontSize: "14px", lineHeight: 1.45, color: "#63696d", "@media (max-width: 599px)": { fontSize: "12px" }
   },
   modelDetail: {
     textAlign: "center",

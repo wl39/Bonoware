@@ -40,7 +40,7 @@ class SectionCarousel extends React.Component {
               onClick={() => this.slider && this.slider.slickGoTo(0)}
             >
               <div className={classes.num}>01</div>
-              <div className={classes.title}>BLAKC IS THE NEW BLACK</div>
+              <div className={classes.title}>BLACK IS THE NEW BLACK</div>
               <div className={classes.shoe}>Yeezy Boost</div>
             </div>
             <div
@@ -56,8 +56,8 @@ class SectionCarousel extends React.Component {
               onClick={() => this.slider && this.slider.slickGoTo(2)}
             >
               <div className={classes.num}>03</div>
-              <div className={classes.title}> TESTING</div>
-              <div className={classes.shoe}>Testing</div>
+              <div className={classes.title}>SHOP OFF-WHITE</div>
+              <div className={classes.shoe}>Off-White</div>
             </div>
           </div>
           <Carousel ref={slider => (this.slider = slider)} {...settings}>

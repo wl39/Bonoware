@@ -3,7 +3,7 @@ import { setupServer } from "msw/node";
 import { createDatabase, DB_KEY, type StorageLike } from "../src/app/database";
 import { createHandlers } from "../src/app/handlers";
 import { DEMO_EMAIL, DEMO_PASSWORD } from "../src/app/seed";
-import type { Order, Product, Session } from "../src/app/types";
+import type { Database, Order, Product, Session } from "../src/app/types";
 import type { Detail } from "../src/app/api";
 
 let values: Map<string, string>;
@@ -53,13 +53,16 @@ const buy = (offerId = "stock-jordan-unc-260", extra = {}) =>
 describe("catalog and account API", () => {
   it("searches model numbers, combines filters, sorts prices, and keeps releases separate", async () => {
     const all = await request<Product[]>("/products");
-    expect(all.data).toHaveLength(8);
+    expect(all.data).toHaveLength(16);
     const filtered = await request<Product[]>(
       "/products?q=350&brand=Adidas&size=260&sort=price-asc",
     );
     expect(filtered.data.map((p) => p.id)).toEqual([
       "yeezy-antlia",
       "yeezy-butter",
+      "yeezy-zebra",
+      "yeezy-pirate-black",
+      "yeezy-oxford-tan",
     ]);
     expect(
       (await request<Product[]>("/products?q=AQ0818-148")).data[0].id,
@@ -232,6 +235,31 @@ describe("orders and stock", () => {
   });
 });
 describe("recovery", () => {
+  it("adds the StockX catalog to an existing store without resetting or duplicating inventory", async () => {
+    await login();
+    const order = (await buy()).data;
+    const old = JSON.parse(values.get(DB_KEY)!) as Database;
+    delete old.catalogRevision;
+    const originalIds = new Set(
+      old.products.filter((p) => !p.sourceUrl).map((p) => p.id),
+    );
+    old.products = old.products.filter((p) => originalIds.has(p.id));
+    old.offers = old.offers.filter((o) => originalIds.has(o.productId));
+    values.set(DB_KEY, JSON.stringify(old));
+    const newShoe = await request<Detail>("/products/AA3831-002");
+    expect(newShoe.data.product.sourceUrl).toBe(
+      "https://stockx.com/nike-air-vapormax-off-white-black",
+    );
+    expect(newShoe.data.offers).toHaveLength(11);
+    expect((await request("/profile")).data.orders[0].id).toBe(order.id);
+    expect((await buy()).status).toBe(409);
+    expect(
+      (await request<Detail>("/products/AA3831-002")).data.offers,
+    ).toHaveLength(11);
+    expect((await request<Product[]>("/products?q=지브라")).data[0].model).toBe(
+      "CP9654",
+    );
+  });
   it("returns useful errors for invalid JSON and unknown API routes", async () => {
     const invalid = await fetch("http://localhost/api/auth/login", {
       method: "POST",

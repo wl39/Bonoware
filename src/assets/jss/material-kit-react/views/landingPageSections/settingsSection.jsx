@@ -1,237 +1,118 @@
-const settingsSection = {
+const mobile = "@media (max-width: 599px)";
+const tablet = "@media (max-width: 959px)";
+const action = {
+  minHeight: 32,
+  minWidth: 64,
+  padding: "4px 14px",
+  borderRadius: 0,
+  fontSize: 13,
+  fontWeight: 500,
+  border: "1px solid #202020",
+  background: "#202020",
+  color: "#fff",
+  "&:hover": { background: "#454545" },
+};
+const field = {
+  minWidth: 0,
+  fontSize: 15,
+  lineHeight: 1.55,
+  color: "#333",
+  overflowWrap: "anywhere",
+};
+const input = { height: 36, border: "1px solid #bbb", padding: "0 8px" };
+export default {
   settings: {
-    width: "100%",
-    margin: "60px 55px 100px 15px",
-    "@media (max-width: 1200px)": {
-      marginRight: "20px"
-    },
-    "@media (max-width: 875px)": {
-      marginRight: "5px",
-      marginLeft: "5px"
-    },
-    "@media (max-width: 599px)": {
-      marginTop: "30px"
-    }
+    flex: "1 1 0",
+    minWidth: 0,
+    margin: "54px 32px 80px",
+    [tablet]: { margin: "42px 20px 64px" },
+    [mobile]: { margin: "30px 16px 48px" },
   },
   settingsHeader: {
-    fontSize: "30px",
-    fontWeight: "600",
-    color: "#2a2a2a",
-    width: "100%",
+    fontSize: "clamp(24px, 2vw, 30px)",
+    fontWeight: 600,
+    lineHeight: 1.3,
     textAlign: "center",
-    height: "30px",
-    lineHeight: "30px",
-    marginBottom: "40px"
+    marginBottom: 28,
+    color: "#2a2a2a",
   },
-  settingsContentContainer: {
-    border: "1px solid #b7b7b7",
-    marginBottom: "130px",
-    transition: "0.3s"
-  },
+  settingsContentContainer: { border: "1px solid #ccc", marginBottom: 48 },
   settingContentHeader: {
     display: "flex",
+    alignItems: "center",
     justifyContent: "space-between",
-    height: "30px",
-    lineHeight: "30px",
-    fontSize: "24px",
-    fontWeight: "600",
-    color: "#2a2a2a",
-    marginBottom: "70px",
-    marginTop: "40px",
-    marginLeft: "30px",
-    marginRight: "30px",
-    "@media (max-width: 959px)": {
-      marginLeft: "20px",
-      marginRight: "20px"
-    },
-    "@media (max-width: 599px)": {
-      marginLeft: "10px",
-      marginRight: "10px"
-    }
+    gap: 8,
+    fontSize: 20,
+    fontWeight: 600,
+    color: "#242424",
+    lineHeight: 1.4,
+    padding: "24px 24px 16px",
+    [mobile]: { padding: "20px 16px 12px", fontSize: 18 },
   },
-  editButton: {
-    padding: "0px",
-    height: "30px",
-    minHeight: "30px",
-    width: "100px",
-    minWidth: "100px",
-    background: "black",
-    color: "white",
-    fontSize: "12px",
-    borderRadius: "0px",
-    fontWeight: "300",
-    "&:hover": {
-      background: "white",
-      color: "black",
-      border: "1px solid black"
-    }
-  },
+  editButton: action,
   editActived: {
-    padding: "0px",
-    height: "30px",
-    minHeight: "30px",
-    width: "100px",
-    minWidth: "100px",
+    ...action,
     background: "white",
-    color: "black",
-    border: "1px solid black",
-    fontSize: "12px",
-    borderRadius: "0px",
-    fontWeight: "300",
-    "&:hover": {
-      background: "black",
-      color: "white"
-    }
+    color: "#202020",
+    "&:hover": { background: "#eee" },
   },
   profileContentsContainer: {
-    display: "flex",
-    height: "60px",
-    lineHeight: "18px",
-    color: "#2a2a2a",
-    marginBottom: "18px",
-    marginLeft: "30px",
-    marginRight: "30px",
-    flexWrap: "wrap",
-    "@media (max-width: 959px)": {
-      marginLeft: "20px",
-      marginRight: "20px"
-    },
-    "@media (max-width: 599px)": {
-      marginLeft: "10px",
-      marginRight: "10px"
-    }
+    display: "grid",
+    gridTemplateColumns: "repeat(2,minmax(0,1fr))",
+    gap: "12px 26px",
+    margin: "4px 24px 20px",
+    [mobile]: { gridTemplateColumns: "1fr", margin: "4px 16px 20px" },
   },
   contentsContainer: {
-    display: "flex",
-    "@media (max-width: 959px)": {
-      width: "50%"
-    }
-  },
-  resetButtonContainer: {
-    display: "flex",
-    paddingLeft: "30px",
-    paddingRight: "30px",
-    paddingBottom: "110px",
-    borderBottom: "1px solid #b7b7b7",
-    "@media (max-width: 959px)": {
-      paddingBottom: "70px",
-      paddingRight: "20px",
-      paddingLeft: "20px"
-    },
-    "@media (max-width: 599px)": {
-      paddingBottom: "40px",
-      paddingRight: "10px",
-      paddingLeft: "10px"
-    }
+    display: "grid",
+    gridTemplateColumns: "76px minmax(0,1fr)",
+    columnGap: 12,
+    alignItems: "center",
   },
   contentsHeader: {
-    fontWeight: "600",
-    fontSize: "18px",
-    marginRight: "18px"
+    fontSize: 14,
+    fontWeight: 600,
+    color: "#272727",
+    lineHeight: 1.5,
+    whiteSpace: "nowrap",
   },
-  contents: {
-    fontSize: "16px",
-    lineHeight: "16px",
-    marginRight: "100px",
-    fontWeight: "300",
-    "@media (max-width: 1400px)": {
-      marginRight: "30px"
-    },
-    "@media (max-width: 959px)": {
-      marginRight: "0px"
-    }
-  },
-  contentsLast: {
-    fontSize: "16px",
-    lineHeight: "16px",
-    fontWeight: "300"
+  contents: field,
+  contentsLast: field,
+  resetButtonContainer: {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 12,
+    padding: "4px 24px 24px",
+    borderBottom: "1px solid #ccc",
+    [mobile]: { padding: "0 16px 20px" },
   },
   resetButton: {
-    padding: "0px",
-    height: "30px",
-    minHeight: "30px",
-    width: "230px",
-    minWidth: "230px",
-    background: "white",
-    color: "#fe0229",
-    fontSize: "12px",
-    borderRadius: "0px",
-    fontWeight: "300",
-    border: "1px solid #fe0229",
-    marginTop: "-3px",
-    "@media (max-width: 599px)": {
-      width: "180px",
-      minWidth: "180px"
-    },
-    "&:hover": {
-      color: "red",
-      background: "white",
-      border: "1px solid red"
-    }
+    ...action,
+    background: "#fff",
+    color: "#a42032",
+    borderColor: "#b34856",
+    "&:hover": { background: "#fff6f7" },
   },
   personalInfoContainer: {
-    display: "flex",
-    height: "320px"
+    display: "grid",
+    gridTemplateColumns: "repeat(2,minmax(0,1fr))",
+    [mobile]: { gridTemplateColumns: "1fr" },
   },
   shippingInfo: {
-    width: "50%",
-    borderRight: "1px solid #b7b7b7"
+    borderRight: "1px solid #ccc",
+    [mobile]: { borderRight: 0, borderBottom: "1px solid #ccc" },
   },
-  accountInfo: {
-    width: "50%"
-  },
+  accountInfo: { minWidth: 0 },
   personalInfo: {
-    margin: "0px 30px"
+    ...field,
+    margin: "0 24px 24px",
+    [mobile]: { margin: "0 16px 20px" },
   },
-  notificationSetting: {
-    borderTop: "1px solid #b7b7b7",
-    paddingTop: "40px"
-  },
-  notificationLeft: {
-    width: "50%",
-    borderRight: "1px dashed #b7b7b7"
-  },
-  notificationRight: {
-    width: "50%"
-  },
-  inputWrapper: {
-    width: "100px",
-    height: "40px",
-    display: "flex",
-    marginTop: "-11px",
-    marginRight: "61px",
-    marginLeft: "-11px",
-    "@media (max-width: 959px)": {
-      height: "30px",
-      marginRight: "0px"
-    }
-  },
-  root: {
-    height: "50px",
-    transition:
-      "border-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,border-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
-    paddingLeft: "10px",
-    border: "1px solid #ebebeb",
-    "@media (max-width: 959px)": {
-      minHeight: ""
-    },
-    "&:hover": {
-      border: "1px solid #a2a9af"
-    }
-  },
-  error: {
-    height: "50px",
-    transition:
-      "border-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,border-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
-    paddingLeft: "10px",
-    border: "1px solid rgba(254, 2, 41, 0.5)",
-    "&:hover": {
-      border: "1px solid #fe0229"
-    },
-    "&:active": {
-      border: "1px solid #fe0229"
-    }
-  }
+  notificationSetting: { borderTop: "1px solid #ccc", paddingTop: 40 },
+  notificationLeft: { width: "50%" },
+  notificationRight: { width: "50%" },
+  inputWrapper: { width: 80, maxWidth: "100%" },
+  root: input,
+  error: { ...input, borderColor: "#b22036" },
 };
-
-export default settingsSection;

@@ -9,111 +9,33 @@ import archiveImage7 from "assets/img/dummy/img-yzy.jpg";
 import React from "react";
 import mostPopularBrand from "assets/jss/material-kit-react/views/mostPopularBrand.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-class MostPopularBrand extends React.Component {
-  render() {
-    const { classes } = this.props;
 
-    return (
-      <div className={classes.container}>
-        <div className={classes.title}>인기 브랜드</div>
-        <div className={classes.brandContainer}>
-          <div className={classes.firstRow}>
-            <Link
-              to={{
-                pathname: "/products",
-                state: {
-                  filter: "",
-                  brand: "nike"
-                }
-              }}
-              className={classes.firstBrand}
-            >
-              <img
-                src={archiveImage0}
-                alt="nikeImage"
-                className={classes.shoeImg}
-              />
-              <img
-                src={archiveImage1}
-                alt="nike"
-                className={classes.brandImg}
-              />
-            </Link>
-            <Link
-              to={{
-                pathname: "/products",
-                state: {
-                  filter: "",
-                  brand: "airjordan"
-                }
-              }}
-              className={classes.middleBrandLeft}
-            >
-              <img
-                src={archiveImage2}
-                alt="jordanImage"
-                className={classes.shoeImg}
-              />
-              <img
-                src={archiveImage3}
-                alt="jordan"
-                className={classes.brandImg}
-              />
-            </Link>
-          </div>
-          <div className={classes.secondRow}>
-            <Link
-              to={{
-                pathname: "/products",
-                state: {
-                  filter: "",
-                  brand: "adidas"
-                }
-              }}
-              className={classes.middleBrandRight}
-            >
-              <img
-                src={archiveImage4}
-                alt="adidasImage"
-                className={classes.shoeImg}
-              />
-              <img
-                src={archiveImage5}
-                alt="adidas"
-                className={classes.brandImg}
-              />
-            </Link>
-            {/* </Button>
-          <Button> */}
-            <Link
-              to={{
-                pathname: "/products",
-                state: {
-                  filter: "",
-                  brand: "yeezy"
-                }
-              }}
-              className={classes.lastBrand}
-            >
-              {" "}
-              <img
-                src={archiveImage6}
-                alt="yeezyImage"
-                className={classes.shoeImg}
-              />
-              <img
-                src={archiveImage7}
-                alt="yeezy"
-                className={classes.brandImg}
-              />
-            </Link>
-          </div>
-        </div>
+const brands = [
+  { filter: "nike", label: "Nike", shoe: archiveImage0, logo: archiveImage1 },
+  { filter: "airjordan", label: "Jordan", shoe: archiveImage2, logo: archiveImage3 },
+  { filter: "adidas", label: "adidas", shoe: archiveImage4, logo: archiveImage5 },
+  { filter: "yeezy", label: "Yeezy", shoe: archiveImage6, logo: archiveImage7 }
+];
+
+function MostPopularBrand({ classes }) {
+  return (
+    <div className={classes.container}>
+      <div className={classes.title}>인기 브랜드</div>
+      <div className={classes.brandContainer}>
+        {brands.map(({ filter, label, shoe, logo }) => (
+          <Link
+            key={filter}
+            to={{ pathname: "/products", state: { filter: "", brand: filter } }}
+            className={classes.brandCard}
+            aria-label={label}
+          >
+            <img src={shoe} alt="" className={classes.shoeImg} />
+            <img src={logo} alt={label} className={classes.brandImg} />
+          </Link>
+        ))}
       </div>
-    );
-  }
+    </div>
+  );
 }
-
 export default withStyles(mostPopularBrand)(MostPopularBrand);

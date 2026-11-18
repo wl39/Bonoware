@@ -73,6 +73,7 @@ class MainPage extends React.Component {
           {/* </Parallax> */}
         </div>
         <AdvertisementSection />
+        <Ticker />
         <MainBottomSection />
         <div className={classes.gridContainer}>
           <div className={classes.backgroundContainerLeft}>
@@ -88,7 +89,6 @@ class MainPage extends React.Component {
             </div>
           </div>
         </div>
-        <Ticker />
       </Aux>
     );
   }

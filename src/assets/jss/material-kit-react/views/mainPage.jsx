@@ -308,8 +308,8 @@ const mainPageStyle = {
     }
   },
   backgroundBlack: {
-    background: "black",
-    opacity: "0.8"
+    background: "rgba(0,0,0,.83)",
+    height: "100%"
   },
   backgroundContainerRight: {
     maxWidth: "50%",
@@ -322,50 +322,24 @@ const mainPageStyle = {
     }
   },
   newsContainer: {
-    padding: "38px 100px 48px 0px",
-    maxWidth: "83.33%",
-    height: "794px",
+    width: "83.333%",
     marginLeft: "auto",
     color: "white",
-    "@media (max-width: 1199px)": {
-      maxWidth: "90%"
-    },
-    "@media (max-width: 992px)": {
-      maxWidth: "90%",
-      flexBasis: "90%",
+    padding: "36px clamp(24px, 3.3vw, 48px) 38px 0",
+    "@media (max-width: 1199px)": { width: "90%" },
+    "@media (max-width: 959px)": {
       margin: "auto",
-      padding: "30px 0px"
-    },
-    "@media (max-width: 768px)": {
-      maxWidth: "90%",
-      flexBasis: "100%",
-      margin: "auto",
-      padding: "10px 0px",
-      height: "450px"
+      padding: "24px 0"
     }
   },
   releaseDateContainer: {
-    height: "794px",
-    maxWidth: "83.33%",
+    width: "83.333%",
     marginRight: "auto",
-    padding: "38px 0px 48px 48px",
-    marginLeft: "3px",
-    "@media (max-width: 1199px)": {
-      maxWidth: "90%"
-    },
-    "@media (max-width: 992px)": {
-      maxWidth: "90%",
-      flexBasis: "90%",
+    padding: "36px 0 38px clamp(24px, 3.3vw, 48px)",
+    "@media (max-width: 1199px)": { width: "90%" },
+    "@media (max-width: 959px)": {
       margin: "auto",
-      padding: "30px 0px",
-      height: "100%"
-    },
-    "@media (max-width: 768px)": {
-      maxWidth: "90%",
-      flexBasis: "100%",
-      margin: "auto",
-      padding: "10px 0px",
-      height: "100%"
+      padding: "24px 0"
     }
   }
 };

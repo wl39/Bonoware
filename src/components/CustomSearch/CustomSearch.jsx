@@ -28,7 +28,8 @@ class CustomSearch extends React.Component {
 
   searchBar = event => {
     this.setState({
-      search: event.target.value
+      search: event.target.value,
+      visible: true
     });
   };
 
@@ -83,7 +84,8 @@ class CustomSearch extends React.Component {
             className={classes.inputBase}
             placeholder="신발명, 브랜드 검색하세요."
             inputProps={{ "aria-label": "신발명, 브랜드 검색하세요." }}
-            onClick={() => this.test()}
+            onClick={this.test}
+            onFocus={this.test}
             onChange={this.searchBar}
             id={id}
           />

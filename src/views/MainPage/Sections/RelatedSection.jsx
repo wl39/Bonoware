@@ -45,9 +45,10 @@ class RelatedSection extends React.Component {
     let arrayOfItems = [];
 
     itemProps.forEach((element, index) => {
-      let name = needData ? element.data[0].name : element.name;
+      const product = needData ? element.data[0] : element;
+      const name = product.name;
       let nameArray = name.split("|");
-      let image = needData ? element.data[0].image[0] : element.image[0];
+      const image = product.image[0];
       let lowestPrice = element.lowestPrice;
 
       arrayOfItems.push(
@@ -55,7 +56,7 @@ class RelatedSection extends React.Component {
           <Button
             className={classesProps.button}
             onClick={() => {
-              this.props.history.push('/products/' + name)
+              this.props.history.push("/products/" + encodeURIComponent(product._id || name));
             }}
           >
             <div className={classesProps.paper}>

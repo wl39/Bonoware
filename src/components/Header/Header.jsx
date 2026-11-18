@@ -165,7 +165,7 @@ class Header extends React.Component {
 
     const customLogo = (
       <CustomButton className={classes.list2} color="transparent">
-        <img src={this.state.logo} className={classes.list1} alt="logo" />
+        <img src={this.props.searchBar ? whiteLogo : this.state.logo} className={classes.list1} alt="logo" />
       </CustomButton>
     );
 

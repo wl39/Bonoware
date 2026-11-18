@@ -4,7 +4,7 @@
 
 ## 현재 구현
 
-원본 `src/components`, `src/views`, `src/assets`, `src/store`를 현재 앱으로 사용합니다. CSS·SCSS·JSS·로고·이미지는 원본을 유지합니다. `git diff fd2205bf -- src/assets`에 변경이 없습니다. 배경과 배너 데이터는 기존 저장소 이미지를 사용하며, 외부 StockX 주소로만 지정되어 있던 브랜드 썸네일도 저장소의 이미지로 연결했습니다.
+원본 `src/components`, `src/views`, `src/assets`, `src/store`를 현재 앱으로 사용합니다. 원본 로고와 배너를 사용하고, 상품 카드·검색·뉴스·프로필·발매 화면의 간격과 글자 크기는 반응형으로 조정했습니다. 배경과 배너 데이터는 기존 저장소 이미지를 사용하며, 외부 StockX 주소로만 지정되어 있던 브랜드 썸네일도 저장소의 이미지로 연결했습니다.
 
 React 18.3.1, Material UI 3.9.4, React Router 5.3.4를 사용해 기존 UI와 호환성을 유지합니다. 빌드는 Vite 8.3.8, 타입 검사 도구는 TypeScript 7.0.2, 모킹은 MSW 3.0.6, 실행 환경은 Node 24입니다. 원본의 Webpack 3·Babel 6·node-sass 도구는 설치하지 않습니다.
 
