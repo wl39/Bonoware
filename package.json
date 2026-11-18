@@ -2,7 +2,6 @@
   "name": "bonoware-probe",
   "version": "2.0.0",
   "private": true,
-  "type": "module",
   "engines": {
     "node": ">=24 <25"
   },
@@ -17,21 +16,39 @@
     "test:e2e": "playwright test",
     "check": "npm run typecheck && npm test && npm run build",
     "postinstall": "msw init public --save",
-    "format": "prettier --write src/app tests *.ts *.json docs/*.md README.md",
-    "format:check": "prettier --check src/app tests *.ts *.json docs/*.md README.md"
+    "format": "prettier --write src/app src/classic tests *.ts *.json docs/*.md README.md",
+    "format:check": "prettier --check src/app src/classic tests *.ts *.json docs/*.md README.md"
   },
   "dependencies": {
-    "lucide-react": "^1.74.0",
+    "@material-ui/core": "3.9.4",
+    "@material-ui/icons": "3.0.2",
+    "apexcharts": "3.54.1",
+    "axios": "^1.21.1",
+    "classnames": "^2.5.1",
+    "moment": "^2.30.1",
     "msw": "^3.0.6",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "react-router-dom": "^7.18.5"
+    "nouislider": "^15.8.1",
+    "prop-types": "^15.8.1",
+    "react": "18.3.1",
+    "react-apexcharts": "1.4.1",
+    "react-dom": "18.3.1",
+    "react-dom-confetti": "0.0.10",
+    "react-input-mask": "2.0.4",
+    "react-nouislider": "2.0.1",
+    "react-onclickoutside": "6.13.2",
+    "react-redux": "7.2.9",
+    "react-router-dom": "5.3.4",
+    "react-slick": "0.31.0",
+    "react-text-mask": "5.5.0",
+    "redux": "4.2.1",
+    "redux-thunk": "2.4.2",
+    "short-unique-id": "1.1.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.1",
     "@types/node": "^24.0.0",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^6.3.0",
     "prettier": "^3.10.1",
     "typescript": "^7.0.2",
@@ -42,5 +59,8 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "overrides": {
+    "node-fetch": "^2.7.0"
   }
 }
