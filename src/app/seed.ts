@@ -135,7 +135,7 @@ const definitions = [
   ],
 ] as const;
 
-export const CATALOG_REVISION = 4;
+export const CATALOG_REVISION = 5;
 
 export function createSeed(now = new Date()): Database {
   const dateAt = (days: number) =>

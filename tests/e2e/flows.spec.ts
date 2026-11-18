@@ -101,9 +101,15 @@ test("original news and release pages render without runtime errors", async ({
     await page.getByRole("radio", { name: "이전 출시" }).check();
   const month = page.getByRole("combobox", { name: "출시 월" });
   await month.selectOption("2027-12");
+  await expect(page.locator("article time").first()).toHaveAttribute(
+    "datetime",
+    /^2027-12-/,
+  );
   const last = page
     .locator("article")
     .filter({ has: page.locator('time[datetime="2027-12-31"]') });
+  if ((await last.count()) === 0)
+    await page.getByRole("button", { name: "다음", exact: true }).click();
   await expect(last).toBeVisible();
   await last.getByRole("link").click();
   await expect(page).toHaveURL(/products\/drop-2027-12-31-fear-of-god/);

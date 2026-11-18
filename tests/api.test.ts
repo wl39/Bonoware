@@ -90,10 +90,23 @@ describe("catalog and account API", () => {
       (await request<Product[]>("/products?q=AQ0818-148")).data[0].id,
     ).toBe("jordan-unc");
     const releases = (await request<Product[]>("/products?upcoming=true")).data;
-    expect(releases).toHaveLength(29);
-    expect(new Set(releases.map((p) => p.releaseDate.slice(0, 7))).size).toBe(
-      14,
-    );
+    expect(releases).toHaveLength(206);
+    expect(new Set(releases.map((p) => p.brand)).size).toBe(19);
+    expect(new Set(releases.map((p) => p.model)).size).toBe(releases.length);
+    const weekMs = 7 * 86400000;
+    for (
+      let monday = Date.parse("2026-11-16");
+      monday <= Date.parse("2027-12-31");
+      monday += weekMs
+    ) {
+      const weekly = releases.filter(({ releaseDate }) => {
+        const time = Date.parse(releaseDate);
+        return time >= monday && time < monday + weekMs;
+      });
+      expect(weekly.length).toBeGreaterThanOrEqual(3);
+      expect(weekly.length).toBeLessThanOrEqual(4);
+      expect(new Set(weekly.map((p) => p.brand)).size).toBe(weekly.length);
+    }
     expect(releases.at(-1)?.releaseDate.slice(0, 10)).toBe("2027-12-31");
     expect(
       releases.every((p) => p.price === null && p.sizes.length === 0),
@@ -283,7 +296,7 @@ describe("recovery", () => {
     const migrated = JSON.parse(values.get(DB_KEY)!) as Database;
     expect(
       migrated.products.filter((p) => p.id.startsWith("drop-")),
-    ).toHaveLength(27);
+    ).toHaveLength(204);
     expect(migrated.offers.some((o) => o.productId.startsWith("drop-"))).toBe(
       false,
     );
