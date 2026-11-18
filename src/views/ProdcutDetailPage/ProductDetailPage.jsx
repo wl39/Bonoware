@@ -1,179 +1,75 @@
 import withStyles from "@material-ui/core/styles/withStyles";
-
 import ProductDetail from "components/Product/ProductDetail.jsx";
 import React from "react";
-
 import axios from "axios";
-
+import Button from "@material-ui/core/Button";
 class ProductDetailPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      size: "all",
-      product: <div style={{ minHeight: "500px" }} />,
-      model: "",
-      image: "",
-      imageList: [],
-      brand: "",
-      lowest: 0,
-      releaseDate: "",
-      stockCount: 0,
-      sid: "",
-      related: {}
-    };
+  state = { data: null, error: "" };
+  componentDidMount() {
+    this.load();
   }
-
-  sizeChanger = size => {
-    this.model = this.props.match.params.model;
-
-    let personalSize = size ? size : "all";
-
-    axios({
-      method: "get",
-      url:
-        "https://api.probe.gg/open/shoeChangedData?shoe=" +
-        this.state.sid +
-        "&size=" +
-        personalSize
-    }).then(value => {
-      switch (value.status) {
-        case 200:
-          let item = value.data[0];
-          this.setState({
-            product: (
-              <ProductDetail
-                model={this.state.model}
-                image={this.state.image}
-                imageList={this.state.imageList}
-                brand={this.state.brand}
-                lowest={this.state.lowest}
-                releaseDate={this.state.releaseDate}
-                stockCount={this.state.stockCount}
-                sid={this.state.sid}
-                related={this.state.related}
-                sizeChanger={this.sizeChanger}
-              />
-            )
-          });
-          break;
-        default:
-          break;
-      }
-    });
-  };
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.model !== nextProps.match.params.model) {
-      this.model = nextProps.match.params.model;
-
-      axios({
-        method: "get",
-        url: "https://api.probe.gg/open/shoe?shoe=" + this.model
-      }).then(value => {
-        switch (value.status) {
-          case 200:
-            let item = value.data[0];
-            this.setState({
-              product: (
-                <ProductDetail
-                  model={item.data.name}
-                  image={item.data.image[0]}
-                  imageList={[
-                    item.data.image[0],
-                    item.data.image[0],
-                    item.data.image[0],
-                    item.data.image[0],
-                    item.data.image[0]
-                  ]}
-                  brand={item.data.brand}
-                  lowest={item.data.lowestPrice}
-                  releaseDate={item.data.releaseDate}
-                  stockCount={item.data.stockCount}
-                  sid={item.data._id}
-                  related={value.data[1]}
-                  sizeChanger={this.sizeChanger}
-                />
-              ),
-              model: item.data.name,
-              image: item.data.image[0],
-              imageList: [
-                item.data.image[0],
-                item.data.image[0],
-                item.data.image[0],
-                item.data.image[0],
-                item.data.image[0]
-              ],
-              brand: item.data.brand,
-              lowest: item.data.lowestPrice,
-              releaseDate: item.data.releaseDate,
-              stockCount: item.data.stockCount,
-              sid: item.data._id,
-              related: value.data[1]
-            });
-            break;
-          default:
-            break;
-        }
+  componentDidUpdate(previous) {
+    if (previous.match.params.model !== this.props.match.params.model)
+      this.load();
+  }
+  componentWillUnmount() {
+    this.controller?.abort();
+  }
+  load = async () => {
+    this.controller?.abort();
+    this.controller = new AbortController();
+    const signal = this.controller.signal;
+    this.setState({ error: "", data: null });
+    try {
+      const response = await axios.get("https://api.probe.gg/open/shoe", {
+        params: { shoe: this.props.match.params.model },
+        signal,
       });
+      if (!response.data?.[0]?.data)
+        throw new Error("상품을 찾을 수 없습니다.");
+      if (!signal.aborted) this.setState({ data: response.data });
+    } catch (error) {
+      if (!signal.aborted)
+        this.setState({
+          error: error.response?.data?.message || error.message,
+        });
     }
-  }
-
-  componentWillMount() {
-    this.model = this.props.match.params.model;
-    axios({
-      method: "get",
-      url: "https://api.probe.gg/open/shoe?shoe=" + this.model
-    }).then(value => {
-      switch (value.status) {
-        case 200:
-          let item = value.data[0];
-          this.setState({
-            product: (
-              <ProductDetail
-                model={item.data.name}
-                image={item.data.image[0]}
-                imageList={[
-                  item.data.image[0],
-                  item.data.image[0],
-                  item.data.image[0],
-                  item.data.image[0],
-                  item.data.image[0]
-                ]}
-                brand={item.data.brand}
-                lowest={item.data.lowestPrice}
-                releaseDate={item.data.releaseDate}
-                stockCount={item.data.stockCount}
-                sid={item.data._id}
-                related={value.data[1]}
-                sizeChanger={this.sizeChanger}
-              />
-            ),
-            model: item.data.name,
-            image: item.data.image[0],
-            imageList: [
-              item.data.image[0],
-              item.data.image[0],
-              item.data.image[0],
-              item.data.image[0],
-              item.data.image[0]
-            ],
-            brand: item.data.brand,
-            lowest: item.data.lowestPrice,
-            releaseDate: item.data.releaseDate,
-            stockCount: item.data.stockCount,
-            sid: item.data._id,
-            related: value.data[1]
-          });
-          break;
-        default:
-          break;
-      }
-    });
-  }
-
+  };
+  sizeChanger = () => {};
   render() {
-    return <div>{this.state.product}</div>;
+    if (this.state.error)
+      return (
+        <div
+          role="alert"
+          style={{ margin: "140px auto 80px", maxWidth: 960, padding: 24 }}
+        >
+          <p>{this.state.error}</p>
+          <Button onClick={this.load}>다시 불러오기</Button>
+        </div>
+      );
+    if (!this.state.data)
+      return (
+        <div
+          style={{ minHeight: 500 }}
+          role="status"
+          aria-label="상품을 불러오는 중"
+        />
+      );
+    const item = this.state.data[0].data;
+    return (
+      <ProductDetail
+        model={item.name}
+        image={item.image[0]}
+        imageList={Array(5).fill(item.image[0])}
+        brand={item.brand}
+        lowest={item.lowestPrice}
+        releaseDate={item.releaseDate}
+        stockCount={item.stockCount}
+        sid={item._id}
+        related={this.state.data[1]}
+        sizeChanger={this.sizeChanger}
+      />
+    );
   }
 }
-
 export default withStyles(null)(ProductDetailPage);

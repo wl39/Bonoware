@@ -1,74 +1,37 @@
 import withStyles from "@material-ui/core/styles/withStyles";
 import React from "react";
 
-let histogram = [];
-class Histogram extends React.Component {
-  componentWillReceiveProps() {
-    // histogram = [];
-    if (histogram.length === 0) {
-      // console.log(histogram.length);
-      for (let i = 0; i < this.props.histogram.length; i++) {
-        if (this.props.histogram[i]) {
-          let px = this.props.histogram[i].frequency * 10;
-          let lpx = this.props.histogram[i].lowestFrequency * 10;
-
-          histogram = [
-            ...histogram,
-            <div
-            key={i}
-              style={{
-                width: "2%"
-              }}
-            >
-              <div
-                style={{
-                  height: px + "px",
-                  width: "100%",
-                  background: "#c8c8c8"
-                }}
-              />
-              <div
-                style={{
-                  height: lpx + "px",
-                  width: "100%",
-                  backgroundImage: "linear-gradient(#c8c8c8, #939393)"
-                }}
-              />
-            </div>
-          ];
-        } else {
-          histogram = [
-            ...histogram,
-            <div
-              key={i}
-              style={{
-                height: "0px",
-                width: "2%",
-                background: "#c8c8c8"
-              }}
-            />
-          ];
-        }
-      }
-      this.setState({
-        histogram: histogram
-      })
-    }
-  }
-
-  render() {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "baseline"
-        }}
-      >
-        {histogram}
-      </div>
-    );
-  }
+function Histogram({ histogram = [] }) {
+  // The original graph has 50 price buckets. Never allocate DOM from an
+  // untrusted sparse-array length (a currency amount used as an index can hang a tab).
+  const buckets = Array.from(
+    { length: Math.min(histogram.length, 50) },
+    (_, i) => histogram[i],
+  );
+  return (
+    <div
+      style={{ display: "flex", flexDirection: "row", alignItems: "baseline" }}
+    >
+      {buckets.map((bucket, i) => (
+        <div key={i} style={{ width: "2%" }}>
+          <div
+            style={{
+              height: Math.max(0, Number(bucket?.frequency) || 0) * 10 + "px",
+              width: "100%",
+              background: "#c8c8c8",
+            }}
+          />
+          <div
+            style={{
+              height:
+                Math.max(0, Number(bucket?.lowestFrequency) || 0) * 10 + "px",
+              width: "100%",
+              backgroundImage: "linear-gradient(#c8c8c8, #939393)",
+            }}
+          />
+        </div>
+      ))}
+    </div>
+  );
 }
-
 export default withStyles(null)(Histogram);

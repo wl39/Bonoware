@@ -216,7 +216,7 @@ class ReleaseDatePanel extends React.Component {
 
   componentWillMount() {
     if (this.props.unreleased.length) {
-      this.props.getUser();
+      if (this.props.isAuth) this.props.getUser();
       this.renderHelper(this.props.unreleased, this.props.attr);
     }
   }

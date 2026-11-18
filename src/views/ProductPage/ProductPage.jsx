@@ -174,17 +174,12 @@ class ProductPage extends React.Component {
         db.scan(param, (err, data) => {
           if (data) {
             count = data.Count;
-            data.Items.forEach(value => {
-              this.setState(prevState => ({
-                histogram: [
-                  ...prevState.histogram,
-                  {
-                    price: value.Price,
-                    count: value.Count,
-                    lowest: value.Lowest
-                  }
-                ]
-              }));
+            this.setState({
+              histogram: data.Items.map(value => ({
+                price: value.Price,
+                count: value.Count,
+                lowest: value.Lowest
+              }))
             });
           } else {
             console.log(err);

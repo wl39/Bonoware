@@ -23,13 +23,13 @@ npm run dev
 
 별도 AWS 계정이나 실제 서버 없이 상품 검색·가격 필터, 로그인·가입, 관심 상품, 댓글, 모의 주문과 취소, 판매 등록과 취소를 체험할 수 있습니다. 기존에 미완성이었던 판매 입력에는 같은 스타일의 가격 입력을 연결했습니다. 구매창의 결제 동작은 모의 주문으로 처리합니다.
 
-계정·관심 목록·댓글·주문·매물은 브라우저 `localStorage`의 `probe.database.v2`에 저장합니다. 이전 작업본에서 저장한 데이터도 같은 저장소를 사용합니다. 가격·시세·재고·발매일은 모두 가상이며 실제 결제·검수·배송·정산·이메일·NFC 인증은 실행하지 않습니다. 데모에는 실제 개인정보와 비밀번호를 입력하지 마세요.
+계정·관심 목록·댓글·주문·매물은 로컬 Node API 서버의 `.probe/state.json`에 저장합니다. 브라우저별 로그인은 HTTP-only 쿠키로 구분하고, 상품·매물·재고는 같은 서버를 사용하는 접속자끼리 공유합니다. 이전 브라우저 저장소는 삭제하지 않으며 서버로 자동 이관하지 않습니다. 가격·시세·재고·발매일은 모두 가상이며 실제 결제·검수·배송·정산·이메일·NFC 인증은 실행하지 않습니다. 데모에는 실제 개인정보와 비밀번호를 입력하지 마세요.
 
 ## 빌드·검증
 
 ```sh
 npm run check
-npx playwright install chromium
+npx playwright install chromium webkit firefox
 npm run test:e2e
 npm run format:check
 ```
@@ -41,7 +41,7 @@ npm run build
 npm run preview
 ```
 
-정적 결과물은 `dist/`, 미리보기 주소는 [http://127.0.0.1:4173](http://127.0.0.1:4173)입니다. 모킹은 빌드 후에도 활성화됩니다. 서비스 워커를 위해 localhost 또는 HTTPS로 접속해야 합니다.
+화면 결과물은 `dist/`, API 서버는 `server-build/`입니다. 두 결과물과 Node 실행 환경이 필요합니다. 미리보기 주소는 [http://127.0.0.1:4173](http://127.0.0.1:4173)입니다. 모킹은 빌드 후에도 Node 서버에서 동작하며 브라우저 서비스 워커에 의존하지 않습니다. `npm run dev`는 API와 Vite를 함께 시작합니다. API 서버가 4173에서 실행 중이면 재사용합니다.
 
 ```sh
 VITE_BASE_PATH=/Bonoware/ npm run build
@@ -53,7 +53,8 @@ VITE_BASE_PATH=/Bonoware/ npm run build
 
 - `src/components`, `src/views`, `src/assets`, `src/store`: 원본 화면·스타일·Redux 코드.
 - `src/classic`: 기존 화면을 Vite에서 실행하는 진입점, API 응답 변환, 로컬 AWS 호환 계층.
-- `src/app`: 타입, API 클라이언트, MSW 핸들러와 영속 저장소.
+- `src/app`: 타입, API 클라이언트, 공통 HTTP 핸들러와 데이터 모델.
+- `server`: Node HTTP 서버, 세션 격리·파일 저장·정적 파일 제공·이전 빌드 자산 보관.
 - `legacy`: 원본 CRA 진입점·Webpack 설정·스크립트의 참고 사본.
 - `ETC`: 원래 Lambda 소스·아카이브. 현재 빌드와 분리되어 있습니다.
 

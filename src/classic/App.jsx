@@ -3,6 +3,7 @@ import { Route, Switch, useLocation } from "react-router-dom";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
+import ErrorBoundary from "./ErrorBoundary";
 const theme = createMuiTheme({
   typography: {
     fontFamily: "'Noto Sans KR', sans-serif",
@@ -45,25 +46,35 @@ export default function App() {
         leftLinks={null}
         changeColorOnScroll={{ height: 100, color: "white" }}
       />
-      <Suspense fallback={<div style={{ minHeight: 500 }} />}>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/products" component={Products} />
-          <Route path="/products/:model" component={Product} />
-          <Route path="/new-releases" component={Releases} />
-          <Route exact path="/news" component={News} />
-          <Route path="/news/:model" component={Article} />
-          <Route exact path="/sell" component={Sell} />
-          <Route path="/sell/details" component={SellDetail} />
-          <Route path="/profile/:content?" component={Profile} />
-          <Route path="/register" component={Register} />
-          <Route path="/about" component={About} />
-          <Route path="/privacy" component={Privacy} />
-          <Route path="/terms" component={Terms} />
-          <Route path="/payments/complete" component={Complete} />
-          <Route component={Home} />
-        </Switch>
-      </Suspense>
+      <ErrorBoundary key={location.pathname}>
+        <Suspense
+          fallback={
+            <div
+              style={{ minHeight: 500 }}
+              role="status"
+              aria-label="화면을 불러오는 중"
+            />
+          }
+        >
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/products" component={Products} />
+            <Route path="/products/:model" component={Product} />
+            <Route path="/new-releases" component={Releases} />
+            <Route exact path="/news" component={News} />
+            <Route path="/news/:model" component={Article} />
+            <Route exact path="/sell" component={Sell} />
+            <Route path="/sell/details" component={SellDetail} />
+            <Route path="/profile/:content?" component={Profile} />
+            <Route path="/register" component={Register} />
+            <Route path="/about" component={About} />
+            <Route path="/privacy" component={Privacy} />
+            <Route path="/terms" component={Terms} />
+            <Route path="/payments/complete" component={Complete} />
+            <Route component={Home} />
+          </Switch>
+        </Suspense>
+      </ErrorBoundary>
       <Footer />
     </MuiThemeProvider>
   );

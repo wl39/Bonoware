@@ -6,9 +6,10 @@ import {
   publicUser,
 } from "../app/database";
 import { classicProduct, classicAccount, classicNews } from "./models";
-import background from "assets/img/bg-img.jpg";
-import banner from "assets/img/adSliderImg/bg1.png";
-import mobileBanner from "assets/img/adSliderImg/bg1-mobile.png";
+import { imagePath } from "../app/seed";
+const background = imagePath("original-bg.jpg");
+const banner = imagePath("original-banner.png");
+const mobileBanner = imagePath("original-banner-mobile.png");
 export function classicHandlers(repository) {
   return [
     http.all("*/classic/*", async ({ request }) => {
@@ -25,7 +26,12 @@ export function classicHandlers(repository) {
             new URL(`${import.meta.env.BASE_URL}api${path}`, request.url),
             {
               method,
-              headers: { "Content-Type": "application/json" },
+              headers: {
+                "Content-Type": "application/json",
+                ...(request.headers.get("cookie")
+                  ? { Cookie: request.headers.get("cookie") }
+                  : {}),
+              },
               ...(input ? { body: JSON.stringify(input) } : {}),
             },
           );

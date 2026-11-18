@@ -20,6 +20,7 @@ export async function api<T>(
     response = await fetch(`${base}${path}`, {
       credentials: "include",
       ...options,
+      signal: options.signal || AbortSignal.timeout(10000),
       headers: { "Content-Type": "application/json", ...options.headers },
     });
   } catch {

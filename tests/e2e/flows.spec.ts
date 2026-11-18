@@ -1,5 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 async function login(page: Page, isMobile: boolean) {
+  const email = `collector-${crypto.randomUUID()}@example.com`;
+  await page.request.post("/api/auth/register", {
+    data: { email, password: "Testing123!", name: "테스트 컬렉터" },
+  });
+  await page.request.post("/api/auth/logout");
   await page.goto("/");
   if (isMobile) {
     await page.getByRole("button", { name: "open drawer" }).click();
@@ -10,12 +15,13 @@ async function login(page: Page, isMobile: boolean) {
   await expect(page.getByLabel("이메일", { exact: true })).toHaveValue(
     "demo@probe.local",
   );
+  await page.getByLabel("이메일", { exact: true }).fill(email);
+  await page.getByLabel("비밀번호", { exact: true }).fill("Testing123!");
   await page.getByRole("button", { name: "로그인", exact: true }).click();
   await expect(page.getByLabel("이메일", { exact: true })).toHaveCount(0);
   await page.goto("/#/profile/recap");
-  await expect(
-    page.getByText("demo@probe.local", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText(email, { exact: true })).toBeVisible();
+  return email;
 }
 test("original home and catalog layout, local images and route navigation", async ({
   page,
@@ -71,11 +77,9 @@ test("original login modal persists session on reload", async ({
   page,
   isMobile,
 }) => {
-  await login(page, isMobile);
+  const email = await login(page, isMobile);
   await page.reload();
-  await expect(
-    page.getByText("demo@probe.local", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText(email, { exact: true })).toBeVisible();
 });
 test("original news and release pages render without runtime errors", async ({
   page,
@@ -100,9 +104,15 @@ test("original purchase stepper creates a persisted mock order", async ({
   isMobile,
 }) => {
   await login(page, isMobile);
+  const size =
+    240 +
+    ["desktop", "mobile", "safari", "iphone-safari", "firefox"].indexOf(
+      test.info().project.name,
+    ) *
+      5;
   await page.goto("/#/products/jordan-unc");
   await page.getByText("사이즈별 최저가로 구매하기", { exact: true }).click();
-  await page.getByText("260", { exact: true }).click();
+  await page.getByText(String(size), { exact: true }).click();
   await page.getByRole("button", { name: "다음", exact: true }).click();
   await page.getByRole("button", { name: "주소 검색", exact: true }).click();
   await page.getByPlaceholder("상세 주소", { exact: true }).fill("데모 101호");
@@ -126,6 +136,9 @@ test("original purchase stepper creates a persisted mock order", async ({
   await page
     .getByRole("button", { name: "모의 주문 취소", exact: true })
     .click();
+  await expect(
+    page.getByRole("button", { name: "모의 주문 취소", exact: true }),
+  ).toHaveCount(0);
 });
 test("original sell form registers and cancels a listing", async ({
   page,
@@ -149,4 +162,40 @@ test("original sell form registers and cancels a listing", async ({
   await expect(
     page.getByRole("button", { name: "판매 취소", exact: true }),
   ).toHaveCount(0);
+});
+
+test("repeated search, filter buttons, logo and navigation keep the page alive without service workers", async ({
+  page,
+  isMobile,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/#/products");
+  if (!isMobile) {
+    await page.getByPlaceholder("신발명, 브랜드 검색하세요.").fill("Jordan");
+    const result = page
+      .locator('a[href*="/products/"]')
+      .filter({ hasText: "에어 조던 1 오프화이트 유니버시티 블루" })
+      .first();
+    await result.click();
+    await expect(
+      page.getByText("사이즈별 최저가로 구매하기", { exact: true }),
+    ).toBeVisible();
+  }
+  await page.getByRole("link", { name: "logo", exact: true }).click();
+  await expect(page.getByText("프로브하세요", { exact: true })).toBeVisible();
+  await page.goto("/#/products");
+  if (!isMobile) {
+    await page.getByText("정렬 방식", { exact: true }).click();
+    await page.getByText("가격순", { exact: true }).click();
+    await page.getByText("260", { exact: true }).first().click();
+  }
+  await expect(page.locator('img[alt="logo"]')).toBeVisible();
+  await page.goto("/#/products/not-a-product");
+  await expect(page.getByRole("alert")).toContainText(
+    "상품을 찾을 수 없습니다.",
+  );
+  await page.getByRole("link", { name: "logo", exact: true }).click();
+  await expect(page.getByText("프로브하세요", { exact: true })).toBeVisible();
+  expect(errors).toEqual([]);
 });

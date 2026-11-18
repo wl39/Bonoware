@@ -13,6 +13,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as actions from "store/actions/actions";
 import axios from "axios";
+import {api} from "../../app/api";
+import {classicAccount} from "../../classic/models";
 
 function getModalStyle() {
   const top = 50;
@@ -173,18 +175,9 @@ class AccountModal extends React.Component {
   };
 
   componentDidMount() {
-    axios
-      .get("https://api.probe.gg/protected/checkLogin", {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Origin": "https://probe.gg"
-        }
-      })
-      .then(response => {
-        let data = response.data;
-        // console.log(data);
-        this.props.setMountAuth(true, data.name, data, data.email);
-      }).catch(() => {});
+    api("/session").then(session => {
+      if(session.user)this.props.setMountAuth(true,session.user.name,classicAccount(session.user,session.following),session.user.email);
+    }).catch(() => {});
   }
 
   menuClick = event => {

@@ -11,34 +11,16 @@ import axios from "axios";
 import "assets/scss/material-kit-react.css";
 import { api, mockMode } from "../app/api";
 async function start() {
-  if (mockMode) {
-    const [
-      { setupWorker },
-      { createHandlers },
-      { createDatabase },
-      { classicHandlers },
-    ] = await Promise.all([
-      import("msw/browser"),
-      import("../app/handlers"),
-      import("../app/database"),
-      import("./handlers"),
-    ]);
-    const repository = createDatabase(localStorage);
-    const worker = setupWorker(
-      ...classicHandlers(repository),
-      ...createHandlers(repository),
-    );
-    await worker.start({
-      serviceWorker: { url: `${import.meta.env.BASE_URL}mockServiceWorker.js` },
-      onUnhandledFrame: "bypass",
-      quiet: true,
-    });
-  } else if ("serviceWorker" in navigator) {
-    const registration = await navigator.serviceWorker.getRegistration(
-      import.meta.env.BASE_URL,
-    );
-    if (registration?.active?.scriptURL.endsWith("/mockServiceWorker.js"))
-      await registration.unregister();
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.getRegistration(
+        import.meta.env.BASE_URL,
+      );
+      if (registration?.active?.scriptURL.endsWith("/mockServiceWorker.js"))
+        await registration.unregister();
+    } catch {
+      /* The local API does not depend on browser service workers. */
+    }
   }
   axios.interceptors.request.use((config) => {
     const url = new URL(config.url, location.origin);
@@ -79,5 +61,11 @@ async function start() {
 }
 start().catch((error) => {
   console.error(error);
-  document.getElementById("root").textContent = error.message;
+  const root = document.getElementById("root");
+  const message = document.createElement("p");
+  message.textContent = error.message;
+  const button = document.createElement("button");
+  button.textContent = "다시 연결";
+  button.onclick = () => window.location.reload();
+  root.replaceChildren(message, button);
 });

@@ -1,4 +1,6 @@
 import axios from "axios";
+import { api } from "../../app/api";
+import { classicAccount } from "../../classic/models";
 export const SET_AUTH = "SET_AUTH";
 export const SET_USERNAME = "SET_USERNAME";
 export const SET_ID = "SET_ID";
@@ -77,7 +79,8 @@ export const authUser = info => {
           let data = response.data;
           dispatch(setUser(data.name, data));
         }
-      });
+      })
+      .catch(error => dispatch(loginError(error.response?.data?.message || "로그인할 수 없습니다. 연결 상태를 확인해주세요.")));
   };
 };
 
@@ -107,20 +110,16 @@ export const setAttrFollowing = (attr, following) => {
   };
 };
 
-export const getUser = () => {
-  return dispatch => {
-    axios
-      .get("https://api.probe.gg/protected/checkLogin", {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Origin": "https://probe.gg"
-        }
-      })
-      .then(response => {
-        let data = response.data;
-        dispatch(setUser(data.name, data, data.email));
-      });
-  };
+export const getUser = () => async dispatch => {
+  try {
+    const session = await api("/session");
+    if (session.user) {
+      const data = classicAccount(session.user, session.following);
+      dispatch(setUser(data.name, data));
+    }
+  } catch (error) {
+    console.error("계정 정보를 불러오지 못했습니다.", error);
+  }
 };
 
 export const getId = id => {

@@ -10,3 +10,6 @@ playwright-report/
 .cache/
 .cached/
 *.log
+
+.probe/
+server-build/

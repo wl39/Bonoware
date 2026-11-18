@@ -18,7 +18,6 @@ const compare = (data1, data2) => {
   return data1.price - data2.price;
 };
 
-let histogram = [];
 let sizeArray = [];
 class ProductSearchPanel extends React.Component {
   constructor(props) {
@@ -41,6 +40,7 @@ class ProductSearchPanel extends React.Component {
       lowestPrice: false,
       sortOption: ""
     };
+    sizeArray = [];
     this.NoUiSlider = React.createRef();
   }
 
@@ -67,9 +67,9 @@ class ProductSearchPanel extends React.Component {
     }
 
     if (this.props.histogram !== nextProps.histogram) {
-      let sorted = [...nextProps.histogram];
+      let sorted = nextProps.histogram.filter(value => Number.isInteger(value.price) && value.price >= 0 && value.price < 50);
       sorted.sort(compare);
-      if (sorted.length === nextProps.num) {
+      if (sorted.length && sorted.length === nextProps.num) {
         this.setState({
           priceRange: [0, (sorted[sorted.length - 1].price * 1 + 1) * 50000],
           minPrice: 0,
@@ -78,16 +78,15 @@ class ProductSearchPanel extends React.Component {
             10
           )
         });
+        const histogram = [];
         sorted.forEach(value => {
           histogram[value.price] = {
             frequency: parseInt(value.count, 10),
             lowestFrequency: parseInt(value.lowest, 10)
           };
         });
+        this.setState({ histogram });
       }
-      this.setState({
-        histogram: histogram
-      });
     }
   }
 
