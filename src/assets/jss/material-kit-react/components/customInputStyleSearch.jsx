@@ -252,44 +252,14 @@ const customInputStyle = {
     }
   },
   windowHeader: {
-    marginTop: "47px",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "90vw",
+    position: "absolute",
+    top: "calc(100% + 2px)",
+    left: "-1px",
+    width: "calc(100% + 2px)",
     display: "grid",
-    position: "fixed",
-    zIndex: "10",
-    overflowY: "scroll",
-    maxHeight: "420px",
-    left: "0",
-    right: "0",
-    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.2)",
-    "&::-webkit-scrollbar": {
-      width: "2px"
-    },
-
-    /* Track */
-    "&::-webkit-scrollbar-track": {
-      background: "#f1f1f1"
-    },
-
-    /* Handle */
-    "&::-webkit-scrollbar-thumb": {
-      background: "black"
-    },
-
-    /* Handle on hover */
-    "&::-webkit-scrollbar-thumb:hover": {
-      background: "black"
-    },
-    "@media (min-width: 480px)": {
-      // display: "none",
-    },
-    "@media (min-width: 768px)": {},
-    "@media (min-width: 992px)": {},
-    "@media (min-width: 1200px)": {
-      marginTop: "64px"
-    }
+    overflowY: "auto",
+    maxHeight: "min(420px, 60vh)",
+    zIndex: 10
   },
   mainPage: {
     position: "absolute",

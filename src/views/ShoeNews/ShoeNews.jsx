@@ -1,10 +1,10 @@
+import { catalogData } from "classic/catalogData";
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import ShoeNewsDetail from "views/ShoeNews/ShoeNewsDetail";
 import ProductCommentsPanel from "components/Product/ProductCommentsPanel";
 
-import axios from "axios";
 
 import shoeNews from "assets/jss/material-kit-react/views/shoeNews";
 
@@ -21,11 +21,7 @@ class ShoeNews extends React.Component {
 
     this.model = this.props.match.params.model;
 
-    axios({
-      method: "get",
-      url:
-        "https://api.probe.gg/open/news?news=" + this.props.match.params.model
-    }).then(value => {
+    catalogData("/open/news?news=" + this.props.match.params.model).then(value => {
       let data = value.data.data;
 
       let date = new Date(data.postDate);

@@ -1,4 +1,7 @@
+import { catalogData } from "classic/catalogData";
 import axios from "axios";
+import { api } from "../../app/api";
+import { classicAccount } from "../../classic/models";
 export const SET_AUTH = "SET_AUTH";
 export const SET_USERNAME = "SET_USERNAME";
 export const SET_ID = "SET_ID";
@@ -47,7 +50,7 @@ export const loginError = message => {
 
 export const authUser = info => {
   return dispatch => {
-    console.log(info);
+
     axios
       .post(
         "https://api.probe.gg/auth/login",
@@ -77,7 +80,8 @@ export const authUser = info => {
           let data = response.data;
           dispatch(setUser(data.name, data));
         }
-      });
+      })
+      .catch(error => dispatch(loginError(error.response?.data?.message || "로그인할 수 없습니다. 연결 상태를 확인해주세요.")));
   };
 };
 
@@ -107,20 +111,16 @@ export const setAttrFollowing = (attr, following) => {
   };
 };
 
-export const getUser = () => {
-  return dispatch => {
-    axios
-      .get("https://api.probe.gg/protected/checkLogin", {
-        withCredentials: true,
-        headers: {
-          "Access-Control-Allow-Origin": "https://probe.gg"
-        }
-      })
-      .then(response => {
-        let data = response.data;
-        dispatch(setUser(data.name, data, data.email));
-      });
-  };
+export const getUser = () => async dispatch => {
+  try {
+    const session = await api("/session");
+    if (session.user) {
+      const data = classicAccount(session.user, session.following);
+      dispatch(setUser(data.name, data));
+    }
+  } catch (error) {
+    console.error("계정 정보를 불러오지 못했습니다.", error);
+  }
 };
 
 export const getId = id => {
@@ -247,10 +247,7 @@ export const getMainImages = () => {
     let unreleased = [];
     let ticker = [];
 
-    axios({
-      method: "get",
-      url: "https://api.probe.gg/open"
-    }).then(value => {
+    catalogData("/open").then(value => {
       value.data[1].graph.forEach(value => {
         switch (value.graphName) {
           case "nike":
@@ -267,16 +264,16 @@ export const getMainImages = () => {
         }
       });
       value.data[2].orderby.item.forEach(value => {
-        daily.push({ name: value.name, image: value.image[0] });
+        daily.push({ id: value._id, name: value.name, image: value.image[0] });
       });
       value.data[3].orderby.item.forEach(value => {
-        weekly.push({ name: value.name, image: value.image[0] });
+        weekly.push({ id: value._id, name: value.name, image: value.image[0] });
       });
       value.data[4].orderby.item.forEach(value => {
-        monthly.push({ name: value.name, image: value.image[0] });
+        monthly.push({ id: value._id, name: value.name, image: value.image[0] });
       });
       value.data[5].orderby.item.forEach(value => {
-        recommend.push({ name: value.name, image: value.image[0] });
+        recommend.push({ id: value._id, name: value.name, image: value.image[0] });
       });
 
       mostPopularSlider = value.data[6].item;

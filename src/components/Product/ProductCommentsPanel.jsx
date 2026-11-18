@@ -1,3 +1,5 @@
+import { staticPages } from "classic/mode";
+import { catalogData } from "classic/catalogData";
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -40,10 +42,7 @@ class ProductCommentsPanel extends React.Component {
     let query = nextProps.shoe ? "shoe=" : "news=";
 
     if (this.props.id !== nextProps.id) {
-      axios({
-        method: "get",
-        url: "https://api.probe.gg/open/findComments?" + query + nextProps.id
-      }).then(value => {
+      catalogData("/open/findComments?" + query + nextProps.id).then(value => {
         let comments = [];
 
         value.data.comments.forEach(value => {
@@ -87,10 +86,7 @@ class ProductCommentsPanel extends React.Component {
   componentWillMount() {
     let query = this.props.shoe ? "shoe=" : "news=";
 
-    axios({
-      method: "get",
-      url: "https://api.probe.gg/open/findComments?" + query + this.props.id
-    }).then(value => {
+    catalogData("/open/findComments?" + query + this.props.id).then(value => {
       let comments = [];
 
       value.data.comments.forEach(value => {
@@ -221,7 +217,7 @@ class ProductCommentsPanel extends React.Component {
           </div>
         )}
 
-        <div className={classes.addContainer}>
+        {!staticPages && <div className={classes.addContainer}>
           <TextField
             error={this.state.error}
             label="댓글 달기"
@@ -244,7 +240,7 @@ class ProductCommentsPanel extends React.Component {
           <Button className={classes.button} onClick={this.submit}>
             등록
           </Button>
-        </div>
+        </div>}
         {/* <div className={classes.commentsContainer}>{this.state.comments}</div> */}
       </div>
     );

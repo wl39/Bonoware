@@ -12,7 +12,7 @@ class Complete extends React.Component {
 
     return (
       <div className={classes.container}>
-        결제가 완료되었습니다
+        모의 주문이 완료되었습니다
         <div>{this.props.location.state.msg}</div>
       </div>
     );

@@ -459,6 +459,7 @@ class Selling extends React.Component {
                 {this.addTextField(shoeData)}
               </div>
             )}
+            {shoeData.status === "on_sale" && <Button onClick={() => this.cancelListing(shoeData._id)}>판매 취소</Button>}
             <div className={classes.profit} id={shoeData._id + "_lowestPrice"}>
               {shoeData.lowestPrice
                 ? "₩" + shoeData.lowestPrice.toLocaleString()
@@ -602,6 +603,12 @@ class Selling extends React.Component {
           });
       }
     }
+  };
+
+  cancelListing = async (id) => {
+    if (!window.confirm("판매 등록을 취소할까요?")) return;
+    try {await axios.post("https://api.probe.gg/protected/cancelListing",{id});this.componentWillMount();}
+    catch(error){alert(error.response?.data?.message || "취소하지 못했습니다.");}
   };
 
   render() {

@@ -50,6 +50,10 @@ const sizeModal = {
     gridGap: "20px 0px",
     justifyContent: "space-between",
     padding: "30px",
+    "@media (max-width: 599px)": {
+      gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+      gridTemplateRows: "none", gridAutoRows: "44px", gap: 8, padding: 12
+    },
     "&::-webkit-scrollbar": {
       width: "2px"
     },
@@ -68,6 +72,7 @@ const sizeModal = {
     textAlign: "center",
     lineHeight: "58px",
     width: "60px",
+    "@media (max-width: 599px)": { width: "100%", lineHeight: "42px", fontSize: "16px" },
     fontSize: "18px",
     fontWeight: "300",
     border: "1px solid #2a2a2a",
@@ -84,6 +89,7 @@ const sizeModal = {
     textAlign: "center",
     lineHeight: "58px",
     width: "60px",
+    "@media (max-width: 599px)": { width: "100%", lineHeight: "42px", fontSize: "16px" },
     fontSize: "18px",
     fontWeight: "600",
     border: "2px solid black",

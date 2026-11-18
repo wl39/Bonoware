@@ -70,7 +70,7 @@ const customProfile = {
     }
   },
   drawerContent: {
-    color: "#4f5666 !important",
+    color: "#b9bfca !important",
     cursor: "pointer",
     transition: "0.3s",
     height: "60px",

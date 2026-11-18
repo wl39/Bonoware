@@ -32,138 +32,35 @@ const mostPopularBrand = {
     }
   },
   brandContainer: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    height: "90%",
-    paddingBottom: "10px",
+    display: "grid",
+    gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+    gap: "14px",
     "@media (max-width: 599px)": {
-      flexDirection: "column"
+      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+      gap: "12px"
     }
   },
-  firstRow: {
-    display: "flex",
-    "@media (max-width: 599px)": {
-      marginBottom: "7px"
-    }
-  },
-  secondRow: {
-    display: "flex",
-    "@media (max-width: 599px)": {
-      marginTop: "7px"
-    }
-  },
-  firstBrand: {
-    flexBasis: "50%",
-    marginRight: "7px",
-    height: "100%",
-    boxShadow: "0 0 9px 1px rgba(4, 0, 0, 0.1)",
-    padding: "30px 15px 0px 15px",
+  brandCard: {
     display: "flex",
     flexDirection: "column",
-    position: "relative",
-    transition: "0.3s",
-    cursor: "pointer",
-    "&:hover": {
-      flexBasis: "52%",
-      height: "102%",
-      marginTop: "-1%"
-    },
-    "@media (max-width: 599px)": {
-      flexBasis: "50%",
-      "&:hover": {
-        flexBasis: "52%",
-        height: "102%",
-        marginTop: "-1%"
-      }
-    }
-  },
-  middleBrandLeft: {
-    flexBasis: "50%",
-    margin: "0px 7px",
-    height: "100%",
-    boxShadow: "0 0 9px 1px rgba(4, 0, 0, 0.1)",
-    padding: "30px 15px 0px 15px",
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
-    transition: "0.3s",
-    cursor: "pointer",
-    "&:hover": {
-      flexBasis: "52%",
-      height: "102%",
-      marginTop: "-1%"
-    },
-    "@media (max-width: 599px)": {
-      flexBasis: "50%",
-      marginRight: "0px",
-      "&:hover": {
-        flexBasis: "52%",
-        height: "102%",
-        marginTop: "-1%"
-      }
-    }
-  },
-  middleBrandRight: {
-    flexBasis: "50%",
-    margin: "0px 7px",
-    height: "100%",
-    boxShadow: "0 0 9px 1px rgba(4, 0, 0, 0.1)",
-    padding: "30px 15px 0px 15px",
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
-    transition: "0.3s",
-    cursor: "pointer",
-    "&:hover": {
-      flexBasis: "52%",
-      height: "102%",
-      marginTop: "-1%"
-    },
-    "@media (max-width: 599px)": {
-      flexBasis: "50%",
-      marginLeft: "0px",
-      "&:hover": {
-        flexBasis: "52%",
-        height: "102%",
-        marginTop: "-1%"
-      }
-    }
-  },
-  lastBrand: {
-    flexBasis: "50%",
-    marginLeft: "7px",
-    height: "100%",
-    boxShadow: "0 0 9px 1px rgba(4, 0, 0, 0.1)",
-    padding: "30px 15px 0px 15px",
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
-    transition: "0.3s",
-    cursor: "pointer",
-    "&:hover": {
-      flexBasis: "52%",
-      height: "102%",
-      marginTop: "-1%"
-    },
-    "@media (max-width: 599px)": {
-      flexBasis: "50%",
-      "&:hover": {
-        flexBasis: "52%",
-        height: "102%",
-        marginTop: "-1%"
-      }
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "clamp(12px, 2vw, 28px) 12px 6px",
+    background: "white",
+    boxShadow: "0 1px 8px rgba(0, 0, 0, .12)",
+    transition: "box-shadow 150ms ease",
+    "&:hover, &:focus-visible": {
+      boxShadow: "0 2px 12px rgba(0, 0, 0, .22)"
     }
   },
   shoeImg: {
     width: "100%",
-    height: "auto"
+    aspectRatio: "7 / 5",
+    objectFit: "contain"
   },
   brandImg: {
-    position: "releative",
-    bottom: "0",
-    left: "0",
-    right: "0",
+    objectFit: "contain",
+    aspectRatio: "7 / 5",
     margin: "0px auto",
     width: "30%"
   }

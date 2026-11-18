@@ -1,133 +1,97 @@
+const stepPanel = {
+  width: "100%",
+  minWidth: 0,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  padding: "clamp(28px, 4vw, 72px) clamp(16px, 2vw, 36px)",
+  "@media (max-width: 959px)": { padding: "28px 24px" },
+};
 const aboutPage = {
   container: {
-    marginTop: "100px"
+    marginTop: "100px",
+    "@media (max-width: 599px)": { marginTop: 60 },
   },
   firstDiv: {
-    height: "500px",
+    height: "clamp(210px, 35vw, 500px)",
     display: "flex",
-    background: "#121621",
-    opacity: "0.9"
+    backgroundColor: "#292d38",
   },
   brandTitle: {
     margin: "auto",
     color: "white",
     fontWeight: "600",
     fontSize: "60px",
-    TextAlign: "center"
+    textAlign: "center",
   },
   brandDescriptionContainer: {
-    height: "600px",
-    display: "flex",
-    position: "relative"
+    minHeight: "clamp(260px, 32vw, 520px)",
+    display: "grid",
+    alignItems: "center",
+    gridTemplateColumns: "1fr 1fr",
+    padding: "clamp(24px, 5vw, 72px)",
+    "@media (max-width: 699px)": { gridTemplateColumns: "1fr" },
   },
-  subContainer: {
-    margin: "auto 0px",
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    bottom: "50%",
-    transform: "translateY(-50%)",
-    height: "min-content"
-  },
+  subContainer: { gridColumn: "-2 / -1", minWidth: 0 },
   brandDescriptionHeader: {
-    fontSize: "36px",
+    fontSize: "clamp(24px, 2.5vw, 36px)",
     lineHeight: "36px",
     fontWeight: "600",
     color: "#121621",
-    marginBottom: "50px"
+    marginBottom: "clamp(16px, 2vw, 36px)",
   },
   brandDescription: {
     letterSpacing: "-0.4px",
     whiteSpace: "pre-line",
     fontSize: "16px",
     fontWeight: "300",
-    lineHeight: "1.88"
+    lineHeight: "1.88",
   },
   howToUse: {
     display: "grid",
-    gridTemplateColumns: "33.333% 33.333% 33.333%"
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    "@media (max-width: 959px)": { gridTemplateColumns: "1fr" },
   },
-  square: {
-    position: "relative",
-    "&:before": {
-      content: `""`,
-      display: "block",
-      paddingTop: "100%"
-    }
-  },
-  firstStep: {
-    position: "absolute",
-    top: "0",
-    bottom: "0",
-    left: "0",
-    right: "0",
-    paddingTop: "25%",
-    paddingLeft: "50px",
-    background: "#eeeeee",
-    color: "#121621",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingBottom: "31.25%"
-  },
-  secondStep: {
-    position: "absolute",
-    top: "0",
-    bottom: "0",
-    left: "0",
-    right: "0",
-    paddingTop: "25%",
-    paddingLeft: "50px",
-    background: "#1b202d",
-    color: "white",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingBottom: "31.25%"
-  },
-  lastStep: {
-    position: "absolute",
-    top: "0",
-    bottom: "0",
-    left: "0",
-    right: "0",
-    paddingTop: "25%",
-    paddingLeft: "50px",
-    background: "#eeeeee",
-    color: "#121621",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    paddingBottom: "31.25%"
-  },
+  square: { minWidth: 0, display: "flex" },
+  firstStep: { ...stepPanel, background: "#eee", color: "#121621" },
+  secondStep: { ...stepPanel, background: "#1b202d", color: "white" },
+  lastStep: { ...stepPanel, background: "#eee", color: "#121621" },
   stepHeader: {
-    fontSize: "36px",
+    fontSize: "clamp(24px, 2.5vw, 36px)",
     fontWeight: "600",
     lineHeight: "1",
-    marginBottom: "50px"
+    marginBottom: "clamp(16px, 2vw, 36px)",
   },
   stepsContainer: {
     display: "grid",
-    gridTemplateColumns: "28.125% 28.125% 28.125%",
+    gridTemplateColumns: "repeat(3,minmax(0,1fr))",
+    columnGap: 12,
+    lineHeight: 1.65,
+    wordBreak: "keep-all",
+    overflowWrap: "anywhere",
     fontSize: "16px",
     letterSpacing: "-0.4px",
     color: "black",
     fontWeight: "300",
-    whiteSpace: "pre-line"
+    whiteSpace: "pre-line",
   },
   stepsContainerWhite: {
     display: "grid",
-    gridTemplateColumns: "28.125% 28.125% 28.125%",
+    gridTemplateColumns: "repeat(3,minmax(0,1fr))",
+    columnGap: 12,
+    lineHeight: 1.65,
+    wordBreak: "keep-all",
+    overflowWrap: "anywhere",
     fontSize: "16px",
     letterSpacing: "-0.4px",
     color: "white",
     fontWeight: "300",
-    whiteSpace: "pre-line"
+    whiteSpace: "pre-line",
   },
   stepIndex: {
     fontWeight: "600",
-    marginBottom: "50px"
-  }
+    marginBottom: "clamp(16px, 2vw, 36px)",
+  },
 };
 
 export default aboutPage;

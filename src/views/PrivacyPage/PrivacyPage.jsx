@@ -1,9 +1,8 @@
 import React from "react";
 
 import withStyles from "@material-ui/core/styles/withStyles";
-import privacyPage from "assets/jss/material-kit-react/views/privacyPage.jsx";
+import privacyPage from "assets/jss/material-kit-react/views/legalPage.jsx";
 
-import Chip from "@material-ui/core/Chip";
 import Description from "@material-ui/icons/Description";
 
 class PrivacyPage extends React.Component {
@@ -11,15 +10,10 @@ class PrivacyPage extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.container}>
-        <Chip
-          className={classes.chips}
-          icon={<Description />}
-          color="secondary"
-          label="개인정보 처리방침"
-        />
-        <p className={classes.br}>㈜보노웨어 개인정보 처리방침 개정안</p>
+        <h1 className={classes.title}><Description aria-hidden="true" />개인정보 처리방침</h1>
+        <p className={classes.br}>**** 개인정보 처리방침 개정안</p>
         <p>
-          ㈜보노웨어(이하 "회사"라 합니다)는 이용자들의 개인정보보호를 매우
+          ****(이하 "회사"라 합니다)는 이용자들의 개인정보보호를 매우
           중요시하며, 이용자가 회사의 프로브(https://www.probe.gg) 쇼핑몰
           서비스(이하 "서비스"라 합니다)를 이용함과 동시에 온라인상에서 회사에
           제공한 개인정보가 보호 받을 수 있도록 최선을 다하고 있습니다. 이에
@@ -36,7 +30,7 @@ class PrivacyPage extends React.Component {
           회사는 개인정보 보호정책을 홈페이지 첫 화면에 공개함으로써 이용자들이
           언제나 용이하게 보실 수 있도록 조치하고 있습니다.
         </p>
-        <p>㈜보노웨어 개인정보처리방침은 다음과 같은 내용을 담고 있습니다. </p>
+        <p>**** 개인정보처리방침은 다음과 같은 내용을 담고 있습니다. </p>
         <p className={classes.br}>가. 개인정보의 수집 및 이용목적</p>
         <p className={classes.br}>나. 수집하는 개인정보 항목과 수집방법</p>
         <p className={classes.br}>다. 개인정보 보유 및 이용 기간</p>
@@ -336,13 +330,13 @@ class PrivacyPage extends React.Component {
           위하여 다음과 같이 책임자와 담당자를 두고 있습니다.
         </p>
 
-        <p>개인정보 보호책임자 : 대표이사 조상훈</p>
-        <p>연락처 : 02-xxx-xxxx</p>
-        <p>이메일 : email: admin@probe.gg</p>
+        <p>개인정보 보호책임자 : 대표이사 ***</p>
+        <p>연락처 : **-***-****</p>
+        <p>이메일 : ****@****.***</p>
 
-        <p>개인정보 보호담당자 : 대표이사 조상훈</p>
-        <p>연락처 : 02-xxx-xxxx</p>
-        <p>이메일 : email: admin@probe.gg</p>
+        <p>개인정보 보호담당자 : 대표이사 ***</p>
+        <p>연락처 : **-***-****</p>
+        <p>이메일 : ****@****.***</p>
 
         <p>
           기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에

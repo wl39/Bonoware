@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import withStyles from "@material-ui/core/styles/withStyles";
 import FormControl from "@material-ui/core/FormControl";
 import InputBase from "@material-ui/core/InputBase";
@@ -25,7 +26,10 @@ class DetailSell extends React.Component {
       search: false,
       model: "",
       imgPreview: null,
-      lowest: ""
+      lowest: "",
+      size: 270,
+      price: "",
+      pending: false
     };
   }
 
@@ -85,6 +89,17 @@ class DetailSell extends React.Component {
       imgPreview: imgPreview,
       lowest: lowest
     });
+  };
+
+  submit = async () => {
+    if (this.state.pending) return;
+    if (!this.state.model || !this.state.imgPreview) {alert("검색 결과에서 판매할 상품을 선택해주세요.");return;}
+    this.setState({pending:true});
+    try {
+      await axios.post("https://api.probe.gg/protected/createListing",{productId:this.state.model,size:Number(this.state.size),price:Number(this.state.price),condition:"new"});
+      this.props.history.push("/profile/selling");
+    } catch(error) {alert(error.response?.data?.message || "로그인과 입력값을 확인해주세요.");}
+    finally {this.setState({pending:false});}
   };
 
   render() {
@@ -344,6 +359,7 @@ class DetailSell extends React.Component {
                 <FormControl className={classes.inputWrapper}>
                   <InputBase
                     fullWidth
+                    inputProps={{"aria-label":"판매 모델"}}
                     value={this.state.model}
                     onClick={this.searchClickToOpen}
                     onChange={this.search}
@@ -365,6 +381,9 @@ class DetailSell extends React.Component {
               <div className={classes.inputLabel}>사이즈</div>
               <FormControl className={classes.inputWrapper}>
                 <InputBase
+                  value={this.state.size}
+                  inputProps={{"aria-label":"판매 사이즈"}}
+                  onChange={event => this.setState({size:event.target.value})}
                   fullWidth
                   classes={{
                     root: classes.root,
@@ -398,7 +417,11 @@ class DetailSell extends React.Component {
             ) : null}
           </div>
         </div>
-        <Button className={classes.next}>다음</Button>
+        <div className={classes.inputContainer}>
+          <div className={classes.inputLabel}>판매가</div>
+          <FormControl className={classes.inputWrapper}><InputBase fullWidth value={this.state.price} onChange={event => this.setState({price:event.target.value})} placeholder="원" inputProps={{"aria-label":"판매 금액"}} classes={{root:classes.root,focused:classes.focused}} /></FormControl>
+        </div>
+        <Button className={classes.next} onClick={this.submit} disabled={this.state.pending}>판매 등록</Button>
       </div>
     );
   }

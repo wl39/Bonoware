@@ -14,46 +14,31 @@ class MainBottomSection extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.containerContents}>
-        <div className={classes.gridContainer}>
-          <div className={classes.shoeContainer}>
-            <div className={classes.sectionContainer}>
-              <MostPopularBrand />
-            </div>
-
-            <div className={classes.sectionContainer}>
-              <MostPopularSection
-                headerName="인기 제품"
-                helper="최근 한달간 가장 많이 판매된 제품입니다."
-                iconName="whatshot"
-              />
-            </div>
-
-            <div className={classes.sectionContainer}>
-              <MostPopularSection
-                headerName="최신 제품"
-                helper="최근 한달간 발매된 신발중 가장 인기있는 제품입니다."
-                iconName="new_releases"
-              />
-            </div>
-
-            <div
-              className={classes.sectionContainerLast}
-            >
-              <MostPopularSection
-                headerName="최저가 제품"
-                helper="최근 한달간 가장 인기있는 최저가 제품입니다."
-                iconName="trending_down"
-              />
-            </div>
-          </div>
+        <div className={classes.shoeContainer}>
+          <MostPopularBrand />
+          <MostPopularSection
+            headerName="인기 제품"
+            helper="최근 한달간 가장 많이 판매된 제품입니다."
+            iconName="whatshot"
+          />
+          <MostPopularSection
+            headerName="최신 제품"
+            helper="최근 한달간 발매된 신발중 가장 인기있는 제품입니다."
+            iconName="new_releases"
+          />
+          <MostPopularSection
+            headerName="최저가 제품"
+            helper="최근 한달간 가장 인기있는 최저가 제품입니다."
+            iconName="trending_down"
+          />
         </div>
         <Link
           to={{
             pathname: "/products",
             state: {
               filter: "",
-              brand: ""
-            }
+              brand: "",
+            },
           }}
           className={classes.link}
         >

@@ -12,6 +12,7 @@ const sellPage = {
   },
   indexLeft: {
     position: "absolute",
+    pointerEvents: "none",
     fontSize: "300px",
     fontWeight: "bold",
     color: "rgba(42, 42, 42, 0.5)",
@@ -36,6 +37,7 @@ const sellPage = {
   },
   indexRight: {
     position: "absolute",
+    pointerEvents: "none",
     fontSize: "300px",
     fontWeight: "bold",
     color: "rgba(42, 42, 42, 0.5)",

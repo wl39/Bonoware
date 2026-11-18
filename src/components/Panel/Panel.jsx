@@ -53,7 +53,7 @@ class Panel extends React.Component {
           ...daily,
           <Button key={props.daily[i].name} className={classes.shoeContainer}>
             <Link
-              to={"/products/" + props.daily[i].name}
+              to={"/products/" + encodeURIComponent(props.daily[i].id || props.daily[i].name)}
               className={classes.link}
             >
               <img
@@ -69,7 +69,7 @@ class Panel extends React.Component {
           ...weekly,
           <Button key={props.weekly[i].name} className={classes.shoeContainer}>
             <Link
-              to={"/products/" + props.weekly[i].name}
+              to={"/products/" + encodeURIComponent(props.weekly[i].id || props.weekly[i].name)}
               className={classes.link}
             >
               <img
@@ -85,7 +85,7 @@ class Panel extends React.Component {
           ...monthly,
           <Button key={props.monthly[i].name} className={classes.shoeContainer}>
             <Link
-              to={"/products/" + props.monthly[i].name}
+              to={"/products/" + encodeURIComponent(props.monthly[i].id || props.monthly[i].name)}
               className={classes.link}
             >
               <img
@@ -104,7 +104,7 @@ class Panel extends React.Component {
             className={classes.shoeContainer}
           >
             <Link
-              to={"/products/" + props.recommend[i].name}
+              to={"/products/" + encodeURIComponent(props.recommend[i].id || props.recommend[i].name)}
               className={classes.link}
             >
               <img

@@ -53,7 +53,7 @@ class LoginPage extends React.Component {
 
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
-    setTimeout(
+    this.animationTimer = setTimeout(
       function() {
         this.setState({ cardAnimaton: "" });
       }.bind(this),
@@ -61,8 +61,12 @@ class LoginPage extends React.Component {
     );
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.animationTimer);
+  }
+
   login = event => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && !this.state.cardAnimaton) {
       this.props.onLoginClicked();
     }
   };
@@ -98,6 +102,8 @@ class LoginPage extends React.Component {
                     focused: classes.focused
                   }}
                   type="text"
+                  defaultValue="demo@probe.local"
+                  inputProps={{"aria-label":"이메일"}}
                   name="username"
                   autoComplete="username"
                 />
@@ -111,6 +117,8 @@ class LoginPage extends React.Component {
                   onChange={this.pwHandler}
                   fullWidth
                   type="password"
+                  defaultValue="Probe1234!"
+                  inputProps={{"aria-label":"비밀번호"}}
                   classes={{
                     root: classes.root,
                     focused: classes.focused
@@ -166,6 +174,7 @@ class LoginPage extends React.Component {
           <div className={classes.cardFooter}>
             <Button
               className={classes.loginButton}
+              disabled={Boolean(this.state.cardAnimaton)}
               onClick={this.props.onLoginClicked}
               classes={{
                 label: classes.loginButtonLabel

@@ -87,11 +87,11 @@ class NewsPanel extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes.newsPanelContainer}>
-        <div className={classes.cardHeader}>
-          <div className={classes.cardHeaderName}>최신 소식</div>
-          <Link to="/news" className={classes.newsLink}>
-            <div className={classes.seeAll}>전체보기</div>
+      <div>
+        <div className="store-section-heading">
+          <h2>최신 소식</h2>
+          <Link to="/news" className="store-see-all">
+            전체보기
           </Link>
         </div>
         {/* <ClickAwayListener onClickAway={this.handleTooltipClose}>

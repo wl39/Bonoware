@@ -1,23 +1,17 @@
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Chip from "@material-ui/core/Chip";
 import Description from "@material-ui/icons/Description";
 
-import termsPage from "assets/jss/material-kit-react/views/termsPage.jsx";
+import termsPage from "assets/jss/material-kit-react/views/legalPage.jsx";
 
 class TermsPage extends React.Component {
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.container}>
-        <Chip
-          className={classes.chips}
-          icon={<Description />}
-          color="secondary"
-          label="이용약관"
-        />
+        <h1 className={classes.title}><Description aria-hidden="true" />이용약관</h1>
         <p>
-          제1조(목적) 이 약관은 주식회사 보노웨어가 운영하는 사이버 몰
+          제1조(목적) 이 약관은 ****가 운영하는 사이버 몰
           “프로브”(이하 “몰”이라 한다)에서 제공하는 인터넷 관련 서비스(이하
           “서비스”라 한다)를 이용함에 있어 사이버 몰과 이용자의 권리, 의무 및
           책임사항을 규정함을 목적으로 합니다.
@@ -26,7 +20,7 @@ class TermsPage extends React.Component {
         <p>제2조(정의)</p>
 
         <p>
-          ① “몰”이란 주식회사 보노웨어가 재화 또는 용역(이하 “재화 등”이라 함)을
+          ① “몰”이란 ****가 재화 또는 용역(이하 “재화 등”이라 함)을
           이용자에게 제공하기 위하여 컴퓨터 등 정보통신설비를 이용하여 재화 등을
           거래할 수 있도록 설정한 가상의 영업장을 말하며, 아울러 사이버몰을
           운영하는 사업자의 의미로도 사용합니다.

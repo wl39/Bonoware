@@ -28,28 +28,15 @@ const mainPageStyle = {
     }
   },
   titleContainer: {
-    ...container,
     position: "absolute",
-    padding: "0px",
+    left: 0,
+    right: 0,
     top: "130px",
-    height: "245px",
-    left: "0",
-    right: "0",
-    "@media (min-width: 480px)": {
-      maxWidth: "90%"
-    },
-    "@media (min-width: 768px)": {
-      maxWidth: "90%"
-    },
-    "@media (min-width: 992px)": {
-      top: "180px",
-      maxWidth: "90%",
-      height: "211px"
-    },
-    "@media (min-width: 1200px)": {
-      top: "220px",
-      maxWidth: "83.333%"
-    }
+    width: "90%",
+    margin: "0 auto",
+    "@media (max-width: 599px)": { width: "calc(100% - 32px)" },
+    "@media (min-width: 992px)": { top: "180px" },
+    "@media (min-width: 1200px)": { top: "220px", width: "83.333%" }
   },
   brand: {
     color: "#FFFFFF",
@@ -87,46 +74,6 @@ const mainPageStyle = {
     },
     "@media (min-width: 1200px)": {
       height: "251px"
-    }
-  },
-  dotContainer: {
-    height: "inherit",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    marginRight: "15px",
-    "@media (min-width: 480px)": {
-      // top: "400px"
-    },
-    "@media (min-width: 768px)": {
-      // top: "517px"
-    },
-    "@media (min-width: 992px)": {
-      marginRight: "34px"
-    },
-    "@media (min-width: 1200px)": {
-      marginRight: "52px"
-    }
-  },
-  dot: {
-    width: "7px",
-    height: "7px",
-    background: "white",
-    borderRadius: "50%",
-    display: "none",
-    "@media (min-width: 480px)": {
-      display: "none"
-    },
-    "@media (min-width: 768px)": {
-      display: "none"
-    },
-    "@media (min-width: 992px)": {
-      width: "5px",
-      height: "5px"
-    },
-    "@media (min-width: 1200px)": {
-      width: "7px",
-      height: "7px"
     }
   },
   titles: {
@@ -185,29 +132,6 @@ const mainPageStyle = {
     },
     "@media (min-width: 1200px)": {
       height: "80px"
-    }
-  },
-  redDot: {
-    width: "7px",
-    height: "7px",
-    background: "#FE0229",
-    borderRadius: "50%",
-    position: "absolute",
-    bottom: "0",
-    display: "none",
-    "@media (min-width: 480px)": {
-      display: "none"
-    },
-    "@media (min-width: 768px)": {
-      display: "none"
-    },
-    "@media (min-width: 992px)": {
-      width: "5px",
-      height: "5px"
-    },
-    "@media (min-width: 1200px)": {
-      width: "7px",
-      height: "7px"
     }
   },
   subtitle: {
@@ -308,8 +232,8 @@ const mainPageStyle = {
     }
   },
   backgroundBlack: {
-    background: "black",
-    opacity: "0.8"
+    background: "rgba(0,0,0,.83)",
+    height: "100%"
   },
   backgroundContainerRight: {
     maxWidth: "50%",
@@ -322,50 +246,24 @@ const mainPageStyle = {
     }
   },
   newsContainer: {
-    padding: "38px 100px 48px 0px",
-    maxWidth: "83.33%",
-    height: "794px",
+    width: "83.333%",
     marginLeft: "auto",
     color: "white",
-    "@media (max-width: 1199px)": {
-      maxWidth: "90%"
-    },
-    "@media (max-width: 992px)": {
-      maxWidth: "90%",
-      flexBasis: "90%",
+    padding: "36px clamp(24px, 3.3vw, 48px) 38px 0",
+    "@media (max-width: 1199px)": { width: "90%" },
+    "@media (max-width: 959px)": {
       margin: "auto",
-      padding: "30px 0px"
-    },
-    "@media (max-width: 768px)": {
-      maxWidth: "90%",
-      flexBasis: "100%",
-      margin: "auto",
-      padding: "10px 0px",
-      height: "450px"
+      padding: "24px 0"
     }
   },
   releaseDateContainer: {
-    height: "794px",
-    maxWidth: "83.33%",
+    width: "83.333%",
     marginRight: "auto",
-    padding: "38px 0px 48px 48px",
-    marginLeft: "3px",
-    "@media (max-width: 1199px)": {
-      maxWidth: "90%"
-    },
-    "@media (max-width: 992px)": {
-      maxWidth: "90%",
-      flexBasis: "90%",
+    padding: "36px 0 38px clamp(24px, 3.3vw, 48px)",
+    "@media (max-width: 1199px)": { width: "90%" },
+    "@media (max-width: 959px)": {
       margin: "auto",
-      padding: "30px 0px",
-      height: "100%"
-    },
-    "@media (max-width: 768px)": {
-      maxWidth: "90%",
-      flexBasis: "100%",
-      margin: "auto",
-      padding: "10px 0px",
-      height: "100%"
+      padding: "24px 0"
     }
   }
 };

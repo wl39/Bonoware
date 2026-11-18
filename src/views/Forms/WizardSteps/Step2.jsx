@@ -46,7 +46,6 @@ function TextMaskCustom(props) {
 TextMaskCustom.propTypes = {
   inputRef: PropTypes.func.isRequired
 };
-let script;
 
 const style = {
   infoText: {
@@ -197,38 +196,9 @@ class Step2 extends React.Component {
     });
   }
 
-  componentDidMount() {
-    script = document.createElement("script");
-
-    script.src =
-      "https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js?autoload=false";
-    document.body.appendChild(script);
-  }
-
   openHandler = () => {
-    window.daum.postcode.load(() => {
-      const Postcode = new window.daum.Postcode({
-        oncomplete: data => {
-          this.setState({
-            postCode: data.zonecode,
-            address1: data.address,
-            postCodeState: "success"
-          });
-          // this.updatePostCode(data.zonecode);
-          // this.updateAddress(data.address);
-        }
-      });
-
-      Postcode.open(Postcode.wrap, {
-        q: Postcode.defaultQuery,
-        autoClose: Postcode.autoClose
-      });
-    });
+    this.setState({postCode:"00000",address1:"서울시 가상구 프로브로 123",postCodeState:"success"});
   };
-
-  componentWillUnmount() {
-    document.body.removeChild(script);
-  }
 
   updatePostCode = postcode => {
     this.setState({

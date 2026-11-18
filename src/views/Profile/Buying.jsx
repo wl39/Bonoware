@@ -461,6 +461,7 @@ class Buying extends React.Component {
           <BoughtModal
             open={this.state.buyingModalOpen}
             modalHandler={this.buyingModalHandler}
+            reload={() => this.componentWillMount()}
             shoeData={this.state.buyingShoeData}
           />
           <div className={classes.sellingDummyContainer}>

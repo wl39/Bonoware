@@ -41,7 +41,7 @@ const panel = {
     padding: "0px 6px",
     background: "#232020",
     color: "white",
-    borderRadius: "7px",
+    borderRadius: 0,
     textAlign: "center",
     margin: "auto",
     "@media (max-width: 959px)": {
@@ -53,7 +53,7 @@ const panel = {
     padding: "0px 6px",
     background: "#232020",
     color: "white",
-    borderRadius: "7px",
+    borderRadius: 0,
     textAlign: "center",
     margin: "auto",
     "@media (max-width: 959px)": {

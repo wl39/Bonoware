@@ -1,0 +1,73 @@
+import { staticPages } from "classic/mode";
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { HashRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore, compose, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import reducer from "store/reducer/reducer";
+import * as actions from "store/actions/actions";
+import App from "./App";
+import axios from "axios";
+import "assets/scss/material-kit-react.css";
+import { api, mockMode } from "../app/api";
+async function start() {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.getRegistration(
+        import.meta.env.BASE_URL,
+      );
+      if (registration?.active?.scriptURL.endsWith("/mockServiceWorker.js"))
+        await registration.unregister();
+    } catch {
+      /* The local API does not depend on browser service workers. */
+    }
+  }
+  if (!staticPages)
+    axios.interceptors.request.use((config) => {
+      const url = new URL(config.url, location.origin);
+      if (url.hostname === "api.probe.gg") {
+        config.url = mockMode
+          ? `${import.meta.env.BASE_URL}classic${url.pathname}${url.search}`
+          : `${import.meta.env.VITE_API_BASE_URL || "/api"}${url.pathname}${url.search}`;
+        delete config.headers["Access-Control-Allow-Origin"];
+      }
+      return config;
+    });
+  const store = createStore(
+    reducer,
+    (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(
+      applyMiddleware(thunk),
+    ),
+  );
+  store.dispatch(actions.getId("demo@probe.local"));
+  store.dispatch(actions.getPw("Probe1234!"));
+  const session = staticPages ? null : await api("/session");
+  if (session?.user) {
+    const { classicAccount } = await import("./models");
+    store.dispatch(
+      actions.setAuth(
+        true,
+        session.user.name,
+        classicAccount(session.user, session.following),
+      ),
+    );
+  }
+  createRoot(document.getElementById("root")).render(
+    <Provider store={store}>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </Provider>,
+  );
+}
+start().catch((error) => {
+  console.error(error);
+  const root = document.getElementById("root");
+  const message = document.createElement("p");
+  message.textContent = error.message;
+  const button = document.createElement("button");
+  button.textContent = "다시 연결";
+  button.onclick = () => window.location.reload();
+  root.replaceChildren(message, button);
+});

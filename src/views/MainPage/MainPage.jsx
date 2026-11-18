@@ -21,7 +21,11 @@ import * as actions from "store/actions/actions";
 import Ticker from "components/Ticker/Ticker.jsx";
 
 class MainPage extends React.Component {
-  componentWillMount() {
+  state = { campaign: 2 };
+
+  changeCampaign = (campaign) => this.setState({ campaign });
+
+  componentDidMount() {
     this.props.getMainImagesHandler();
   }
 
@@ -32,34 +36,33 @@ class MainPage extends React.Component {
         <div style={{ backgroundColor: "#000000" }}>
           <div
             className={classes.parallax}
-            style={{
-              backgroundImage: "url(" + this.props.backgroundImage + ")",
-              opacity: "0.7"
-            }}
-          />
+            aria-hidden="true"
+          >
+            {[
+              import.meta.env.BASE_URL + "images/banner-canvas.jpg",
+              import.meta.env.BASE_URL + "images/yeezy-butter.jpg",
+              this.props.backgroundImage
+            ].map((image, i) => (
+              <div
+                key={i}
+                className={"campaign-hero campaign-hero--" + i}
+                data-current={this.state.campaign === i}
+                style={image ? { backgroundImage: `url("${image}")` } : undefined}
+              />
+            ))}
+          </div>
           {/* <Parallax> */}
 
-          <div
-            className={classes.titleContainer}
-            style={{ paddingRight: "0px" }}
-          >
+          <div className={classes.titleContainer}>
             <GridContainer>
               <GridItem className={classes.gridDummy}>
                 <div className={classes.brand}>
-                  <div className={classes.dotContainer}>
-                    <div className={classes.dot} />
-                    <div className={classes.dot} />
-                    <div className={classes.dot} />
-                  </div>
                   <div className={classes.titles}>
                     <h1 className={classes.title}>당신의 특별한 신발을</h1>
                     <h1 className={classes.title}>프로브하세요</h1>
                   </div>
                 </div>
                 <div className={classes.searchContainer}>
-                  <div className={classes.dotContainer}>
-                    <div className={classes.redDot} />
-                  </div>
                   <CustomSearch
                     id="material"
                     formControlProps={{
@@ -72,7 +75,8 @@ class MainPage extends React.Component {
           </div>
           {/* </Parallax> */}
         </div>
-        <AdvertisementSection />
+        <AdvertisementSection active={this.state.campaign} onChange={this.changeCampaign} />
+        <Ticker />
         <MainBottomSection />
         <div className={classes.gridContainer}>
           <div className={classes.backgroundContainerLeft}>
@@ -88,7 +92,6 @@ class MainPage extends React.Component {
             </div>
           </div>
         </div>
-        <Ticker />
       </Aux>
     );
   }

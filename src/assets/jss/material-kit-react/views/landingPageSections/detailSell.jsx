@@ -11,11 +11,13 @@ const detailSell = {
     },
     "@media (max-width: 599px)": {
       maxWidth: "100%",
-      margin: "100px auto 140px"
+      padding: "0 16px",
+      margin: "100px auto 100px"
     }
   },
   indexLeft: {
     position: "absolute",
+    pointerEvents: "none",
     fontSize: "300px",
     fontWeight: "bold",
     color: "rgba(42, 42, 42, 0.5)",
@@ -40,6 +42,7 @@ const detailSell = {
   },
   indexRight: {
     position: "absolute",
+    pointerEvents: "none",
     fontSize: "300px",
     fontWeight: "bold",
     color: "rgba(42, 42, 42, 0.5)",
@@ -159,8 +162,8 @@ const detailSell = {
     width: "70%",
     margin: "0px 0px 0px auto",
     "@media (max-width: 992px)": {
-      width: "72%",
-      margin: "0px 0px 0px 30%"
+      width: "70%",
+      marginLeft: "auto"
     }
   },
   root: {
@@ -214,7 +217,7 @@ const detailSell = {
   },
   filterIcon: {
     margin: "auto 0px",
-    color: "#inherit"
+    color: "inherit"
   },
   filterViewIconActive: {
     color: "black",

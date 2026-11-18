@@ -27,7 +27,8 @@ class CustomSearchHeader extends React.Component {
 
   searchBar = event => {
     this.setState({
-      search: event.target.value
+      search: event.target.value,
+      visible: true
     });
   };
 
@@ -79,7 +80,8 @@ class CustomSearchHeader extends React.Component {
               color: "inherit"
             }}
             placeholder="신발명, 브랜드 검색하세요."
-            onClick={() => this.test()}
+            onClick={this.test}
+            onFocus={this.test}
             onChange={this.searchBar}
             id={id}
           />
@@ -100,7 +102,6 @@ class CustomSearchHeader extends React.Component {
             search={this.state.search}
             visible={this.state.visible}
             test={classes.windowHeader}
-            josh={this.props.srcoll}
             lol={value => this.clickToLeaveWithUpdate(value)}
           />
         </FormControl>

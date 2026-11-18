@@ -32,6 +32,7 @@ const headerStyle = {
   },
   otherPage: {
     backgroundColor: "#000000 !important",
+    color: "#fff !important",
     padding: "20px 0px !important"
   },
   notMainContainer: {
@@ -113,7 +114,7 @@ const headerStyle = {
     textAlign: "center",
     justifyContent: "space-between",
     fontSize: "16px",
-    fontWeight: "500px",
+    fontWeight: 500,
     fontStyle: "normal",
     fontStretch: "normal",
     lineHeight: "1",
@@ -140,7 +141,7 @@ const headerStyle = {
     textAlign: "center",
     justifyContent: "space-between",
     fontSize: "16px",
-    fontWeight: "500px",
+    fontWeight: 500,
     fontStyle: "normal",
     fontStretch: "normal",
     lineHeight: "1",
@@ -232,7 +233,7 @@ const headerStyle = {
     ...defaultFont,
     lineHeight: "30px",
     fontSize: "18px",
-    borderRadius: "3px",
+    borderRadius: 0,
     textTransform: "none",
     color: "inherit",
     "&:hover,&:focus": {
@@ -244,7 +245,7 @@ const headerStyle = {
   primary: {
     backgroundColor: primaryColor,
     color: "#FFFFFF",
-    borderRadius: "1rem",
+    borderRadius: 0,
     boxShadow:
       "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(156, 39, 176, 0.46)"
   },
@@ -280,6 +281,7 @@ const headerStyle = {
   },
   transparent: {
     backgroundColor: "transparent",
+    backgroundImage: "linear-gradient(to bottom, rgba(0,0,0,.35), transparent)",
     boxShadow: "none",
     paddingTop: "32px",
     color: "#FFFFFF",
@@ -334,7 +336,7 @@ const headerStyle = {
     paddingTop: "82px"
   },
   scrollTop: {
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    backgroundColor: "#202124",
     paddingTop: "6px",
     color: "#dbdbdb",
     marginTop: "20px",

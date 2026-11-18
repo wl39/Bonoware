@@ -18,86 +18,52 @@ const newsPanel = {
     fontSize: "14px",
     color: "white"
   },
-  container: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "column",
-    flexBasis: "20%",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.6)",
-    padding: "40px 0px",
-    "@media (max-width: 768px)": {
-      padding: "15px 0px"
-    }
-  },
-  newsPanelContainer: {
-    height: "100%",
+  newsContainer: {
     display: "flex",
     flexDirection: "column"
   },
-  newsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    height: "100%"
+  container: {
+    borderBottom: "1px solid rgba(255,255,255,.32)"
   },
   mainInfo: {
     display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between"
+    alignItems: "baseline",
+    justifyContent: "space-between",
+    gap: "8px"
   },
   title: {
-    fontWeight: "600",
-    height: "15px",
-    minHeight: "15px",
-    lineHeight: "15px",
+    fontWeight: 600,
     fontSize: "15px",
+    lineHeight: 1.5,
     overflow: "hidden",
-    letterSpacing: "0.21px"
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
   },
   details: {
-    display: "flex",
-    fontSize: "16px",
-    lineHeight: "16px",
-    flexDirection: "row",
-    fontWeight: "200"
+    color: "#d0d0d0",
+    fontSize: "13px",
+    fontWeight: 400,
+    lineHeight: 1.5
   },
   viewValue: {
-    fontSize: "16px",
-    height: "16px",
-    lineHeight: "10px",
-    letterSpacing: "0.16px",
-    fontWeight: "200",
-    minWidth: "60px",
-    "@media (max-width: 599px)": {
-      fontSize: "12px",
-      lineHeight: "14px"
-    }
-  },
-  icon: {
-    fontSize: "9px",
-    height: "12px",
-    paddingTop: "3px"
-  },
-  label: {
-    flexDirection: "column"
+    flexShrink: 0,
+    color: "#d0d0d0",
+    fontSize: "12px",
+    fontVariantNumeric: "tabular-nums"
   },
   link: {
-    margin: "0px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    height: "100%",
-    color: "#d9d9d9 !important",
-    "&:hover": {
-      color: "white !important"
-    }
+    display: "grid",
+    gap: "4px",
+    padding: "clamp(12px, 1.4vw, 20px) 0",
+    color: "white !important",
+    "&:hover $title, &:focus-visible $title": { textDecoration: "underline" }
   },
   cardHeader: {
     display: "flex",
-    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     paddingBottom: "14px",
-    borderBottom: "1px solid rgba(255, 255, 255, 0.6)"
+    borderBottom: "1px solid rgba(255,255,255,.5)"
   },
   cardHeaderName: {
     textAlign: "center",

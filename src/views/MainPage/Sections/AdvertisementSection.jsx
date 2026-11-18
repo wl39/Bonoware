@@ -1,127 +1,84 @@
-import Hidden from "@material-ui/core/Hidden";
-// react component for creating beautiful carousel
-// @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
-// core components
-import carouselStyle from "assets/jss/material-kit-react/views/componentsSections/carouselStyle.jsx";
-import Aux from "hoc/Aux_/Aux_";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import Carousel from "react-slick";
+import "./campaign.css";
 
-class SectionCarousel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      slideIndex: 0
-    };
-  }
-  render() {
-    const settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipeToSlide: true,
-      autoplay: true,
-      arrows: false,
-      adaptiveHeight: false
-      // beforeChange: (current, next) => this.setState({ slideIndex: next })
-    };
+const campaigns = [
+  { title: "Black is the new black", model: "Canvas High-Top" },
+  { title: "Smooth like…", model: "Yeezy Boost 350 V2 Butter" },
+  { title: "Shop Off-White", model: "Off-White" },
+];
 
-    const { classes } = this.props;
-    return (
-      <Aux>
-        <Hidden only={["xs"]} implementation="css">
-          <div className={classes.navBoxContainer}>
-            <div
-              className={classes.navBox}
-              onClick={() => this.slider && this.slider.slickGoTo(0)}
-            >
-              <div className={classes.num}>01</div>
-              <div className={classes.title}>BLAKC IS THE NEW BLACK</div>
-              <div className={classes.shoe}>Yeezy Boost</div>
-            </div>
-            <div
-              className={classes.navBox}
-              onClick={() => this.slider && this.slider.slickGoTo(1)}
-            >
-              <div className={classes.num}>02</div>
-              <div className={classes.title}>TONAL ON THE ROCKS</div>
-              <div className={classes.shoe}>Yeezy Boost 700</div>
-            </div>
-            <div
-              className={classes.lastNavBox}
-              onClick={() => this.slider && this.slider.slickGoTo(2)}
-            >
-              <div className={classes.num}>03</div>
-              <div className={classes.title}> TESTING</div>
-              <div className={classes.shoe}>Testing</div>
-            </div>
-          </div>
-          <Carousel ref={slider => (this.slider = slider)} {...settings}>
-            <div>
-              <img
-                src={this.props.pcSliderImages[0]}
-                className="slick-image"
-                alt="0"
-              />
-            </div>
-            <div>
-              <img
-                src={this.props.pcSliderImages[1]}
-                className="slick-image"
-                alt="1"
-              />
-            </div>
-            <div>
-              <img
-                src={this.props.pcSliderImages[2]}
-                className="slick-image"
-                alt="2"
-              />
-            </div>
+function AdvertisementSection({
+  pcSliderImages,
+  mobileSliderImages,
+  active,
+  onChange,
+}) {
+  const slider = useRef(null);
+  const [motion] = useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)"),
+  );
+  const [reducedMotion, setReducedMotion] = useState(motion.matches);
+  useEffect(() => {
+    const update = () => setReducedMotion(motion.matches);
+    motion.addEventListener("change", update);
+    return () => motion.removeEventListener("change", update);
+  }, [motion]);
+  return (
+    <section className="home-campaign" aria-label="메인 배너">
+      <div className="campaign-tabs" role="group" aria-label="배너 선택">
+        {campaigns.map(({ title, model }, i) => (
+          <button
+            key={title}
+            type="button"
+            aria-pressed={active === i}
+            onClick={() => slider.current?.slickGoTo(i)}
+          >
+            <span className="campaign-number">0{i + 1}</span>
+            <span className="campaign-title">{title}</span>
+            <span className="campaign-model">{model}</span>
+          </button>
+        ))}
+      </div>
+      <div className="campaign-strip">
+        {pcSliderImages.length === campaigns.length && (
+          <Carousel
+            ref={slider}
+            initialSlide={2}
+            autoplay={!reducedMotion}
+            autoplaySpeed={4500}
+            speed={reducedMotion ? 0 : 500}
+            arrows={false}
+            swipeToSlide
+            beforeChange={(_, next) => onChange(next)}
+          >
+            {campaigns.map(({ title, model }, i) => (
+              <div key={title}>
+                <div className="campaign-frame">
+                  <picture>
+                    <source
+                      media="(max-width: 599px)"
+                      srcSet={mobileSliderImages[i]}
+                    />
+                    <img
+                      className={i === 0 ? "campaign-canvas" : undefined}
+                      src={pcSliderImages[i]}
+                      alt={title + " · " + model}
+                    />
+                  </picture>
+                  {i === 0 && <strong aria-hidden="true">{title}</strong>}
+                </div>
+              </div>
+            ))}
           </Carousel>
-        </Hidden>
-        <Hidden only={["sm", "lg", "xl", "md"]} implementation="css">
-          <Carousel {...settings}>
-            <div>
-              <img
-                src={this.props.mobileSliderImages[0]}
-                className="slick-image"
-                alt="3"
-              />
-            </div>
-            <div>
-              <img
-                src={this.props.mobileSliderImages[1]}
-                className="slick-image"
-                alt="4"
-              />
-            </div>
-            <div>
-              <img
-                src={this.props.mobileSliderImages[2]}
-                className="slick-image"
-                alt="5"
-              />
-            </div>
-          </Carousel>
-        </Hidden>
-      </Aux>
-    );
-  }
+        )}
+      </div>
+    </section>
+  );
 }
 
-const mapStateToProps = state => {
-  return {
-    pcSliderImages: state.pcSliderImages,
-    mobileSliderImages: state.mobileSliderImages
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(carouselStyle)(SectionCarousel));
+export default connect(({ pcSliderImages, mobileSliderImages }) => ({
+  pcSliderImages,
+  mobileSliderImages,
+}))(AdvertisementSection);

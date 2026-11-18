@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import boughtModal from "assets/jss/material-kit-react/views/landingPageSections/boughtModal.jsx";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -60,6 +61,12 @@ class BoughtModal extends React.Component {
     this.props.modalHandler(false, null);
   };
 
+  cancelOrder = async () => {
+    if (!window.confirm("모의 주문을 취소할까요?")) return;
+    try {await axios.post("https://api.probe.gg/protected/cancelOrder",{id:this.props.shoeData._id});this.props.reload();this.handleClose();}
+    catch(error){alert(error.response?.data?.message || "취소하지 못했습니다.");}
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -87,10 +94,12 @@ class BoughtModal extends React.Component {
                 </div>
               </div>
               <Button
+                onClick={this.cancelOrder}
+                disabled={this.props.shoeData.status !== "confirmed"}
                 className={classes.recpitButton}
                 classes={{ label: classes.buttonLabel }}
               >
-                영수증{"\n"}발급내역
+                {this.props.shoeData.status === "confirmed" ? "모의 주문 취소" : "취소된 주문"}
               </Button>
             </div>
             <div className={classes.orderProductTable}>
@@ -186,7 +195,8 @@ class BoughtModal extends React.Component {
                 </div>
                 <div className={classes.orderInfoBox}>
                   <div className={classes.detailHeader}>주문자 정보</div>
-                  <div></div>
+                  <div>{this.props.shoeData.recipient}</div>
+
                 </div>
               </div>
             </div>
